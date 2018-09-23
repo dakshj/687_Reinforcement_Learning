@@ -1,0 +1,111 @@
+import math
+import operator
+import random
+
+import numpy as np
+
+NUM_EPISODES = 10000
+
+GAMMA = 0.9
+
+ROWS, COLS = 5, 5
+
+WALLS = [(2, 2), (2, 3)]
+WATERS = [(4, 2)]
+
+START = (0, 0)
+GOAL = (4, 4)
+
+REWARD_GOAL = 10
+REWARD_WATERS = -10
+
+UP, DOWN, LEFT, RIGHT, STAY = 'AU', 'AD', 'AL', 'AR', 'STAY'
+
+DIRECTIONS = {
+    UP: (-1, 0),
+    DOWN: (1, 0),
+    LEFT: (0, -1),
+    RIGHT: (0, 1),
+    STAY: (0, 0)
+}
+
+PROB_ACTUAL = 0.8
+PROB_LEFT = 0.85
+PROB_RIGHT = 0.9
+PROB_STAY = 1.0
+
+VEERS = {
+    UP: {
+        LEFT: DIRECTIONS[LEFT], RIGHT: DIRECTIONS[RIGHT]
+    },
+    DOWN: {
+        LEFT: DIRECTIONS[RIGHT], RIGHT: DIRECTIONS[LEFT]
+    },
+    LEFT: {
+        LEFT: DIRECTIONS[DOWN], RIGHT: DIRECTIONS[UP]
+    },
+    RIGHT: {
+        LEFT: DIRECTIONS[UP], RIGHT: DIRECTIONS[DOWN]
+    },
+}
+
+curr = START
+
+rewards = []
+
+for i in range(NUM_EPISODES):
+
+    total_steps = 0
+    total_reward = 0
+
+    while True:
+        total_steps += 1
+
+        rand_no = random.randint(0, 4)
+
+        direction = None
+
+        if rand_no == 0:
+            direction = UP
+        elif rand_no == 1:
+            direction = DOWN
+        elif rand_no == 2:
+            direction = LEFT
+        else:
+            direction = RIGHT
+
+        rand_actual_no = random.random()
+
+        direction_increment_coordinates = None
+
+        if rand_actual_no < PROB_ACTUAL:
+            direction_increment_coordinates = DIRECTIONS[direction]
+        elif PROB_ACTUAL <= rand_actual_no < PROB_LEFT:
+            direction_increment_coordinates = VEERS[direction][LEFT]
+        elif PROB_LEFT <= rand_actual_no < PROB_RIGHT:
+            direction_increment_coordinates = VEERS[direction][RIGHT]
+        elif PROB_RIGHT <= rand_actual_no < PROB_STAY:
+            direction_increment_coordinates = DIRECTIONS[STAY]
+
+        curr_temp = curr
+
+        curr_temp = tuple(map(operator.add, curr_temp, direction_increment_coordinates))
+
+        if curr_temp not in WALLS and (0 <= curr_temp[0] < ROWS) and (0 <= curr_temp[1] < COLS):
+            curr = curr_temp
+
+        if curr in WATERS:
+            total_reward -= math.pow(GAMMA, total_steps) * REWARD_WATERS
+
+        elif curr == GOAL:
+            total_reward += math.pow(GAMMA, total_steps) * REWARD_GOAL
+            rewards.append(total_reward)
+
+            break
+
+rewards = np.array(rewards)
+
+print('Mean = {}'.format(np.mean(rewards)))
+print('Standard Deviation = {}'.format(np.std(rewards)))
+print('Maximum = {}'.format(np.max(rewards)))
+print('Minimum = {}'.format(np.min(rewards)))
