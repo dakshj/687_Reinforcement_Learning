@@ -11,7 +11,7 @@ GAMMA = 0.9
 ROWS, COLS = 5, 5
 
 WALLS = [(2, 2), (2, 3)]
-WATERS = [(4, 2)]
+WATER = [(4, 2)]
 
 START = (0, 0)
 GOAL = (4, 4)
@@ -94,7 +94,7 @@ for i in range(NUM_EPISODES):
         if curr_temp not in WALLS and (0 <= curr_temp[0] < ROWS) and (0 <= curr_temp[1] < COLS):
             curr = curr_temp
 
-        if curr in WATERS:
+        if curr in WATER:
             reward += math.pow(GAMMA, step) * REWARD_WATERS
 
         elif curr == GOAL:
