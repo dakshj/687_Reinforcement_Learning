@@ -51,15 +51,15 @@ VEERS = {
 
 curr = START
 
-rewards = []
+all_rewards = []
 
 for i in range(NUM_EPISODES):
 
-    total_steps = 0
-    total_reward = 0
+    step = -1
+    reward = 0
 
     while True:
-        total_steps += 1
+        step += 1
 
         rand_no = random.randint(0, 4)
 
@@ -95,17 +95,17 @@ for i in range(NUM_EPISODES):
             curr = curr_temp
 
         if curr in WATERS:
-            total_reward -= math.pow(GAMMA, total_steps) * REWARD_WATERS
+            reward -= math.pow(GAMMA, step) * REWARD_WATERS
 
         elif curr == GOAL:
-            total_reward += math.pow(GAMMA, total_steps) * REWARD_GOAL
-            rewards.append(total_reward)
+            reward += math.pow(GAMMA, step) * REWARD_GOAL
+            all_rewards.append(reward)
 
             break
 
-rewards = np.array(rewards)
+all_rewards = np.array(all_rewards)
 
-print('Mean = {}'.format(np.mean(rewards)))
-print('Standard Deviation = {}'.format(np.std(rewards)))
-print('Maximum = {}'.format(np.max(rewards)))
-print('Minimum = {}'.format(np.min(rewards)))
+print('Mean = {}'.format(np.mean(all_rewards)))
+print('Standard Deviation = {}'.format(np.std(all_rewards)))
+print('Maximum = {}'.format(np.max(all_rewards)))
+print('Minimum = {}'.format(np.min(all_rewards)))
