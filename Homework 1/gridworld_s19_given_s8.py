@@ -10,8 +10,8 @@ GAMMA = 0.9
 
 ROWS, COLS = 5, 5
 
-WALLS = [(2, 2), (2, 3)]
-WATER = [(4, 2)]
+WALLS = [(2, 2), (3, 2)]
+WATER = (4, 2)
 
 START = (0, 0)
 GOAL = (4, 4)
@@ -49,8 +49,6 @@ VEERS = {
     },
 }
 
-curr = START
-
 all_rewards = []
 
 s8_count = 0
@@ -58,6 +56,7 @@ s19_count = 0
 
 for i in range(NUM_EPISODES):
 
+    curr = START
     step = -1
     reward = 0
 
@@ -70,7 +69,7 @@ for i in range(NUM_EPISODES):
         if step == 8 and curr == (3, 4):
             s8_reached = True
 
-        if s8_reached and step == 19 and curr in WATER:
+        if s8_reached and step == 19 and curr == WATER:
             s19_reached = True
 
         rand_no = random.randint(0, 4)
@@ -106,7 +105,7 @@ for i in range(NUM_EPISODES):
         if curr_temp not in WALLS and (0 <= curr_temp[0] < ROWS) and (0 <= curr_temp[1] < COLS):
             curr = curr_temp
 
-        if curr in WATER:
+        if curr == WATER:
             reward += math.pow(GAMMA, step) * REWARD_WATERS
 
         elif curr == GOAL:

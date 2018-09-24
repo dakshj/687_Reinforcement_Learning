@@ -46,8 +46,16 @@ VEERS = {
     },
     RIGHT: {
         LEFT: DIRECTIONS[UP], RIGHT: DIRECTIONS[DOWN]
-    },
+    }
 }
+
+OPTIMAL_POLICY = [
+    [RIGHT, RIGHT, RIGHT, RIGHT, DOWN],
+    [RIGHT, RIGHT, RIGHT, DOWN, DOWN],
+    [UP, UP, STAY, DOWN, DOWN],
+    [UP, UP, STAY, DOWN, DOWN],
+    [UP, LEFT, RIGHT, RIGHT, STAY],
+]
 
 all_rewards = []
 
@@ -60,18 +68,7 @@ for i in range(NUM_EPISODES):
     while True:
         step += 1
 
-        rand_no = random.randint(0, 4)
-
-        direction = None
-
-        if rand_no == 0:
-            direction = UP
-        elif rand_no == 1:
-            direction = DOWN
-        elif rand_no == 2:
-            direction = LEFT
-        else:
-            direction = RIGHT
+        direction = OPTIMAL_POLICY[curr[0]][curr[1]]
 
         rand_actual_no = random.random()
 
