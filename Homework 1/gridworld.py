@@ -161,8 +161,8 @@ def execute(episodes=NUM_EPISODES, policy=uniform_random_policy, print_s19_given
 
 if __name__ == '__main__':
     run_part_1 = True
-    run_part_3 = False
-    run_part_4 = False
+    run_part_3 = True
+    run_part_4 = True
 
     if run_part_1:
         execute()
