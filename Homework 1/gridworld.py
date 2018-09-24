@@ -95,7 +95,7 @@ for i in range(NUM_EPISODES):
             curr = curr_temp
 
         if curr in WATERS:
-            reward -= math.pow(GAMMA, step) * REWARD_WATERS
+            reward += math.pow(GAMMA, step) * REWARD_WATERS
 
         elif curr == GOAL:
             reward += math.pow(GAMMA, step) * REWARD_GOAL
