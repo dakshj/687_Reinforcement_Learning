@@ -171,4 +171,4 @@ if __name__ == '__main__':
         execute(policy=optimal_policy)
 
     if run_part_4:
-        execute(print_s19_given_s8=True)
+        execute(episodes=100000, print_s19_given_s8=True)
