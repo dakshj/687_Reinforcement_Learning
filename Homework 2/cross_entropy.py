@@ -16,8 +16,7 @@ def generate_initial_tabular_softmax_policy():
     return np.random.uniform(0, 1, (92,))
 
 
-# TODO TRIALS = 50
-TRIALS = 1
+TRIALS = 50
 WHILE_LOOP_ITERATIONS_VALUES = [100]
 K_VALUES = [300]
 K_e_VALUES = [30]
@@ -43,7 +42,8 @@ def cross_entropy(while_limit, K, K_e, N):
     trial_results = []
 
     for while_i in range(while_limit):
-        print(while_i)
+        print('{} / {}'.format(while_i, while_limit))
+
         for _ in range(K):
             theta_k = np.random.multivariate_normal(theta, sigma)
 
@@ -60,13 +60,16 @@ def cross_entropy(while_limit, K, K_e, N):
 
         list_of__theta_k__vs__J_k_hat.sort(key=lambda x: x[1], reverse=True)
 
-        theta_k_sum = np.sum([x for (x, _) in list_of__theta_k__vs__J_k_hat][:K_e], axis=0)
+        filtered_theta_k_list = [x for (x, _) in list_of__theta_k__vs__J_k_hat][:K_e]
+
+        theta_k_sum = np.sum(filtered_theta_k_list, axis=0)
 
         theta = 1 / K_e * theta_k_sum
 
-        summation_part = [(x - theta) * np.transpose((x - theta)) for (x, _) in
-                          list_of__theta_k__vs__J_k_hat[:K_e]]
-        sigma = 1 / (EPSILON + K_e) * (EPSILON * np.identity(92) + summation_part)
+        summation_part = [(x - theta) * np.transpose((x - theta)) for x in filtered_theta_k_list]
+        summation_part = np.sum(summation_part, axis=0)
+
+        sigma = (1 / (EPSILON + K_e)) * ((EPSILON * np.identity(92)) + summation_part)
 
         # End While loop
 
