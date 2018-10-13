@@ -47,6 +47,39 @@ def update_state(state: np.ndarray, theta_dot_dot: float, x_dot_dot: float):
     state[IDX_THETA_DOT] += (TIME_STEP * theta_dot_dot)
 
 
+def calculate_accelerations(state: np.ndarray, policy: np.ndarray) -> (float, float):
+    force_applied_to_cart = get_force_from_next_action(policy, state)
+
+    theta = state[IDX_THETA]
+    theta_dot = state[IDX_THETA_DOT]
+
+    sin0 = math.sin(theta)
+    cos0 = math.cos(theta)
+
+    num = (G * sin0) + (
+        cos0 *
+        (
+            -force_applied_to_cart -
+            (MASS_POLE * POLE_HALF_LENGTH * (theta_dot ** 2) * sin0)
+        ) / (MASS_CART + MASS_POLE)
+    )
+
+    denom = POLE_HALF_LENGTH * ((4 / 3) - (
+        (MASS_POLE * (cos0 ** 2)) /
+        (MASS_CART + MASS_POLE)
+    ))
+
+    theta_dot_dot = num / denom
+
+    x_dot_dot = (
+                    force_applied_to_cart + (MASS_POLE * POLE_HALF_LENGTH * (
+                        ((theta_dot ** 2) * sin0) - (theta_dot_dot * cos0))
+                                             )
+                ) / (MASS_CART + MASS_POLE)
+
+    return theta_dot_dot, x_dot_dot
+
+
 def execute(episodes: int, policy: np.ndarray) -> list:
     all_rewards = []
 
@@ -68,34 +101,7 @@ def execute(episodes: int, policy: np.ndarray) -> list:
             # Pole is still up
             reward += REWARD_POLE_UP
 
-            force_applied_to_cart = get_force_from_next_action(policy, state)
-
-            theta = state[IDX_THETA]
-            theta_dot = state[IDX_THETA_DOT]
-
-            sin0 = math.sin(theta)
-            cos0 = math.cos(theta)
-
-            num = (G * sin0) + (
-                cos0 *
-                (
-                    -force_applied_to_cart -
-                    (MASS_POLE * POLE_HALF_LENGTH * (theta_dot ** 2) * sin0)
-                ) / (MASS_CART + MASS_POLE)
-            )
-
-            denom = POLE_HALF_LENGTH * ((4 / 3) - (
-                (MASS_POLE * (cos0 ** 2)) /
-                (MASS_CART + MASS_POLE)
-            ))
-
-            theta_dot_dot = num / denom
-
-            x_dot_dot = (
-                            force_applied_to_cart + (MASS_POLE * POLE_HALF_LENGTH * (
-                                ((theta_dot ** 2) * sin0) - (theta_dot_dot * cos0))
-                                                     )
-                        ) / (MASS_CART + MASS_POLE)
+            theta_dot_dot, x_dot_dot = calculate_accelerations(state, policy)
 
             update_state(state, theta_dot_dot, x_dot_dot)
 
