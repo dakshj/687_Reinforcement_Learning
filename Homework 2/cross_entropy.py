@@ -20,7 +20,7 @@ def generate_initial_tabular_softmax_policy():
     return np.random.uniform(0, 1, (92,))
 
 
-TRIALS = 50
+TRIALS = 20
 WHILE_LOOP_ITERATIONS_VALUES = [100]
 K_VALUES = [300]
 K_e_VALUES = [30]
