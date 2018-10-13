@@ -45,8 +45,9 @@ def execute():
 
 
 def plot_results(results):
-    results = results.mean(axis=0)
-    plt.plot(arr)
+    results = np.mean(results, axis=0)
+    print(np.shape(results))
+    plt.plot(results)
     plt.show()
 
 
