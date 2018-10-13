@@ -1,3 +1,5 @@
+import time
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -28,18 +30,18 @@ EPSILON = 0.0001
 def execute():
     all_results = []
 
-    for _ in range(TRIALS):
+    for trial in range(TRIALS):
         for while_hyp in WHILE_LOOP_ITERATIONS_VALUES:
             for K_hyp in K_VALUES:
                 for K_e_hyp in K_e_VALUES:
                     for N_hyp in N_VALUES:
-                        trial_results = cross_entropy(while_hyp, K_hyp, K_e_hyp, N_hyp)
+                        trial_results = cross_entropy(while_hyp, K_hyp, K_e_hyp, N_hyp, trial)
                         all_results.append(trial_results)
 
     all_results = np.array(all_results)
 
     # Save results to file
-    np.save('all_results', all_results)
+    np.save('all_results_{}'.format(time.time()), all_results)
 
     plot_results(all_results)
 
@@ -51,7 +53,7 @@ def plot_results(results):
     plt.show()
 
 
-def cross_entropy(while_limit, K, K_e, N):
+def cross_entropy(while_limit, K, K_e, N, trial):
     theta = generate_initial_tabular_softmax_policy()
     sigma = np.identity(92)
 
@@ -60,7 +62,8 @@ def cross_entropy(while_limit, K, K_e, N):
     trial_results = []
 
     for while_i in range(while_limit):
-        print('{} / {}'.format(while_i, while_limit))
+        print('{} / {} in trial {} / {}'
+            .format(while_i, while_limit, trial, TRIALS))
 
         for _ in range(K):
             theta_k = np.random.multivariate_normal(theta, sigma)
