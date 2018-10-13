@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import numpy as np
 
 import gridworld
@@ -16,7 +17,7 @@ def generate_initial_tabular_softmax_policy():
     return np.random.uniform(0, 1, (92,))
 
 
-TRIALS = 50
+TRIALS = 2
 WHILE_LOOP_ITERATIONS_VALUES = [100]
 K_VALUES = [300]
 K_e_VALUES = [30]
@@ -25,12 +26,28 @@ EPSILON = 0.0001
 
 
 def execute():
+    all_results = []
+
     for _ in range(TRIALS):
         for while_hyp in WHILE_LOOP_ITERATIONS_VALUES:
             for K_hyp in K_VALUES:
                 for K_e_hyp in K_e_VALUES:
                     for N_hyp in N_VALUES:
-                        cross_entropy(while_hyp, K_hyp, K_e_hyp, N_hyp)
+                        trial_results = cross_entropy(while_hyp, K_hyp, K_e_hyp, N_hyp)
+                        all_results.append(trial_results)
+
+    all_results = np.array(all_results)
+
+    # Save results to file
+    np.save('all_results', all_results)
+
+    plot_results(all_results)
+
+
+def plot_results(results):
+    results = results.mean(axis=0)
+    plt.plot(arr)
+    plt.show()
 
 
 def cross_entropy(while_limit, K, K_e, N):
@@ -72,6 +89,8 @@ def cross_entropy(while_limit, K, K_e, N):
         sigma = (1 / (EPSILON + K_e)) * ((EPSILON * np.identity(92)) + summation_part)
 
         # End While loop
+
+    return trial_results
 
 
 if __name__ == '__main__':
