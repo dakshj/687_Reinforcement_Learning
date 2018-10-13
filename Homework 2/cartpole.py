@@ -41,10 +41,10 @@ def get_force_from_next_action(policy: np.ndarray, curr_state: np.ndarray) -> in
 
 
 def update_state(state: np.ndarray, theta_dot_dot: float, x_dot_dot: float):
-    state[IDX_X] = state[IDX_X] + (TIME_STEP * state[IDX_V])
-    state[IDX_V] = state[IDX_V] + (TIME_STEP * x_dot_dot)
-    state[IDX_THETA] = state[IDX_THETA] + (TIME_STEP * state[IDX_THETA_DOT])
-    state[IDX_THETA_DOT] = state[IDX_THETA_DOT] + (TIME_STEP * theta_dot_dot)
+    state[IDX_X] += (TIME_STEP * state[IDX_V])
+    state[IDX_V] += (TIME_STEP * x_dot_dot)
+    state[IDX_THETA] += (TIME_STEP * state[IDX_THETA_DOT])
+    state[IDX_THETA_DOT] += (TIME_STEP * theta_dot_dot)
 
 
 def execute(episodes: int, policy: np.ndarray) -> list:
@@ -71,28 +71,31 @@ def execute(episodes: int, policy: np.ndarray) -> list:
             force_applied_to_cart = get_force_from_next_action(policy, state)
 
             theta = state[IDX_THETA]
+            theta_dot = state[IDX_THETA_DOT]
 
-            num = (G * math.sin(theta)) + \
-                  (
-                      math.cos(theta) *
-                      (
-                          -force_applied_to_cart -
-                          (MASS_POLE * POLE_HALF_LENGTH * (theta ** 2) * math.sin(theta))
-                      )
-                  )
+            sin0 = math.sin(theta)
+            cos0 = math.cos(theta)
+
+            num = (G * sin0) + (
+                cos0 *
+                (
+                    -force_applied_to_cart -
+                    (MASS_POLE * POLE_HALF_LENGTH * (theta_dot ** 2) * sin0)
+                ) / (MASS_CART + MASS_POLE)
+            )
 
             denom = POLE_HALF_LENGTH * ((4 / 3) - (
-                (MASS_POLE * (math.cos(theta) ** 2)) /
+                (MASS_POLE * (cos0 ** 2)) /
                 (MASS_CART + MASS_POLE)
             ))
 
             theta_dot_dot = num / denom
 
-            x_dot_dot = (force_applied_to_cart + (
-                MASS_POLE * POLE_HALF_LENGTH * (
-                    ((theta ** 2) * math.sin(theta)) - (theta_dot_dot * math.cos(theta)))
-            )) \
-                        / (MASS_CART + MASS_POLE)
+            x_dot_dot = (
+                            force_applied_to_cart + (MASS_POLE * POLE_HALF_LENGTH * (
+                                ((theta_dot ** 2) * sin0) - (theta_dot_dot * cos0))
+                                                     )
+                        ) / (MASS_CART + MASS_POLE)
 
             update_state(state, theta_dot_dot, x_dot_dot)
 

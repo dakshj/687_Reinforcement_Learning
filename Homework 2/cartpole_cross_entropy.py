@@ -5,10 +5,10 @@ import cross_entropy
 # Constants
 ENV_CARTPOLE = 'cartpole'
 TRIALS_DIR = '{}_cross_entropy_trials'.format(ENV_CARTPOLE)
-TRIALS = 1
-WHILE_LOOP_ITERATIONS_VALUES = [5]
-K_VALUES = [10]
-K_e_VALUES = [2]
+TRIALS = 20
+WHILE_LOOP_ITERATIONS_VALUES = [100]
+K_VALUES = [300]
+K_e_VALUES = [30]
 N_VALUES = [1]  # Set to 1 because cartpole is deterministic
 
 
