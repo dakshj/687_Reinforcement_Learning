@@ -5,126 +5,35 @@ import numpy as np
 
 import cartpole
 import gridworld
-
-
-def softmax(X, theta=1.0, axis=None):
-    """
-    Compute the softmax of each element along an axis of X.
-
-    Parameters
-    ----------
-    X: ND-Array. Probably should be floats.
-    theta (optional): float parameter, used as a multiplier
-        prior to exponentiation. Default = 1.0
-    axis (optional): axis to compute values along. Default is the
-        first non-singleton axis.
-
-    Returns an array the same size as X. The result will sum to 1
-    along the specified axis.
-    """
-
-    # make X at least 2d
-    y = np.atleast_2d(X)
-
-    # find axis
-    if axis is None:
-        axis = next(j[0] for j in enumerate(y.shape) if j[1] > 1)
-
-    # multiply y against the theta parameter,
-    y = y * float(theta)
-
-    # subtract the max for numerical stability
-    y = y - np.expand_dims(np.max(y, axis=axis), axis)
-
-    y = np.exp(y)
-
-    # take the sum along the specified axis
-    ax_sum = np.expand_dims(np.sum(y, axis=axis), axis)
-
-    # finally: divide element-wise
-    p = y / ax_sum
-
-    # flatten if X was 1D
-    if len(X.shape) == 1: p = p.flatten()
-
-    return p
+from cartpole_cross_entropy import generate_initial_cartpole_policy
+from gridworld_cross_entropy import generate_initial_gridworld_tabular_softmax_policy
+from softmax import softmax
 
 
 def convert_theta_to_table(theta):
     return softmax(X=np.reshape(theta, (-1, 4)), theta=0.5, axis=1)
 
 
-def generate_initial_gridworld_tabular_softmax_policy():
-    return np.random.uniform(0, 1, (92,))
-
-
-def generate_initial_cartpole_policy():
-    return np.random.uniform(-10, 10, (4,))
-
-
 # Environments
-GRIDWORLD, CARTPOLE = 'gridworld', 'cartpole'
+ENV_GRIDWORLD, ENV_CARTPOLE = 'gridworld', 'cartpole'
 
 # Common constants
 EPSILON = 0.0001
 
-# Gridworld Constants
-GRID_TRIALS_DIR = '{}_cross_entropy_trials'.format(GRIDWORLD)
-GRID_TRIALS = 20
-GRID_WHILE_LOOP_ITERATIONS_VALUES = [100]
-GRID_K_VALUES = [300]
-GRID_K_e_VALUES = [30]
-GRID_N_VALUES = [50]
 
-# Cartpole Constants
-CART_GRID_TRIALS_DIR = '{}_cross_entropy_trials'.format(CARTPOLE)
-CART_TRIALS = 20
-CART_WHILE_LOOP_ITERATIONS_VALUES = [100]
-CART_K_VALUES = [300]
-CART_K_e_VALUES = [30]
-CART_N_VALUES = [50]
+def save_trial(np_arr, env: str):
+    if not os.path.exists(env):
+        os.mkdir(env)
+
+    np.save('{}/trial_{}'.format(env, time.time()), np_arr)
 
 
-def save_trial(np_arr):
-    if not os.path.exists(GRID_TRIALS_DIR):
-        os.mkdir(GRID_TRIALS_DIR)
-
-    np.save('{}/trial_{}'.format(GRID_TRIALS_DIR, time.time()), np_arr)
-
-
-def execute_gridworld(env: str):
-    for trial in range(GRID_TRIALS):
-        for while_hyp in GRID_WHILE_LOOP_ITERATIONS_VALUES:
-            for K_hyp in GRID_K_VALUES:
-                for K_e_hyp in GRID_K_e_VALUES:
-                    for N_hyp in GRID_N_VALUES:
-                        save_trial(
-                            cross_entropy(while_hyp, K_hyp, K_e_hyp, N_hyp, trial, env))
-
-
-def execute_cartpole(env: str):
-    for trial in range(CART_TRIALS):
-        for while_hyp in CART_WHILE_LOOP_ITERATIONS_VALUES:
-            for K_hyp in CART_K_VALUES:
-                for K_e_hyp in CART_K_e_VALUES:
-                    for N_hyp in CART_N_VALUES:
-                        save_trial(
-                            cross_entropy(while_hyp, K_hyp, K_e_hyp, N_hyp, trial, env))
-
-
-def execute(env: str):
-    if env == GRIDWORLD:
-        execute_gridworld(env)
-    elif env == CARTPOLE:
-        execute_cartpole(env)
-
-
-def cross_entropy(while_limit, K, K_e, N, trial, env: str):
-    if env == GRIDWORLD:
+def cross_entropy(while_limit, K, K_e, N, trial, trials_total, env: str):
+    if env == ENV_GRIDWORLD:
         theta = generate_initial_gridworld_tabular_softmax_policy()
         sigma = np.identity(92)
 
-    elif env == CARTPOLE:
+    elif env == ENV_CARTPOLE:
         theta = generate_initial_cartpole_policy()
         sigma = np.identity(4)
 
@@ -136,7 +45,7 @@ def cross_entropy(while_limit, K, K_e, N, trial, env: str):
 
     for while_i in range(while_limit):
         print('{} / {} in trial {} / {} (time = {} s)'
-            .format(while_i, while_limit, trial, GRID_TRIALS, round(time.time() - exec_time, 2)))
+            .format(while_i, while_limit, trial, trials_total, round(time.time() - exec_time, 2)))
         exec_time = time.time()
 
         for _ in range(K):
@@ -145,10 +54,10 @@ def cross_entropy(while_limit, K, K_e, N, trial, env: str):
 
             table = convert_theta_to_table(theta_k)
 
-            if env == GRIDWORLD:
+            if env == ENV_GRIDWORLD:
                 episodes_results = gridworld.execute(episodes=N, policy_table=table)
 
-            elif env == CARTPOLE:
+            elif env == ENV_CARTPOLE:
                 episodes_results = cartpole.execute(episodes=N, policy=theta_k)
 
             trial_results.extend(episodes_results)
@@ -179,7 +88,3 @@ def cross_entropy(while_limit, K, K_e, N, trial, env: str):
         # End While loop
 
     return trial_results
-
-
-if __name__ == '__main__':
-    execute(CARTPOLE)
