@@ -13,7 +13,7 @@ K_e_VALUES = [30]
 N_VALUES = [50]
 
 
-def execute_gridworld():
+def execute():
     for trial in range(TRIALS):
         for while_hyp in WHILE_LOOP_ITERATIONS_VALUES:
             for K_hyp in K_VALUES:
@@ -31,4 +31,4 @@ def generate_initial_gridworld_tabular_softmax_policy():
 
 
 if __name__ == '__main__':
-    execute_gridworld()
+    execute()

@@ -13,7 +13,7 @@ K_e_VALUES = [30]
 N_VALUES = [1]  # Set to 1 because cartpole is deterministic
 
 
-def execute_cartpole():
+def execute():
     for trial in range(TRIALS):
         for while_hyp in WHILE_LOOP_ITERATIONS_VALUES:
             for K_hyp in K_VALUES:
@@ -31,4 +31,4 @@ def generate_initial_cartpole_policy():
 
 
 if __name__ == '__main__':
-    execute_cartpole()
+    execute()
