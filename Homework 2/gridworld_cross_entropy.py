@@ -61,9 +61,12 @@ def cross_entropy(while_limit, K, K_e, N, trial):
 
     trial_results = []
 
+    exec_time = time.time()
+
     for while_i in range(while_limit):
-        print('{} / {} in trial {} / {}'
-            .format(while_i, while_limit, trial, TRIALS))
+        print('{} / {} in trial {} / {} (time = {} s)'
+            .format(while_i, while_limit, trial, TRIALS, round(time.time() - exec_time, 2)))
+        exec_time = time.time()
 
         for _ in range(K):
             theta_k = np.random.multivariate_normal(theta, sigma)

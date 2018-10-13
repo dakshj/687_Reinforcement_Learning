@@ -72,7 +72,7 @@ def tabular_softmax_policy(curr, table):
 def execute(episodes, policy_table):
     all_rewards = []
 
-    for i in range(episodes):
+    for _ in range(episodes):
 
         curr = START
         step = -1
