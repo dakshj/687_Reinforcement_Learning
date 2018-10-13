@@ -10,7 +10,7 @@ TRIALS = 20
 WHILE_LOOP_ITERATIONS_VALUES = [100]
 K_VALUES = [300]
 K_e_VALUES = [30]
-N_VALUES = [50]
+N_VALUES = [1]  # Set to 1 because cartpole is deterministic
 
 
 def execute_cartpole():
