@@ -7,7 +7,8 @@ import gridworld
 
 
 def softmax(row):
-    return np.exp(row) / np.sum(np.exp(row), axis=0)
+    exp_row = np.exp(row)
+    return exp_row / np.sum(exp_row, axis=0)
 
 
 def convert_theta_to_table(theta):
@@ -37,8 +38,6 @@ def execute():
                     for N_hyp in N_VALUES:
                         trial_results = cross_entropy(while_hyp, K_hyp, K_e_hyp, N_hyp, trial)
                         all_results.append(trial_results)
-
-    all_results = np.array(all_results)
 
     # Save results to file
     np.save('all_results_{}'.format(time.time()), all_results)
