@@ -96,9 +96,11 @@ def execute(episodes: int, policy: np.ndarray) -> list:
 
             update_state(state, theta_dot_dot, x_dot_dot)
 
-            # End for loop
+            # End time steps loop
 
         all_rewards.append(reward)
+
+        # End episodes loop
 
     # Return rewards of all episodes
     return all_rewards
