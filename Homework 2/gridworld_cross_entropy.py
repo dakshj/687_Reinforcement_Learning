@@ -1,10 +1,9 @@
 import numpy as np
 
-from cross_entropy import ENV_GRIDWORLD
-from cross_entropy import cross_entropy
-from cross_entropy import save_trial
+import cross_entropy
 
 # Constants
+ENV_GRIDWORLD = 'gridworld'
 TRIALS_DIR = '{}_cross_entropy_trials'.format(ENV_GRIDWORLD)
 TRIALS = 20
 WHILE_LOOP_ITERATIONS_VALUES = [100]
@@ -19,9 +18,9 @@ def execute():
             for K_hyp in K_VALUES:
                 for K_e_hyp in K_e_VALUES:
                     for N_hyp in N_VALUES:
-                        save_trial(
-                            cross_entropy(while_hyp, K_hyp, K_e_hyp, N_hyp, trial, TRIALS,
-                                ENV_GRIDWORLD),
+                        cross_entropy.save_trial(
+                            cross_entropy.cross_entropy(while_hyp, K_hyp, K_e_hyp, N_hyp, trial,
+                                TRIALS, ENV_GRIDWORLD),
                             TRIALS_DIR
                         )
 

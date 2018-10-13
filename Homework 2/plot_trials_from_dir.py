@@ -17,3 +17,4 @@ def plot_dir(trials_dir):
 
 if __name__ == '__main__':
     plot_dir('gridworld_cross_entropy_trials')
+    plot_dir('cartpole_cross_entropy_trials')

@@ -1,15 +1,14 @@
 import numpy as np
 
-from cross_entropy import ENV_CARTPOLE
-from cross_entropy import cross_entropy
-from cross_entropy import save_trial
+import cross_entropy
 
 # Constants
+ENV_CARTPOLE = 'cartpole'
 TRIALS_DIR = '{}_cross_entropy_trials'.format(ENV_CARTPOLE)
-TRIALS = 20
-WHILE_LOOP_ITERATIONS_VALUES = [100]
-K_VALUES = [300]
-K_e_VALUES = [30]
+TRIALS = 1
+WHILE_LOOP_ITERATIONS_VALUES = [5]
+K_VALUES = [10]
+K_e_VALUES = [2]
 N_VALUES = [1]  # Set to 1 because cartpole is deterministic
 
 
@@ -19,9 +18,9 @@ def execute():
             for K_hyp in K_VALUES:
                 for K_e_hyp in K_e_VALUES:
                     for N_hyp in N_VALUES:
-                        save_trial(
-                            cross_entropy(while_hyp, K_hyp, K_e_hyp, N_hyp, trial, TRIALS,
-                                ENV_CARTPOLE),
+                        cross_entropy.save_trial(
+                            cross_entropy.cross_entropy(while_hyp, K_hyp, K_e_hyp, N_hyp, trial,
+                                TRIALS, ENV_CARTPOLE),
                             TRIALS_DIR
                         )
 

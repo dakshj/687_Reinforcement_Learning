@@ -83,7 +83,13 @@ def cross_entropy(while_limit, K, K_e, N, trial, trials_total, env: str):
             axis=0
         )
 
-        sigma = (1 / (EPSILON + K_e)) * ((EPSILON * np.identity(92)) + summation_part)
+        if env == ENV_GRIDWORLD:
+            identity = np.identity(92)
+        elif env == ENV_CARTPOLE:
+            identity = np.identity(4)
+
+        # noinspection PyUnboundLocalVariable
+        sigma = (1 / (EPSILON + K_e)) * ((EPSILON * identity) + summation_part)
 
         # End While loop
 
