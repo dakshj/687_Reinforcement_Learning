@@ -12,8 +12,8 @@ N_VALUES = [1]  # Set to 1 because cartpole is deterministic
 WHILE_LOOP_ITERATIONS_VALUES = [15]
 K_VALUES = [80]
 K_e_VALUES = [20]
-EPSILON_VALUES = [0.01]
-SIGMA_MULTIPLIER_VALUES = [10]
+EPSILON_VALUES = [0.0001]
+SIGMA_MULTIPLIER_VALUES = [20]
 
 
 def execute():
