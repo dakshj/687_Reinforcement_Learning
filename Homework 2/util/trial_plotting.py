@@ -26,3 +26,6 @@ def save_trial(np_arr, trial_dir: str):
 if __name__ == '__main__':
     plot_dir('../method/cross_entropy/gridworld_cross_entropy_trials')
     plot_dir('../method/cross_entropy/cartpole_cross_entropy_trials')
+
+    plot_dir('../method/hill_climbing/gridworld_hill_climbing_trials')
+    plot_dir('../method/hill_climbing/cartpole_hill_climbing_trials')
