@@ -12,8 +12,8 @@ WHILE_LOOP_ITERATIONS_VALUES = [50]
 K_VALUES = [800]
 K_e_VALUES = [200]
 N_VALUES = [5]
-EPSILON = 0.0001
-SIGMA_MULTIPLIER = 1
+EPSILON_VALUES = [0.0001]
+SIGMA_MULTIPLIER_VALUES = [1]
 
 
 def execute():
@@ -22,11 +22,13 @@ def execute():
             for K_hyp in K_VALUES:
                 for K_e_hyp in K_e_VALUES:
                     for N_hyp in N_VALUES:
-                        save_trial(
-                            cross_entropy(while_hyp, K_hyp, K_e_hyp, N_hyp, trial,
-                                TRIALS, gridworld.ENV),
-                            TRIALS_DIR
-                        )
+                        for epsilon_hyp in EPSILON_VALUES:
+                            for sigma_multiplier_hyp in SIGMA_MULTIPLIER_VALUES:
+                                save_trial(
+                                    cross_entropy(while_hyp, K_hyp, K_e_hyp, N_hyp, trial,
+                                        TRIALS, gridworld.ENV, epsilon_hyp, sigma_multiplier_hyp),
+                                    TRIALS_DIR
+                                )
 
 
 if __name__ == '__main__':

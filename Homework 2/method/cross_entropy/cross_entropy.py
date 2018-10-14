@@ -7,17 +7,17 @@ from agent import gridworld
 from agent.cartpole import generate_initial_cartpole_policy
 from agent.gridworld import generate_initial_gridworld_tabular_softmax_policy, \
     convert_theta_to_table
-from method.cross_entropy import cartpole_cross_entropy, gridworld_cross_entropy
 
 
-def cross_entropy(while_limit, K, K_e, N, trial, trials_total, env: str):
+def cross_entropy(while_limit, K, K_e, N, trial, trials_total, env: str, epsilon: float,
+                  sigma_multiplier: float):
     if env == gridworld.ENV:
         theta = generate_initial_gridworld_tabular_softmax_policy()
-        sigma = gridworld_cross_entropy.SIGMA_MULTIPLIER * np.identity(92)
+        sigma = sigma_multiplier * np.identity(92)
 
     elif env == cartpole.ENV:
         theta = generate_initial_cartpole_policy()
-        sigma = cartpole_cross_entropy.SIGMA_MULTIPLIER * np.identity(4)
+        sigma = sigma_multiplier * np.identity(4)
 
     list_of__theta_k__vs__J_k_hat = []
 
@@ -63,13 +63,11 @@ def cross_entropy(while_limit, K, K_e, N, trial, trials_total, env: str):
 
         if env == gridworld.ENV:
             identity = np.identity(92)
-            EPSILON = gridworld_cross_entropy.EPSILON
         elif env == cartpole.ENV:
             identity = np.identity(4)
-            EPSILON = cartpole_cross_entropy.EPSILON
 
         # noinspection PyUnboundLocalVariable
-        sigma = (1 / (EPSILON + K_e)) * ((EPSILON * identity) + summation_part)
+        sigma = (1 / (epsilon + K_e)) * ((epsilon * identity) + summation_part)
 
         # End While loop
 
