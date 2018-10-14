@@ -4,6 +4,8 @@ import random
 
 import numpy as np
 
+from util.softmax import softmax
+
 ENV = 'gridworld'
 
 GAMMA = 0.9
@@ -124,3 +126,7 @@ def execute(episodes, policy_table):
 
 def generate_initial_gridworld_tabular_softmax_policy():
     return np.random.uniform(0, 1, (92,))
+
+
+def convert_theta_to_table(theta):
+    return softmax(X=np.reshape(theta, (-1, 4)), theta=0.5, axis=1)

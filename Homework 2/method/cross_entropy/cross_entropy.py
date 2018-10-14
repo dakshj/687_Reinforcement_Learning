@@ -5,15 +5,9 @@ import numpy as np
 from agent import cartpole
 from agent import gridworld
 from agent.cartpole import generate_initial_cartpole_policy
-from agent.gridworld import generate_initial_gridworld_tabular_softmax_policy
-from util.softmax import softmax
+from agent.gridworld import generate_initial_gridworld_tabular_softmax_policy, \
+    convert_theta_to_table
 
-
-def convert_theta_to_table(theta):
-    return softmax(X=np.reshape(theta, (-1, 4)), theta=0.5, axis=1)
-
-
-# Common constants
 EPSILON = 0.0001
 
 
