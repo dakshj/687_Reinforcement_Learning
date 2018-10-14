@@ -13,19 +13,16 @@ def convert_theta_to_table(theta):
     return softmax(X=np.reshape(theta, (-1, 4)), theta=0.5, axis=1)
 
 
-# Environments
-ENV_GRIDWORLD, ENV_CARTPOLE = 'gridworld', 'cartpole'
-
 # Common constants
 EPSILON = 0.0001
 
 
 def cross_entropy(while_limit, K, K_e, N, trial, trials_total, env: str):
-    if env == ENV_GRIDWORLD:
+    if env == gridworld.ENV:
         theta = generate_initial_gridworld_tabular_softmax_policy()
         sigma = np.identity(92)
 
-    elif env == ENV_CARTPOLE:
+    elif env == cartpole.ENV:
         theta = generate_initial_cartpole_policy()
         sigma = np.identity(4)
 
@@ -45,11 +42,11 @@ def cross_entropy(while_limit, K, K_e, N, trial, trials_total, env: str):
             # noinspection PyUnboundLocalVariable
             theta_k = np.random.multivariate_normal(theta, sigma)
 
-            if env == ENV_GRIDWORLD:
+            if env == gridworld.ENV:
                 table = convert_theta_to_table(theta_k)
                 episodes_results = gridworld.execute(episodes=N, policy_table=table)
 
-            elif env == ENV_CARTPOLE:
+            elif env == cartpole.ENV:
                 episodes_results = cartpole.execute(episodes=N, policy=theta_k)
 
             trial_results.extend(episodes_results)
@@ -73,9 +70,9 @@ def cross_entropy(while_limit, K, K_e, N, trial, trials_total, env: str):
         top_policy_samples = filtered_theta_k_list - theta
         summation_part = np.dot(top_policy_samples.T, top_policy_samples)
 
-        if env == ENV_GRIDWORLD:
+        if env == gridworld.ENV:
             identity = np.identity(92)
-        elif env == ENV_CARTPOLE:
+        elif env == cartpole.ENV:
             identity = np.identity(4)
 
         # noinspection PyUnboundLocalVariable

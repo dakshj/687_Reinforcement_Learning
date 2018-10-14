@@ -1,9 +1,9 @@
-from method.cross_entropy import cross_entropy
+from agent import cartpole
+from method.cross_entropy.cross_entropy import cross_entropy
 from util.trial_plotting import save_trial
 
 # Constants
-ENV_CARTPOLE = 'cartpole'
-TRIALS_DIR = '{}_cross_entropy_trials'.format(ENV_CARTPOLE)
+TRIALS_DIR = '{}_cross_entropy_trials'.format(cartpole.ENV)
 TRIALS = 20
 WHILE_LOOP_ITERATIONS_VALUES = [50]
 K_VALUES = [300]
@@ -18,8 +18,8 @@ def execute():
                 for K_e_hyp in K_e_VALUES:
                     for N_hyp in N_VALUES:
                         save_trial(
-                            cross_entropy.cross_entropy(while_hyp, K_hyp, K_e_hyp, N_hyp, trial,
-                                TRIALS, ENV_CARTPOLE),
+                            cross_entropy(while_hyp, K_hyp, K_e_hyp, N_hyp, trial,
+                                TRIALS, cartpole.ENV),
                             TRIALS_DIR
                         )
 

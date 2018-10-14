@@ -2,6 +2,8 @@ import math
 
 import numpy as np
 
+ENV = 'cartpole'
+
 ANGLE_MAX = math.pi / 2
 ANGLE_MIN = -math.pi / 2
 ANGLE_START = 0

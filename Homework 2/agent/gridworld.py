@@ -4,6 +4,8 @@ import random
 
 import numpy as np
 
+ENV = 'gridworld'
+
 GAMMA = 0.9
 
 ROWS, COLS = 5, 5
