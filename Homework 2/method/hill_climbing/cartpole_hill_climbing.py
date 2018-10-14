@@ -5,9 +5,9 @@ from util.trial_plotting import save_trial
 # Constants
 TRIALS_DIR = '{}_hill_climbing_trials'.format(cartpole.ENV)
 TRIALS = 500
-WHILE_LOOP_ITERATIONS_VALUES = [200]
+WHILE_LOOP_ITERATIONS_VALUES = [300]
 SIGMA_VALUES = [2]
-N_VALUES = [90]
+N_VALUES = [1]  # Set to 1 because cartpole is deterministic
 
 
 def execute():
