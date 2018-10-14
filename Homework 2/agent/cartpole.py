@@ -115,5 +115,5 @@ def execute(episodes: int, policy: np.ndarray) -> list:
     return all_rewards
 
 
-if __name__ == '__main__':
-    execute(episodes=1, policy=np.random.uniform(-10, 10, (4,)))
+def generate_initial_cartpole_policy():
+    return np.random.uniform(-10, 10, (4,))
