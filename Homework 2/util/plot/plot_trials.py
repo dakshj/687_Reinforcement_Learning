@@ -19,12 +19,18 @@ def plot_dir(trials_dir):
 
     plt.errorbar(range(1, results.shape[1] + 1),
         np.mean(results, axis=0), np.std(results, axis=0), ecolor='yellow')
-    text = '{}\n{}\n{}\n{}\n{}'.format(
+    text = '{}\n' \
+           '{}             {}\n' \
+           '{}             {}\n' \
+           '{}             {}' \
+        .format(
         'Trials: {}'.format(results.shape[0]),
-        'Max Mean:  {}'.format(np.max(np.mean(results, axis=0))),
-        'Min Mean:  {}'.format(np.min(np.mean(results, axis=0))),
+        'Max Mean: {}'.format(np.max(np.mean(results, axis=0))),
+        'Min Mean: {}'.format(np.min(np.mean(results, axis=0))),
         'Max Value: {}'.format(np.max(results)),
         'Min Value: {}'.format(np.min(results)),
+        'Max Std Dev: {}'.format(np.max(np.std(results, axis=0))),
+        'Min Std Dev: {}'.format(np.min(np.std(results, axis=0))),
     )
     plt.gcf().text(0.005, 0.008, text)
 
