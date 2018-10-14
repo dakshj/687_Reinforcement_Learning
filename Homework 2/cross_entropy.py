@@ -21,11 +21,11 @@ ENV_GRIDWORLD, ENV_CARTPOLE = 'gridworld', 'cartpole'
 EPSILON = 0.0001
 
 
-def save_trial(np_arr, env: str):
-    if not os.path.exists(env):
-        os.mkdir(env)
+def save_trial(np_arr, trial_dir: str):
+    if not os.path.exists(trial_dir):
+        os.mkdir(trial_dir)
 
-    np.save('{}/trial_{}'.format(env, time.time()), np_arr)
+    np.save('{}/trial_{}'.format(trial_dir, time.time()), np_arr)
 
 
 def cross_entropy(while_limit, K, K_e, N, trial, trials_total, env: str):
