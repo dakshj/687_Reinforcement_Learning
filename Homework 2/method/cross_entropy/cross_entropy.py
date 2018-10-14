@@ -55,14 +55,14 @@ def cross_entropy(while_limit, K, K_e, N, trial, trials_total, env: str):
 
         list_of__theta_k__vs__J_k_hat.sort(key=lambda x: x[1], reverse=True)
 
-        filtered_theta_k_list = [x for (x, _) in list_of__theta_k__vs__J_k_hat][:K_e]
+        top_theta_k = [x for (x, _) in list_of__theta_k__vs__J_k_hat][:K_e]
 
-        theta_k_sum = np.sum(filtered_theta_k_list, axis=0)
+        theta_k_sum = np.sum(top_theta_k, axis=0)
 
         theta = 1 / K_e * theta_k_sum
 
-        top_policy_samples = filtered_theta_k_list - theta
-        summation_part = np.dot(top_policy_samples.T, top_policy_samples)
+        diff = top_theta_k - theta
+        summation_part = np.dot(diff.T, diff)
 
         if env == gridworld.ENV:
             identity = np.identity(92)

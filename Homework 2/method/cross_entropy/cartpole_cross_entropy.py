@@ -1,14 +1,16 @@
 from agent import cartpole
 from method.cross_entropy.cross_entropy import cross_entropy
-from util.trial_plotting import save_trial
+from util.plot_trials import save_trial
 
 # Constants
 TRIALS_DIR = '{}_cross_entropy_trials'.format(cartpole.ENV)
 TRIALS = 20
-WHILE_LOOP_ITERATIONS_VALUES = [50]
-K_VALUES = [300]
-K_e_VALUES = [5]
 N_VALUES = [1]  # Set to 1 because cartpole is deterministic
+
+# Hyper-parameters
+WHILE_LOOP_ITERATIONS_VALUES = [25]
+K_VALUES = [100]
+K_e_VALUES = [50]
 
 
 def execute():

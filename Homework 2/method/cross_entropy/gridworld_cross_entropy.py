@@ -1,10 +1,12 @@
 from agent import gridworld
 from method.cross_entropy.cross_entropy import cross_entropy
-from util.trial_plotting import save_trial
+from util.plot_trials import save_trial
 
 # Constants
 TRIALS_DIR = '{}_cross_entropy_trials'.format(gridworld.ENV)
 TRIALS = 20
+
+# Hyper-parameters
 WHILE_LOOP_ITERATIONS_VALUES = [100]
 K_VALUES = [300]
 K_e_VALUES = [30]

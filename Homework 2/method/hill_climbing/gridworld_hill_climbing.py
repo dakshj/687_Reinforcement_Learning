@@ -1,10 +1,12 @@
 from agent import gridworld
 from method.hill_climbing.hill_climbing import hill_climbing
-from util.trial_plotting import save_trial
+from util.plot_trials import save_trial
 
 # Constants
 TRIALS_DIR = '{}_hill_climbing_trials'.format(gridworld.ENV)
 TRIALS = 500
+
+# Hyper-parameters
 WHILE_LOOP_ITERATIONS_VALUES = [200]
 SIGMA_VALUES = [2]
 N_VALUES = [90]
