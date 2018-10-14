@@ -3,11 +3,11 @@ import time
 
 import numpy as np
 
-import cartpole
-import gridworld
-from cartpole_cross_entropy import generate_initial_cartpole_policy
-from gridworld_cross_entropy import generate_initial_gridworld_tabular_softmax_policy
-from softmax import softmax
+from agent import cartpole
+from agent import gridworld
+from method.cartpole_cross_entropy import generate_initial_cartpole_policy
+from method.gridworld_cross_entropy import generate_initial_gridworld_tabular_softmax_policy
+from util.softmax import softmax
 
 
 def convert_theta_to_table(theta):
