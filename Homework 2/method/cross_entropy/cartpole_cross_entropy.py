@@ -1,6 +1,6 @@
 from agent import cartpole
 from method.cross_entropy.cross_entropy import cross_entropy
-from util.plot_trials import save_trial
+from util.plot.plot_trials import save_trial
 
 # Constants
 TRIALS_DIR = '{}_cross_entropy_trials'.format(cartpole.ENV)

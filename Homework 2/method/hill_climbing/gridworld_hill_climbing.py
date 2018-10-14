@@ -1,6 +1,6 @@
 from agent import gridworld
 from method.hill_climbing.hill_climbing import hill_climbing
-from util.plot_trials import save_trial
+from util.plot.plot_trials import save_trial
 
 # Constants
 TRIALS_DIR = '{}_hill_climbing_trials'.format(gridworld.ENV)
