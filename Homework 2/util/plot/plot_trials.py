@@ -26,6 +26,6 @@ def plot_dir(trials_dir):
         'Max Value: {}'.format(np.max(results)),
         'Min Value: {}'.format(np.min(results)),
     )
-    plt.gcf().text(0, 0, text)
+    plt.gcf().text(0.005, 0.008, text)
 
     plt.show()
