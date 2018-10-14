@@ -4,12 +4,13 @@ from util.plot.plot_trials import save_trial
 
 # Constants
 TRIALS_DIR = '{}_hill_climbing_trials'.format(cartpole.ENV)
-TRIALS = 500
+TRIALS = 10000
 N_VALUES = [1]  # Set to 1 because cartpole is deterministic
 
 # Hyper-parameters
+# REMEMBER TO SET ASIDE PREVIOUS TRIALS DIR!
 WHILE_LOOP_ITERATIONS_VALUES = [300]
-SIGMA_VALUES = [6]
+SIGMA_VALUES = [3]
 
 
 def execute():

@@ -4,10 +4,11 @@ from util.plot.plot_trials import save_trial
 
 # Constants
 TRIALS_DIR = '{}_hill_climbing_trials'.format(gridworld.ENV)
-TRIALS = 500
+TRIALS = 10000
 
 # Hyper-parameters
-WHILE_LOOP_ITERATIONS_VALUES = [200]
+# REMEMBER TO SET ASIDE PREVIOUS TRIALS DIR!
+WHILE_LOOP_ITERATIONS_VALUES = [300]
 SIGMA_VALUES = [2]
 N_VALUES = [90]
 

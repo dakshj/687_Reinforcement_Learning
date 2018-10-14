@@ -57,9 +57,7 @@ def cross_entropy(while_limit, K, K_e, N, trial, trials_total, env: str):
 
         top_theta_k = [x for (x, _) in list_of__theta_k__vs__J_k_hat][:K_e]
 
-        theta_k_sum = np.sum(top_theta_k, axis=0)
-
-        theta = 1 / K_e * theta_k_sum
+        theta = np.mean(top_theta_k, axis=0)
 
         diff = top_theta_k - theta
         summation_part = np.dot(diff.T, diff)

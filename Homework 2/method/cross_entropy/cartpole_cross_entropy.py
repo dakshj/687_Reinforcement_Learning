@@ -4,13 +4,14 @@ from util.plot.plot_trials import save_trial
 
 # Constants
 TRIALS_DIR = '{}_cross_entropy_trials'.format(cartpole.ENV)
-TRIALS = 20
+TRIALS = 10000
 N_VALUES = [1]  # Set to 1 because cartpole is deterministic
 
 # Hyper-parameters
-WHILE_LOOP_ITERATIONS_VALUES = [25]
+# REMEMBER TO SET ASIDE PREVIOUS TRIALS DIR!
+WHILE_LOOP_ITERATIONS_VALUES = [50]
 K_VALUES = [100]
-K_e_VALUES = [50]
+K_e_VALUES = [5]
 
 
 def execute():
