@@ -10,7 +10,7 @@ N_VALUES = [1]  # Set to 1 because cartpole is deterministic
 # Hyper-parameters
 # REMEMBER TO SET ASIDE PREVIOUS TRIALS DIR!
 WHILE_LOOP_ITERATIONS_VALUES = [300]
-SIGMA_VALUES = [3]
+SIGMA_VALUES = [10]
 
 
 def execute():
