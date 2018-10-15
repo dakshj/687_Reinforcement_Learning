@@ -27,7 +27,6 @@ def get_returns(env: str, episodes: int, policy: np.ndarray):
     return results, np.mean(results)
 
 
-# noinspection PyUnboundLocalVariable
 def hill_climbing(while_limit: int, sigma: float, N: int, trial, trials_total, env: str):
     if env == gridworld.ENV:
         theta = generate_initial_gridworld_tabular_softmax_policy()
@@ -39,6 +38,7 @@ def hill_climbing(while_limit: int, sigma: float, N: int, trial, trials_total, e
 
     trial_results = []
 
+    # noinspection PyUnboundLocalVariable
     episodes_results, J_hat = get_returns(env=env, episodes=N, policy=theta)
     trial_results.extend(episodes_results)
 

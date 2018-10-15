@@ -34,4 +34,7 @@ def plot_dir(trials_dir):
     )
     plt.gcf().text(0.005, 0.008, text)
 
+    plt.xlabel('Episodes', fontsize=16)
+    plt.ylabel('Expected Returns', fontsize=16)
+
     plt.show()
