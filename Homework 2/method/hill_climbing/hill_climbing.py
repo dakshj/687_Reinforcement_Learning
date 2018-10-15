@@ -8,7 +8,7 @@ from agent.cartpole import generate_initial_cartpole_policy
 from agent.gridworld import convert_theta_to_table
 from agent.gridworld import generate_initial_gridworld_tabular_softmax_policy
 
-EPSILON = 0.0001
+EPSILON = 0.01
 
 
 def get_returns(env: str, episodes: int, policy: np.ndarray):
