@@ -3,6 +3,7 @@ import operator
 import random
 
 import numpy as np
+from preconditions import preconditions
 
 from util.softmax import softmax
 
@@ -73,6 +74,9 @@ def tabular_softmax_policy(curr, table):
     return np.random.choice([UP, DOWN, LEFT, RIGHT], p=row)
 
 
+@preconditions(
+    lambda policy_table: np.shape(policy_table) == (23, 4)
+)
 def execute(episodes, policy_table):
     all_rewards = []
 
