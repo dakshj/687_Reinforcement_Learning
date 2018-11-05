@@ -59,24 +59,24 @@ def calculate_accelerations(state: np.ndarray, policy: np.ndarray) -> (float, fl
     cos0 = math.cos(theta)
 
     num = (G * sin0) + (
-        cos0 *
-        (
-            -force_applied_to_cart -
-            (MASS_POLE * POLE_HALF_LENGTH * (theta_dot ** 2) * sin0)
-        ) / (MASS_CART + MASS_POLE)
+            cos0 *
+            (
+                    -force_applied_to_cart -
+                    (MASS_POLE * POLE_HALF_LENGTH * (theta_dot ** 2) * sin0)
+            ) / (MASS_CART + MASS_POLE)
     )
 
     denom = POLE_HALF_LENGTH * ((4 / 3) - (
-        (MASS_POLE * (cos0 ** 2)) /
-        (MASS_CART + MASS_POLE)
+            (MASS_POLE * (cos0 ** 2)) /
+            (MASS_CART + MASS_POLE)
     ))
 
     theta_dot_dot = num / denom
 
     x_dot_dot = (
-                    force_applied_to_cart + (MASS_POLE * POLE_HALF_LENGTH * (
+                        force_applied_to_cart + (MASS_POLE * POLE_HALF_LENGTH * (
                         ((theta_dot ** 2) * sin0) - (theta_dot_dot * cos0))
-                                             )
+                                                 )
                 ) / (MASS_CART + MASS_POLE)
 
     return theta_dot_dot, x_dot_dot
@@ -117,5 +117,5 @@ def execute(episodes: int, policy: np.ndarray) -> list:
     return all_rewards
 
 
-def generate_initial_cartpole_policy():
+def generate_random_cartpole_policy():
     return np.random.uniform(-10, 10, (4,))

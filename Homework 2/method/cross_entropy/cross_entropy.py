@@ -4,19 +4,19 @@ import numpy as np
 
 from agent import cartpole
 from agent import gridworld
-from agent.cartpole import generate_initial_cartpole_policy
-from agent.gridworld import generate_initial_gridworld_tabular_softmax_policy, \
+from agent.cartpole import generate_random_cartpole_policy
+from agent.gridworld import generate_random_gridworld_tabular_softmax_policy, \
     convert_theta_to_table
 
 
 def cross_entropy(while_limit, K, K_e, N, trial, trials_total, env: str, epsilon: float,
                   sigma_multiplier: float):
     if env == gridworld.ENV:
-        theta = generate_initial_gridworld_tabular_softmax_policy()
+        theta = generate_random_gridworld_tabular_softmax_policy()
         sigma = sigma_multiplier * np.identity(92)
 
     elif env == cartpole.ENV:
-        theta = generate_initial_cartpole_policy()
+        theta = generate_random_cartpole_policy()
         sigma = sigma_multiplier * np.identity(4)
 
     list_of__theta_k__vs__J_k_hat = []

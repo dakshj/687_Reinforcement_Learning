@@ -1,76 +1,35 @@
-# TODO Change this file to be TD!
-
-import time
+import itertools
 
 import numpy as np
 
 from agent import cartpole
 from agent import gridworld
-from agent.cartpole import generate_initial_cartpole_policy
-from agent.gridworld import generate_initial_gridworld_tabular_softmax_policy, \
-    convert_theta_to_table
 
 
-def td(while_limit, K, K_e, N, trial, trials_total, env: str, epsilon: float,
-                  sigma_multiplier: float):
+def td(env: str, alpha: float, num_episodes_weight_update: int,
+       num_episodes_mse_calc: int, fourier_basis_n: int) -> float:
+    policy = get_policy(env)
+    fourier_arr = get_nth_order_fourier_basis(policy, fourier_basis_n)
+
+    for _ in range(num_episodes_weight_update):
+        pass
+
+    mse = 0.
+
+    for _ in range(num_episodes_mse_calc):
+        # TODO Calculate delta
+        mse += 0
+
+    return mse / num_episodes_mse_calc
+
+
+def get_policy(env: str):
     if env == gridworld.ENV:
-        theta = generate_initial_gridworld_tabular_softmax_policy()
-        sigma = sigma_multiplier * np.identity(92)
+        return gridworld.generate_random_gridworld_tabular_softmax_policy()
 
-    elif env == cartpole.ENV:
-        theta = generate_initial_cartpole_policy()
-        sigma = sigma_multiplier * np.identity(4)
+    if env == cartpole.ENV:
+        return cartpole.generate_random_cartpole_policy()
 
-    list_of__theta_k__vs__J_k_hat = []
 
-    trial_results = []
-
-    exec_time = time.time()
-
-    for while_i in range(while_limit):
-        print('{} / {} in trial {} / {} (time = {} s)'
-            .format(while_i + 1, while_limit, trial + 1, trials_total,
-            round(time.time() - exec_time, 2)))
-        exec_time = time.time()
-
-        for _ in range(K):
-            # noinspection PyUnboundLocalVariable
-            theta_k = np.random.multivariate_normal(theta, sigma)
-
-            if env == gridworld.ENV:
-                table = convert_theta_to_table(theta_k)
-                episodes_results = gridworld.execute(episodes=N, policy_table=table)
-
-            elif env == cartpole.ENV:
-                episodes_results = cartpole.execute(episodes=N, policy=theta_k)
-
-            trial_results.extend(episodes_results)
-
-            list_of__theta_k__vs__J_k_hat.append((theta_k,
-
-                                                  # J_k_hat
-                                                  np.mean(episodes_results)
-                                                  ))
-
-            # End K loop
-
-        list_of__theta_k__vs__J_k_hat.sort(key=lambda x: x[1], reverse=True)
-
-        top_theta_k = [x for (x, _) in list_of__theta_k__vs__J_k_hat][:K_e]
-
-        theta = np.mean(top_theta_k, axis=0)
-
-        diff = top_theta_k - theta
-        summation_part = np.dot(diff.T, diff)
-
-        if env == gridworld.ENV:
-            identity = np.identity(92)
-        elif env == cartpole.ENV:
-            identity = np.identity(4)
-
-        # noinspection PyUnboundLocalVariable
-        sigma = (1 / (epsilon + K_e)) * ((epsilon * identity) + summation_part)
-
-        # End While loop
-
-    return trial_results
+def get_nth_order_fourier_basis(policy: np.ndarray, fourier_basis_n: int) -> list:
+    return list(itertools.product(range(fourier_basis_n + 1), repeat=policy.shape[0]))

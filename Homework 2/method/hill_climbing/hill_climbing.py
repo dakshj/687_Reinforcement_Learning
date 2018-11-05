@@ -4,9 +4,9 @@ import numpy as np
 
 from agent import cartpole
 from agent import gridworld
-from agent.cartpole import generate_initial_cartpole_policy
+from agent.cartpole import generate_random_cartpole_policy
 from agent.gridworld import convert_theta_to_table
-from agent.gridworld import generate_initial_gridworld_tabular_softmax_policy
+from agent.gridworld import generate_random_gridworld_tabular_softmax_policy
 
 EPSILON = 0.01
 
@@ -29,11 +29,11 @@ def get_returns(env: str, episodes: int, policy: np.ndarray):
 
 def hill_climbing(while_limit: int, sigma: float, N: int, trial, trials_total, env: str):
     if env == gridworld.ENV:
-        theta = generate_initial_gridworld_tabular_softmax_policy()
+        theta = generate_random_gridworld_tabular_softmax_policy()
         sigma = sigma * np.identity(92)
 
     elif env == cartpole.ENV:
-        theta = generate_initial_cartpole_policy()
+        theta = generate_random_cartpole_policy()
         sigma = sigma * np.identity(4)
 
     trial_results = []

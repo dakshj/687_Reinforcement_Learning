@@ -128,7 +128,7 @@ def execute(episodes, policy_table):
     return all_rewards
 
 
-def generate_initial_gridworld_tabular_softmax_policy():
+def generate_random_gridworld_tabular_softmax_policy():
     return np.random.uniform(0, 1, (92,))
 
 
