@@ -42,12 +42,12 @@ def execute(alpha: float, agent_execute_func, fourier_basis_n: int = None,
         phi = np.cos(math.pi * np.dot(fourier_arr, state))
 
         if weights is None:
-            weights = get_random_weights(np.shape(phi)[0])
+            weights = get_weights_zeros(np.shape(phi)[0])
 
         v = round(float(np.dot(weights, phi)), ndigits=2)
 
         if time_step != 0:
-            td_err = round(reward + gamma * v - v_prev, ndigits=2)
+            td_err = round(reward + (gamma * v) - v_prev, ndigits=2)
 
             if 0 <= episode < weight_update_episodes:
                 weights += alpha * td_err * phi
@@ -66,8 +66,8 @@ def get_nth_order_fourier_basis(policy: np.ndarray, fourier_basis_n: int) -> lis
     return list(itertools.product(range(fourier_basis_n + 1), repeat=policy.shape[0]))
 
 
-def get_random_weights(n: int):
-    return np.random.uniform(-10, 10, (n,))
+def get_weights_zeros(n: int):
+    return np.zeros((n,))
 
 
 def plot(data):
