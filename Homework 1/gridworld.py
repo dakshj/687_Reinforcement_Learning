@@ -58,19 +58,8 @@ OPTIMAL_POLICY = [
 ]
 
 
-def uniform_random_policy(curr):
-    rand_no = random.randint(0, 4)
-
-    if rand_no == 0:
-        direction = UP
-    elif rand_no == 1:
-        direction = DOWN
-    elif rand_no == 2:
-        direction = LEFT
-    else:
-        direction = RIGHT
-
-    return direction
+def uniform_random_policy(_):
+    return random.choice([UP, DOWN, LEFT, RIGHT])
 
 
 def optimal_policy(curr):
