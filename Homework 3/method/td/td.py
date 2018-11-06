@@ -26,13 +26,12 @@ def execute(alpha: float, agent_execute_func, fourier_basis_n: int = None,
     """
     fourier_arr = None
     weights = None
-    state_prev = None
-    v_state_prev = None
+    v_prev = None
 
     # Save TD Errors for each episode X each time step
     td_errs = []
 
-    for episode, state, reward, gamma in agent_execute_func(
+    for time_step, episode, state, reward, gamma in agent_execute_func(
             weight_update_episodes + mse_calc_episodes):
 
         if fourier_arr is None:
@@ -43,22 +42,18 @@ def execute(alpha: float, agent_execute_func, fourier_basis_n: int = None,
         if weights is None:
             weights = get_random_weights(np.shape(phi)[0])
 
-        v_state = np.dot(weights, phi)
+        v = np.dot(weights, phi)
 
-        # This is the first iteration, so can't calculate TD error yet
-        # Simply store previous values and continue to next iteration
-        if state_prev is None:
-            state_prev = state
-            v_state_prev = v_state
-            continue
+        if time_step != 0:
+            td_err = reward + gamma * v - v_prev
 
-        td_err = reward + gamma * v_state - v_state_prev
+            if 0 <= episode < weight_update_episodes:
+                weights += alpha * td_err * phi
 
-        if 0 <= episode < weight_update_episodes:
-            weights += alpha * td_err * phi
+            elif weight_update_episodes <= episode < mse_calc_episodes:
+                td_errs.append((episode, td_err))
 
-        elif weight_update_episodes <= episode < mse_calc_episodes:
-            td_errs.append((episode, td_err))
+        v_prev = v
 
     # Convert list of tuples to 2D array of episodes X time stamps
     td_errs = np.array(
