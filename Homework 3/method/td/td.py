@@ -34,6 +34,8 @@ def execute(alpha: float, agent_execute_func, fourier_basis_n: int = None,
     for time_step, episode, state, reward, gamma in agent_execute_func(
             weight_update_episodes + mse_calc_episodes):
 
+        # TODO fourier_arr, phi, {current calculation for v} are cartpole-specific;
+        # add code for gridworld to work too
         if fourier_arr is None:
             fourier_arr = get_nth_order_fourier_basis(state, fourier_basis_n)
 
