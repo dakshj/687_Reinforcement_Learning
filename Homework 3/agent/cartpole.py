@@ -97,14 +97,14 @@ def execute(episodes: int) -> list:
             if not (X_MIN < state[IDX_X] < X_MAX):
                 break
 
+            yield time_step, episode, state, REWARD_POLE_UP, GAMMA
+
             # Pole is still up
             reward += REWARD_POLE_UP
 
             theta_dot_dot, x_dot_dot = calculate_accelerations(state)
 
             update_state(state, theta_dot_dot, x_dot_dot)
-
-            yield time_step, episode, state, reward, GAMMA
 
             # End time steps loop
 
