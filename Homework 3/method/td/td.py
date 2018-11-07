@@ -44,10 +44,10 @@ def execute(alpha: float, agent_execute_func, fourier_basis_n: int = None,
         if weights is None:
             weights = get_weights_zeros(np.shape(phi)[0])
 
-        v = round(float(np.dot(weights, phi)), ndigits=2)
+        v = np.dot(weights, phi)
 
         if time_step != 0:
-            td_err = round(reward + (gamma * v) - v_prev, ndigits=2)
+            td_err = reward + (gamma * v) - v_prev
 
             if 0 <= episode < weight_update_episodes:
                 weights += alpha * td_err * phi
@@ -62,8 +62,9 @@ def execute(alpha: float, agent_execute_func, fourier_basis_n: int = None,
     return np.average(np.sum(td_errs ** 2, axis=1))
 
 
-def get_nth_order_fourier_basis(policy: np.ndarray, fourier_basis_n: int) -> list:
-    return list(itertools.product(range(fourier_basis_n + 1), repeat=policy.shape[0]))
+def get_nth_order_fourier_basis(policy: np.ndarray, fourier_basis_n: int) -> np.ndarray:
+    return np.array(list(itertools.product(range(fourier_basis_n + 1),
+        repeat=policy.shape[0])))
 
 
 def get_weights_zeros(n: int):
