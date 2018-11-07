@@ -80,7 +80,7 @@ def plot(data):
 
     plt.legend(loc='upper left')
 
-    plt.xlabel('Alpha')
+    plt.xlabel('Alpha (in log10 space)')
     plt.ylabel('Mean-Squared TD Error')
 
     plt.show()
