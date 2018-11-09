@@ -13,12 +13,12 @@ ALPHA_VALUES = np.arange(ALPHA_START, ALPHA_END + 1)
 WEIGHT_UPDATE_NUM_EPISODES = 100
 MSE_CALC_NUM_EPISODES = 100
 FOURIER_BASIS_VALUES = [3, 5]
-ENV_VALUES = [cartpole.ENV, gridworld.ENV]
+ENV_VALUES = [cartpole.ENV]
 MAX_TIME_STEPS = 1010
 MAX_ACCEPTABLE_MSE = 10000
 
 
-def execute(alpha: float, agent_execute_func, fourier_basis_n: int = None,
+def execute(env: str, alpha: float, agent_execute_func, fourier_basis_n: int = None,
             weight_update_episodes: int = WEIGHT_UPDATE_NUM_EPISODES,
             mse_calc_episodes: int = MSE_CALC_NUM_EPISODES) -> float:
     """
@@ -35,23 +35,34 @@ def execute(alpha: float, agent_execute_func, fourier_basis_n: int = None,
     for time_step, episode, state, reward, gamma in agent_execute_func(
             weight_update_episodes + mse_calc_episodes):
 
-        # TODO fourier_arr, phi, {current calculation for v} are cartpole-specific;
-        # add code for gridworld to work too
-        if fourier_arr is None:
-            fourier_arr = get_nth_order_fourier_basis(state, fourier_basis_n)
+        v = None
+        phi = None
 
-        phi = np.cos(math.pi * np.dot(fourier_arr, state))
+        if env == cartpole.ENV:
+            if fourier_arr is None:
+                fourier_arr = get_nth_order_fourier_basis(state, fourier_basis_n)
 
-        if weights is None:
-            weights = get_weights_zeros(np.shape(phi)[0])
+            phi = np.cos(math.pi * np.dot(fourier_arr, state))
 
-        v = np.dot(weights, phi)
+            if weights is None:
+                weights = get_weights_zeros(np.shape(phi)[0])
+
+            v = np.dot(weights, phi)
+
+        elif env == gridworld.ENV:
+            # TODO Initialize `v` and `weights`
+            weights = None
+            v = None
 
         if time_step != 0:
             td_err = reward + (gamma * v) - v_prev
 
             if 0 <= episode < weight_update_episodes:
-                weights += alpha * td_err * phi
+                if env == cartpole.ENV:
+                    weights += alpha * td_err * phi
+                elif env == gridworld.ENV:
+                    # TODO Calculate `weights`
+                    pass
 
             elif weight_update_episodes <= episode < \
                     (weight_update_episodes + mse_calc_episodes):
@@ -102,7 +113,7 @@ def execute_all():
 
             curr_results = []
             for alpha in ALPHA_VALUES:
-                mse = execute(math.pow(10, alpha), fourier_basis_n=fourier,
+                mse = execute(env, math.pow(10, alpha), fourier_basis_n=fourier,
                     agent_execute_func=get_agent_execute_func(env))
 
                 if mse <= MAX_ACCEPTABLE_MSE:
