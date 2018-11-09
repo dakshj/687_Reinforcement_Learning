@@ -49,24 +49,26 @@ VEERS = {
     },
 }
 
+MAX_ALLOWABLE_STEPS = 15
 
-def uniform_random_policy():
+
+def get_direction_from_uniform_random_policy():
     return random.choice([UP, DOWN, LEFT, RIGHT])
 
 
 def execute(episodes):
-    all_rewards = []
+    all_returns = []
 
     for episode in range(episodes):
 
-        curr = START
-        step = -1
-        reward = 0
+        state = START
+        time_step = -1
+        returns = 0
 
         while True:
-            step += 1
+            time_step += 1
 
-            direction = uniform_random_policy()
+            direction = get_direction_from_uniform_random_policy()
 
             direction_increment_coordinates = None
 
@@ -81,29 +83,33 @@ def execute(episodes):
             elif PROB_RIGHT <= rand_actual_no < PROB_STAY:
                 direction_increment_coordinates = DIRECTIONS[STAY]
 
-            curr_temp = curr
+            temp_state = state
 
-            curr_temp = tuple(map(operator.add, curr_temp, direction_increment_coordinates))
+            temp_state = tuple(map(operator.add, temp_state,
+                direction_increment_coordinates))
 
-            if curr_temp not in WALLS and (0 <= curr_temp[0] < ROWS) and (0 <= curr_temp[1] < COLS):
-                curr = curr_temp
+            if temp_state not in WALLS and \
+                    (0 <= temp_state[0] < ROWS) and \
+                    (0 <= temp_state[1] < COLS):
+                state = temp_state
 
-            if curr == WATER:
-                reward += math.pow(GAMMA, step) * REWARD_WATERS
+            reward = 0
 
-            elif curr == GOAL:
-                reward += math.pow(GAMMA, step) * REWARD_GOAL
+            if state == WATER:
+                reward = math.pow(GAMMA, time_step) * REWARD_WATERS
 
-            # TODO yield values based on what is required by td.py
-            yield step, episode
+            elif state == GOAL:
+                reward = math.pow(GAMMA, time_step) * REWARD_GOAL
 
-            if curr == GOAL or step >= 15:
-                all_rewards.append(reward)
+            returns += reward
+
+            yield time_step, episode, None, reward, GAMMA
+
+            if state == GOAL or time_step >= MAX_ALLOWABLE_STEPS:
+                all_returns.append(returns)
                 break
 
-    all_rewards = np.array(all_rewards)
-
-    return all_rewards
+    return np.array(all_returns)
 
 
 def generate_random_gridworld_tabular_softmax_policy():
