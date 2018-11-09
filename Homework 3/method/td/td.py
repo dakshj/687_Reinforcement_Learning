@@ -50,8 +50,11 @@ def execute(env: str, alpha: float, agent_execute_func, fourier_basis_n: int = N
             v = np.dot(weights, phi)
 
         elif env == gridworld.ENV:
-            # TODO Initialize `v` and `weights`
-            weights = None
+            # TODO initialize `weights` with proper shape
+            if weights is None:
+                weights = None
+
+            # TODO Calculate `v`
             v = None
 
         if time_step != 0:
@@ -61,8 +64,9 @@ def execute(env: str, alpha: float, agent_execute_func, fourier_basis_n: int = N
                 if env == cartpole.ENV:
                     weights += alpha * td_err * phi
                 elif env == gridworld.ENV:
-                    # TODO Calculate `weights`
-                    pass
+                    # TODO Correctly update weights `weights`
+                    # [might (or might not) require `phi`]
+                    weights += alpha * td_err * None
 
             elif weight_update_episodes <= episode < \
                     (weight_update_episodes + mse_calc_episodes):
