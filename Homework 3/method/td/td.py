@@ -7,14 +7,15 @@ import numpy as np
 from agent import cartpole
 from agent import gridworld
 
-ALPHA_START = -10
+ALPHA_START = -15
 ALPHA_END = -1
-ALPHA_VALUES = [math.pow(10, x) for x in np.arange(ALPHA_START, ALPHA_END + 1)]
+ALPHA_VALUES = np.arange(ALPHA_START, ALPHA_END + 1)
 WEIGHT_UPDATE_NUM_EPISODES = 100
 MSE_CALC_NUM_EPISODES = 100
 FOURIER_BASIS_VALUES = [3, 5]
 ENV_VALUES = [cartpole.ENV, gridworld.ENV]
 MAX_TIME_STEPS = 1010
+MAX_ACCEPTABLE_MSE = 10000
 
 
 def execute(alpha: float, agent_execute_func, fourier_basis_n: int = None,
@@ -75,13 +76,13 @@ def plot(data):
     labels = ['CartPole Fourier Basis 3', 'CartPole Fourier Basis 5', 'GridWorld']
     for row, label in zip(data, labels):
         x, y = map(list, zip(*row))
-        plt.plot([round(x_ith) for x_ith in x], y, label=label)
+        plt.plot([round(x_ith) for x_ith in x], np.log10(y), label=label)
         plt.xticks(np.arange(min(x), max(x) + 1))
 
     plt.legend(loc='upper left')
 
     plt.xlabel('Alpha (in log10 space)')
-    plt.ylabel('Mean-Squared TD Error')
+    plt.ylabel('Mean-Squared TD Error (in log10 space)')
 
     plt.show()
 
@@ -101,9 +102,13 @@ def execute_all():
 
             curr_results = []
             for alpha in ALPHA_VALUES:
-                mse = execute(alpha, fourier_basis_n=fourier,
+                mse = execute(math.pow(10, alpha), fourier_basis_n=fourier,
                     agent_execute_func=get_agent_execute_func(env))
-                curr_results.append((math.log(alpha, 10), mse))
+
+                if mse <= MAX_ACCEPTABLE_MSE:
+                    curr_results.append((alpha, mse))
+
+                # End for alpha
 
             results.append(curr_results)
 
