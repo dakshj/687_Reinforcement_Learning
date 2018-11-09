@@ -114,3 +114,11 @@ def execute(episodes):
 
 def generate_random_gridworld_tabular_softmax_policy():
     return np.random.uniform(0, 1, (92,))
+
+
+def get_v_vector() -> np.ndarray:
+    result = np.zeros(shape=(5, 5))
+
+    # TODO Calculate *expected* v values for each of the 23 states
+
+    return result
