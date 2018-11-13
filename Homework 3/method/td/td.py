@@ -27,7 +27,9 @@ def execute(env: str, alpha: float, agent_execute_func, fourier_basis_n: int = N
     """
     fourier_arr = None
     weights = None
+    v_arr = None
     v_prev = None
+    state_prev = None
 
     # Save TD Errors for each episode X each time step
     td_errs = np.zeros((mse_calc_episodes, MAX_TIME_STEPS))
@@ -50,29 +52,29 @@ def execute(env: str, alpha: float, agent_execute_func, fourier_basis_n: int = N
             v = np.dot(weights, phi)
 
         elif env == gridworld.ENV:
-            # TODO initialize `weights` with proper shape
-            if weights is None:
-                weights = None
-
-            # TODO Calculate `v`
-            v = None
+            if v_arr is None:
+                v_arr = np.random.rand(gridworld.GRID_SHAPE)
 
         if time_step != 0:
-            td_err = reward + (gamma * v) - v_prev
+            td_err = None
+
+            if env == cartpole.ENV:
+                td_err = reward + (gamma * v) - v_prev
+            elif env == gridworld.ENV:
+                td_err = reward + (gamma * v_arr[state]) - v_arr[state_prev]
 
             if 0 <= episode < weight_update_episodes:
                 if env == cartpole.ENV:
                     weights += alpha * td_err * phi
                 elif env == gridworld.ENV:
-                    # TODO Correctly update weights `weights`
-                    # [might (or might not) require `phi`]
-                    weights += alpha * td_err * None
+                    v_arr[state_prev] += alpha * td_err
 
             elif weight_update_episodes <= episode < \
                     (weight_update_episodes + mse_calc_episodes):
                 td_errs[episode - weight_update_episodes, time_step] = td_err
 
         v_prev = v
+        state_prev = state
 
     # Calculate and return mean-squared TD error
     return np.average(np.sum(td_errs ** 2, axis=1))

@@ -9,6 +9,7 @@ ENV = 'gridworld'
 GAMMA = 0.9
 
 ROWS, COLS = 5, 5
+GRID_SHAPE = (ROWS, COLS)
 
 WALLS = [(2, 2), (3, 2)]
 WATER = (4, 2)
@@ -117,7 +118,7 @@ def generate_random_gridworld_tabular_softmax_policy():
 
 
 def get_v_vector() -> np.ndarray:
-    result = np.zeros(shape=(5, 5))
+    result = np.zeros(GRID_SHAPE)
 
     # TODO Calculate *expected* v values for each of the 23 states
 
