@@ -65,12 +65,12 @@ def execute(episodes):
         state = START
         time_step = 0
         returns = 0
-        reward = 0
+        non_discounted_reward = 0
 
         while True:
-            yield time_step, episode, state, reward, GAMMA
+            yield time_step, episode, state, non_discounted_reward, GAMMA
 
-            if state == GOAL or time_step >= MAX_ALLOWABLE_STEPS:
+            if state == GOAL:
                 all_returns.append(returns)
                 break
 
@@ -99,13 +99,17 @@ def execute(episodes):
                     (0 <= temp_state[1] < COLS):
                 state = temp_state
 
+            discounted_reward = 0
+
             if state == WATER:
-                reward = math.pow(GAMMA, time_step) * REWARD_WATERS
+                non_discounted_reward = REWARD_WATERS
+                discounted_reward = math.pow(GAMMA, time_step) * REWARD_WATERS
 
             elif state == GOAL:
-                reward = math.pow(GAMMA, time_step) * REWARD_GOAL
+                non_discounted_reward = REWARD_GOAL
+                discounted_reward = math.pow(GAMMA, time_step) * REWARD_GOAL
 
-            returns += reward
+            returns += discounted_reward
             time_step += 1
 
     return np.array(all_returns)

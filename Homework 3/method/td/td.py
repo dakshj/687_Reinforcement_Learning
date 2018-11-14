@@ -32,7 +32,7 @@ def execute(env: str, alpha: float, agent_execute_func, fourier_basis_n: int = N
     state_prev = None
 
     # Save TD Errors for each episode X each time step
-    td_errs = np.zeros((mse_calc_episodes, MAX_TIME_STEPS))
+    td_errs = np.zeros((mse_calc_episodes, MAX_TIME_STEPS * 100))
 
     for time_step, episode, state, reward, gamma in agent_execute_func(
             weight_update_episodes + mse_calc_episodes):
