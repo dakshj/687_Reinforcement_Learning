@@ -93,13 +93,13 @@ def plot(data):
     labels = ['CartPole Fourier Basis 3', 'CartPole Fourier Basis 5', 'GridWorld']
     for row, label in zip(data, labels):
         x, y = map(list, zip(*row))
-        plt.plot([round(x_ith) for x_ith in x], y, label=label)
+        plt.plot([round(x_ith) for x_ith in x], np.log10(y), label=label)
         plt.xticks(np.arange(min(x), max(x) + 1))
 
     plt.legend(loc='upper left')
 
     plt.xlabel('Alpha (in log10 space)')
-    plt.ylabel('Mean-Squared TD Error')
+    plt.ylabel('Mean-Squared TD Error (in log10 space)')
 
     plt.show()
 
