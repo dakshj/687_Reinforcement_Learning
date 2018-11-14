@@ -63,11 +63,16 @@ def execute(episodes):
     for episode in range(episodes):
 
         state = START
-        time_step = -1
+        time_step = 0
         returns = 0
+        reward = 0
 
         while True:
-            time_step += 1
+            yield time_step, episode, state, reward, GAMMA
+
+            if state == GOAL or time_step >= MAX_ALLOWABLE_STEPS:
+                all_returns.append(returns)
+                break
 
             direction = get_direction_from_uniform_random_policy()
 
@@ -94,8 +99,6 @@ def execute(episodes):
                     (0 <= temp_state[1] < COLS):
                 state = temp_state
 
-            reward = 0
-
             if state == WATER:
                 reward = math.pow(GAMMA, time_step) * REWARD_WATERS
 
@@ -103,23 +106,10 @@ def execute(episodes):
                 reward = math.pow(GAMMA, time_step) * REWARD_GOAL
 
             returns += reward
-
-            yield time_step, episode, None, reward, GAMMA
-
-            if state == GOAL or time_step >= MAX_ALLOWABLE_STEPS:
-                all_returns.append(returns)
-                break
+            time_step += 1
 
     return np.array(all_returns)
 
 
 def generate_random_gridworld_tabular_softmax_policy():
     return np.random.uniform(0, 1, (92,))
-
-
-def get_v_vector() -> np.ndarray:
-    result = np.zeros(GRID_SHAPE)
-
-    # TODO Calculate *expected* v values for each of the 23 states
-
-    return result
