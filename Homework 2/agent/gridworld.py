@@ -12,6 +12,7 @@ ENV = 'gridworld'
 GAMMA = 0.9
 
 ROWS, COLS = 5, 5
+GRID_SHAPE = (ROWS, COLS)
 
 WALLS = [(2, 2), (3, 2)]
 WATER = (4, 2)
@@ -52,6 +53,8 @@ VEERS = {
     },
 }
 
+MAX_ALLOWABLE_STEPS = 15
+
 
 def tabular_softmax_policy(curr, table):
     # Convert coordinates to the 1-23 Gridworld range
@@ -78,22 +81,21 @@ def tabular_softmax_policy(curr, table):
     lambda policy_table: np.shape(policy_table) == (23, 4)
 )
 def execute(episodes, policy_table):
-    all_rewards = []
+    all_returns = []
 
-    for _ in range(episodes):
+    for episode in range(episodes):
 
-        curr = START
-        step = -1
+        state = START
+        time_step = 0
+        returns = 0
         reward = 0
 
         while True:
-            step += 1
-
-            if step > 15:
-                all_rewards.append(reward)
+            if state == GOAL or time_step >= MAX_ALLOWABLE_STEPS:
+                all_returns.append(returns)
                 break
 
-            direction = tabular_softmax_policy(curr, policy_table)
+            direction = tabular_softmax_policy(state, policy_table)
 
             direction_increment_coordinates = None
 
@@ -108,24 +110,26 @@ def execute(episodes, policy_table):
             elif PROB_RIGHT <= rand_actual_no < PROB_STAY:
                 direction_increment_coordinates = DIRECTIONS[STAY]
 
-            curr_temp = curr
+            temp_state = state
 
-            curr_temp = tuple(map(operator.add, curr_temp, direction_increment_coordinates))
+            temp_state = tuple(map(operator.add, temp_state,
+                direction_increment_coordinates))
 
-            if curr_temp not in WALLS and (0 <= curr_temp[0] < ROWS) and (0 <= curr_temp[1] < COLS):
-                curr = curr_temp
+            if temp_state not in WALLS and \
+                    (0 <= temp_state[0] < ROWS) and \
+                    (0 <= temp_state[1] < COLS):
+                state = temp_state
 
-            if curr == WATER:
-                reward += math.pow(GAMMA, step) * REWARD_WATERS
+            if state == WATER:
+                reward = math.pow(GAMMA, time_step) * REWARD_WATERS
 
-            elif curr == GOAL:
-                reward += math.pow(GAMMA, step) * REWARD_GOAL
-                all_rewards.append(reward)
-                break
+            elif state == GOAL:
+                reward = math.pow(GAMMA, time_step) * REWARD_GOAL
 
-    all_rewards = np.array(all_rewards)
+            returns += reward
+            time_step += 1
 
-    return all_rewards
+    return np.array(all_returns)
 
 
 def generate_random_gridworld_tabular_softmax_policy():
