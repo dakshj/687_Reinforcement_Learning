@@ -88,7 +88,7 @@ def execute(episodes: int) -> list:
         reward = 0
 
         # Step over every 0.02s until the 20.2s limit
-        for time_step in np.arange(0, int(TIME_TOTAL / TIME_STEP)):
+        for time_step in range(int(TIME_TOTAL / TIME_STEP)):
             if not (ANGLE_MIN <= state[IDX_THETA] <= ANGLE_MAX):
                 # Pole has fallen down
                 reward += REWARD_POLE_DOWN
