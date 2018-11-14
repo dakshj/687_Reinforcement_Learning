@@ -53,7 +53,7 @@ def execute(env: str, alpha: float, agent_execute_func, fourier_basis_n: int = N
 
         elif env == gridworld.ENV:
             if v_arr is None:
-                v_arr = np.random.rand(*gridworld.GRID_SHAPE)
+                v_arr = np.zeros(gridworld.GRID_SHAPE)
 
         if time_step != 0:
             td_err = None
