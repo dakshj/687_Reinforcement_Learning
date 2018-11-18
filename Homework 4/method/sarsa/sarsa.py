@@ -8,6 +8,7 @@ def sarsa(agent: Agent, alpha: float) -> list:
     all_returns = []
 
     # TODO What happens to q when we have a non-tabular policy?
+    # TODO maybe use if-else bby checking for is_tabular to init q and w respectively
     q = agent.init_q()
     w = agent.init_w()
 

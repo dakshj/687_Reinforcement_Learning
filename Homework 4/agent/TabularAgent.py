@@ -10,5 +10,5 @@ class TabularAgent(Agent):
         return True
 
     @abstractmethod
-    def init_q(self):
+    def init_q(self) -> dict:
         pass

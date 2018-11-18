@@ -1,6 +1,7 @@
 import math
 import operator
 import random
+from collections import defaultdict
 
 import numpy as np
 
@@ -85,6 +86,10 @@ class GridWorld(TabularAgent):
     @staticmethod
     def __get_initial_state():
         return START
+
+    @staticmethod
+    def init_q() -> dict:
+        return defaultdict(float)
 
     @staticmethod
     def gamma() -> float:
