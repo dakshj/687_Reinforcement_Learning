@@ -105,10 +105,6 @@ class CartPole(NonTabularAgent):
         else:
             return -MOTOR_FORCE
 
-    def get_policy_from_q(self, q):
-        # TODO
-        pass
-
     def take_action(self, action):
         self.__update_state_from_action(action)
         self.__update_returns()

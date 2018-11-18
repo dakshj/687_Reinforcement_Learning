@@ -96,10 +96,6 @@ class GridWorld(TabularAgent):
     def get_action(self, policy_table):
         return tabular_softmax_policy(policy_table, self.state)
 
-    def get_policy_from_q(self, q):
-        # TODO
-        pass
-
     def take_action(self, action):
         self.__update_state_from_action(action)
         self.__update_returns()

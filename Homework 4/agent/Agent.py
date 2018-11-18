@@ -1,4 +1,6 @@
 from abc import ABC, abstractmethod
+from itertools import groupby
+from operator import itemgetter
 
 
 class Agent(ABC):
@@ -34,9 +36,28 @@ class Agent(ABC):
     def get_action(self, policy):
         pass
 
-    @abstractmethod
-    def get_policy_from_q(self, q):
-        pass
+    @staticmethod
+    def get_policy_from_q(q) -> dict:
+        grouped = [(k, [x for _, x in group]) for k, group in groupby(q, itemgetter(0))]
+
+        policy = {}
+
+        for state, action_list in grouped:
+            max_val = None
+            max_action = None
+
+            for action in action_list:
+                if max_val is None:
+                    max_val = q[(state, action)]
+                    max_action = action
+
+                if q[(state, action)] > max_val:
+                    max_val = q[(state, action)]
+                    max_action = action
+
+            policy[state] = max_action
+
+        return policy
 
     @abstractmethod
     def take_action(self, action):
