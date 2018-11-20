@@ -5,11 +5,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def save_trial(arr, trial_dir: str):
-    if not os.path.exists(trial_dir):
-        os.mkdir(trial_dir)
+def save_trial(arr, trials_dir: str):
+    if not os.path.exists(trials_dir):
+        os.mkdir(trials_dir)
 
-    np.save('{}/trial_{}'.format(trial_dir, time.time()), arr)
+    np.save('{}/trial_{}'.format(trials_dir, time.time()), arr)
 
 
 def plot_dir(trials_dir):

@@ -20,7 +20,7 @@ def execute():
             episode_results = sarsa(agent=agent, alpha=alpha,
                     trial=trial, trials_total=TRIALS)
 
-            save_trial(arr=episode_results, trial_dir=trials_dir)
+            save_trial(arr=episode_results, trials_dir=trials_dir)
 
 
 if __name__ == '__main__':

@@ -6,9 +6,9 @@ from util.random_hyperparameter_search import random_hyperparameter_search
 
 TRIALS = 100
 
-EPSILON = [0.3]
-ALPHA = [0.1]
-FOURIER_BASIS_ORDER = [3]
+EPSILON = [0.3, 0.5, 0.6]
+ALPHA = [0.1, 0.0001, 0.001]
+FOURIER_BASIS_ORDER = [3, 5]
 
 
 def execute():
@@ -24,7 +24,7 @@ def execute():
             episode_results = sarsa(agent=agent, alpha=alpha,
                     trial=trial, trials_total=TRIALS)
 
-            save_trial(arr=episode_results, trial_dir=trials_dir)
+            save_trial(arr=episode_results, trials_dir=trials_dir)
 
 
 if __name__ == '__main__':
