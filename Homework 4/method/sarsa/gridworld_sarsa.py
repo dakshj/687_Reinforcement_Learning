@@ -8,17 +8,19 @@ TRIALS = 100
 
 EPSILON = [0.3]
 ALPHA = [0.1]
+EPISODES = [100, 200]
 
 
 def execute():
-    for epsilon, alpha in random_hyperparameter_search(EPSILON, ALPHA):
-        trials_dir = '{}__sarsa__e={}__a={}' \
-            .format(gridworld.ENV, epsilon, alpha)
+    for epsilon, alpha, episodes in \
+            random_hyperparameter_search(EPSILON, ALPHA, EPISODES):
+        trials_dir = '{}__sarsa__e={}__a={}__ep={}' \
+            .format(gridworld.ENV, epsilon, alpha, episodes)
 
         for trial in range(TRIALS):
             agent = GridWorld(epsilon=epsilon)
             episode_results = sarsa(agent=agent, alpha=alpha,
-                    trial=trial, trials_total=TRIALS)
+                    trial=trial, trials_total=TRIALS, episodes=episodes)
 
             save_trial(arr=episode_results, trials_dir=trials_dir)
 
