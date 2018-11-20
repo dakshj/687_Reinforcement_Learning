@@ -34,6 +34,8 @@ X_MIN = -3
 
 IDX_X, IDX_V, IDX_THETA, IDX_THETA_DOT = 0, 1, 2, 3
 
+STATE_DIMENSION = 4
+
 
 def calculate_accelerations(state: np.ndarray, action: int) -> (float, float):
     theta = state[IDX_THETA]
@@ -84,10 +86,10 @@ class CartPole(NonTabularAgent):
         self._state[IDX_THETA_DOT] += (TIME_STEP_ACTUAL * theta_dot_dot)
 
     def _get_initial_state(self):
-        return np.zeros((4,))
+        return np.zeros((STATE_DIMENSION,))
 
     def _get_state_dimension(self) -> int:
-        return self._get_initial_state()[0]
+        return STATE_DIMENSION
 
     def _get_current_reward(self) -> float:
         if not self.has_terminated():

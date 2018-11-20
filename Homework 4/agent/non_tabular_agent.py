@@ -10,7 +10,7 @@ from agent.agent import Agent
 class NonTabularAgent(Agent, ABC):
 
     def __init__(self, epsilon: float, fourier_basis_order: int):
-        super().__init__(self, epsilon)
+        super().__init__(epsilon)
 
         self.fourier_arr = NonTabularAgent._get_fourier_arr(
                 fourier_basis_order=fourier_basis_order,
