@@ -7,8 +7,8 @@ from agent.non_tabular_agent import NonTabularAgent
 from agent.tabular_agent import TabularAgent
 
 
-def sarsa(agent: Agent, alpha: float, trial: int, trials_total: int,
-          episodes: int) -> list:
+def sarsa(agent: Agent, epsilon: float, epsilon_decay: float,
+          alpha: float, trial: int, trials_total: int, episodes: int) -> list:
     # List of rewards across all episodes, for this one trial
     episode_returns = []
 
@@ -28,12 +28,12 @@ def sarsa(agent: Agent, alpha: float, trial: int, trials_total: int,
 
     exec_time = time.time()
     for episode in range(episodes):
-        print('Episode {} / {} in Trial {} / {} (Time = {} s)'
+        print('Episode {} / {} in Trial {} / {} (Time = {} s, Time steps = {})'
             .format(episode + 1, episodes, trial + 1, trials_total,
-                round(time.time() - exec_time, 2)))
+                round(time.time() - exec_time, 2), agent.time_step))
         exec_time = time.time()
 
-        agent.reset_for_new_episode()
+        agent.reset_for_new_episode(epsilon=epsilon)
 
         state = agent.state
 
@@ -76,6 +76,8 @@ def sarsa(agent: Agent, alpha: float, trial: int, trials_total: int,
             # Time step end
 
         episode_returns.append(agent.returns)
+
+        epsilon *= epsilon_decay
 
         # Episode end
 

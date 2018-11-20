@@ -7,15 +7,15 @@ import numpy as np
 
 class Agent(ABC):
 
-    def __init__(self, epsilon: float):
+    def __init__(self):
         self._time_step = None
         self._state = None
         self._returns = None
-        self.reset_for_new_episode()
+        self.reset_for_new_episode(epsilon=None)
 
         self._num_actions = len(self._get_actions_list())
 
-        self._epsilon = epsilon
+        self._epsilon = None
 
     @property
     def state(self):
@@ -25,10 +25,15 @@ class Agent(ABC):
     def returns(self):
         return self._returns
 
-    def reset_for_new_episode(self):
+    @property
+    def time_step(self):
+        return self._time_step
+
+    def reset_for_new_episode(self, epsilon):
         self._time_step = 0
         self._state = self._get_initial_state()
         self._returns = 0.
+        self._epsilon = epsilon
 
     @abstractmethod
     def has_terminated(self) -> bool:

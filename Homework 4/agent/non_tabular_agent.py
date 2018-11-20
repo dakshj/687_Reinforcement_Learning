@@ -9,9 +9,8 @@ from agent.agent import Agent
 
 class NonTabularAgent(Agent, ABC):
 
-    def __init__(self, epsilon: float, fourier_basis_order: int):
-        super().__init__(epsilon)
-
+    def __init__(self, fourier_basis_order: int):
+        super().__init__()
         self._fourier_arr = self._get_fourier_arr(
                 fourier_basis_order=fourier_basis_order,
                 state_dimension=self._get_state_dimension()

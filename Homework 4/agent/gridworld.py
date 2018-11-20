@@ -51,11 +51,13 @@ VEERS = {
     },
 }
 
+MAX_TIME_STEPS = 10000
+
 
 class GridWorld(TabularAgent):
 
     def has_terminated(self) -> bool:
-        return self._state == GOAL
+        return self._state == GOAL or self._time_step >= MAX_TIME_STEPS
 
     def _update_state_from_action(self, action):
         direction_increment_coordinates = None
