@@ -7,7 +7,7 @@ from agent.tabular_agent import TabularAgent
 EPISODES = 100
 
 
-def sarsa(agent: Agent, alpha: float, fourier_basis_order: int, epsilon: float) -> list:
+def sarsa(agent: Agent, alpha: float) -> list:
     # List of rewards across all episodes, for this one trial
     all_returns = []
 
