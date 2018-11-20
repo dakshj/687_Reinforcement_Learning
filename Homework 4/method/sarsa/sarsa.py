@@ -1,3 +1,5 @@
+import time
+
 import numpy as np
 
 from agent.agent import Agent
@@ -7,9 +9,9 @@ from agent.tabular_agent import TabularAgent
 EPISODES = 100
 
 
-def sarsa(agent: Agent, alpha: float) -> list:
+def sarsa(agent: Agent, alpha: float, trial: int, trials_total: int) -> list:
     # List of rewards across all episodes, for this one trial
-    all_returns = []
+    episode_returns = []
 
     # Tabular Variables
     q = None
@@ -25,7 +27,13 @@ def sarsa(agent: Agent, alpha: float) -> list:
         weights = agent.init_weights()
         phi = agent.get_phi()
 
+    exec_time = time.time()
     for episode in range(EPISODES):
+        print('Episode {} / {} in Trial {} / {} (Time = {} s)'
+            .format(episode + 1, EPISODES, trial + 1, trials_total,
+                round(time.time() - exec_time, 2)))
+        exec_time = time.time()
+
         agent.reset_for_new_episode()
 
         state = agent.state
@@ -66,8 +74,10 @@ def sarsa(agent: Agent, alpha: float) -> list:
             action = action_next
             phi = phi_next
 
-            all_returns.append(agent.returns)
+            # Time step end
 
-            # Episode end
+        episode_returns.append(agent.returns)
 
-    return all_returns
+        # Episode end
+
+    return episode_returns
