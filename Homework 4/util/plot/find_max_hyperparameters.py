@@ -44,3 +44,7 @@ if __name__ == '__main__':
 # Directory = cartpole__sarsa__e=0.4__a=0.0005__f=5
 # Max Mean = 53.07
 # Max Value = 337.0
+
+# Directory = cartpole__sarsa__e=0.25__a=0.0005__f=4
+# Max Mean = 80.0
+# Max Value = 434.0
