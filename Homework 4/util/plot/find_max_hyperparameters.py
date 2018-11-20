@@ -18,33 +18,14 @@ def find_max_mean(method_dir):
         max_means.append(max_mean)
         max_values.append(max_value)
 
-    i = int(np.argmax(max_values))
-
-    print('Directory = {}'.format(dirs[i]))
-    print('Max Mean = {}'.format(max_means[i]))
-    print('Max Value = {}'.format(max_values[i]))
+    for i, text in zip(
+            [int(np.argmax(max_means)), int(np.argmax(max_values))],
+            ['Max Mean', 'Max Value']):
+        print('\nPicking by {}'.format(text))
+        print('Directory = {}'.format(dirs[i]))
+        print('Max Mean = {}'.format(max_means[i]))
+        print('Max Value = {}'.format(max_values[i]))
 
 
 if __name__ == '__main__':
     find_max_mean('../../method/sarsa')
-
-# RESULTS:
-# Directory = cartpole__sarsa__e=0.3__a=0.0001__f=3
-# Max Mean = 77.46
-# Max Value = 281.0
-
-# Directory = cartpole__sarsa__e=0.2__a=1e-06__f=3
-# Max Mean = 81.88
-# Max Value = 278.0
-
-# Directory = cartpole__sarsa__e=0.25__a=1e-06__f=3
-# Max Mean = 82.8
-# Max Value = 303.0
-
-# Directory = cartpole__sarsa__e=0.4__a=0.0005__f=5
-# Max Mean = 53.07
-# Max Value = 337.0
-
-# Directory = cartpole__sarsa__e=0.25__a=0.0005__f=4
-# Max Mean = 80.0
-# Max Value = 434.0

@@ -1,0 +1,29 @@
+Directory = cartpole__sarsa__e=0.3__a=0.0001__f=3
+Max Mean = 77.46
+Max Value = 281.0
+
+Directory = cartpole__sarsa__e=0.2__a=1e-06__f=3
+Max Mean = 81.88
+Max Value = 278.0
+
+Directory = cartpole__sarsa__e=0.25__a=1e-06__f=3
+Max Mean = 82.8
+Max Value = 303.0
+
+Directory = cartpole__sarsa__e=0.4__a=0.0005__f=5
+Max Mean = 53.07
+Max Value = 337.0
+
+Directory = cartpole__sarsa__e=0.25__a=0.0005__f=4
+Max Mean = 80.0
+Max Value = 434.0
+
+Picking by Max Mean
+Directory = cartpole__sarsa__e=0.25__a=1e-05__f=3
+Max Mean = 82.96
+Max Value = 294.0
+
+Picking by Max Value
+Directory = cartpole__sarsa__e=0.25__a=0.0005__f=5
+Max Mean = 47.41
+Max Value = 790.0
