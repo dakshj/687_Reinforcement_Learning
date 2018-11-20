@@ -30,7 +30,7 @@ class Agent(ABC):
 
     def reset_for_new_episode(self):
         self._time_step = 0
-        self._state = self.get_initial_state()
+        self._state = self._get_initial_state()
         self._returns = 0.
 
     @abstractmethod
@@ -46,11 +46,11 @@ class Agent(ABC):
         pass
 
     @abstractmethod
-    def get_initial_state(self):
+    def _get_initial_state(self):
         pass
 
     @abstractmethod
-    def get_state_dimension(self):
+    def _get_state_dimension(self):
         pass
 
     def get_action(self, q_or_weights: np.ndarray):

@@ -83,11 +83,11 @@ class GridWorld(TabularAgent):
                 (0 <= temp_state[1] < COLS):
             self._state = temp_state
 
-    def get_initial_state(self):
+    def _get_initial_state(self):
         return START
 
-    def get_state_dimension(self) -> int:
-        return len(self.get_initial_state())
+    def _get_state_dimension(self) -> int:
+        return len(self._get_initial_state())
 
     def _get_current_reward(self) -> float:
         if self.state == WATER:
@@ -106,7 +106,7 @@ class GridWorld(TabularAgent):
         return [UP, DOWN, LEFT, RIGHT]
 
     @staticmethod
-    def num_states():
+    def _num_states():
         return TOTAL_STATES
 
     @staticmethod

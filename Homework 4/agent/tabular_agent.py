@@ -8,11 +8,11 @@ from agent.agent import Agent
 class TabularAgent(Agent, ABC):
 
     def init_q(self) -> np.ndarray:
-        return np.zeros((self.num_states(), self._num_actions))
+        return np.zeros((self._num_states(), self._num_actions))
 
     @staticmethod
     @abstractmethod
-    def num_states():
+    def _num_states():
         pass
 
     @staticmethod

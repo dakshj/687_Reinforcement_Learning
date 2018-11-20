@@ -14,7 +14,7 @@ class NonTabularAgent(Agent, ABC):
 
         self.fourier_arr = NonTabularAgent._get_fourier_arr(
                 fourier_basis_order=fourier_basis_order,
-                state_dimension=self.get_state_dimension()
+                state_dimension=self._get_state_dimension()
         )
 
         self.num_features_phi = self.fourier_arr.shape[0]

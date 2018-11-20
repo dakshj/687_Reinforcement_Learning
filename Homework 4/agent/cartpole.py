@@ -83,11 +83,11 @@ class CartPole(NonTabularAgent):
         self._state[IDX_THETA] += (TIME_STEP_ACTUAL * self._state[IDX_THETA_DOT])
         self._state[IDX_THETA_DOT] += (TIME_STEP_ACTUAL * theta_dot_dot)
 
-    def get_initial_state(self):
+    def _get_initial_state(self):
         return np.zeros((4,))
 
-    def get_state_dimension(self) -> int:
-        return self.get_initial_state()[0]
+    def _get_state_dimension(self) -> int:
+        return self._get_initial_state()[0]
 
     def _get_current_reward(self) -> float:
         if not self.has_terminated():
