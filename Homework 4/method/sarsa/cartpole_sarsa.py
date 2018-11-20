@@ -27,8 +27,9 @@ def execute():
         trials_dir = '{}__sarsa__e={}__a={}__f={}' \
             .format(cartpole.ENV, epsilon, alpha, fourier_basis_order)
 
+        # Skipping existing dirs helps in parallelization by skipping
+        # those hyperparams that have already been checked
         skip_existing_path = True
-
         if skip_existing_path and os.path.exists(trials_dir):
             continue
 
