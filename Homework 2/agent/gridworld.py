@@ -61,14 +61,14 @@ def tabular_softmax_policy(curr, table):
     i = (curr[0] * ROWS) + (curr[1] + 1)
 
     # Subtract because of obstacles in GridWorld
-    if i >= 13:
+    if i >= 14:
         i -= 1
 
     if i >= 18:
         i -= 1
 
-    if i >= 23:
-        i -= 1
+    # 0-based value
+    i -= 1
 
     # Get row of probability values for each direction
     row = table[i]
@@ -78,7 +78,7 @@ def tabular_softmax_policy(curr, table):
 
 
 @preconditions(
-    lambda policy_table: np.shape(policy_table) == (23, 4)
+        lambda policy_table: np.shape(policy_table) == (23, 4)
 )
 def execute(episodes, policy_table):
     all_returns = []
@@ -113,7 +113,7 @@ def execute(episodes, policy_table):
             temp_state = state
 
             temp_state = tuple(map(operator.add, temp_state,
-                direction_increment_coordinates))
+                    direction_increment_coordinates))
 
             if temp_state not in WALLS and \
                     (0 <= temp_state[0] < ROWS) and \
