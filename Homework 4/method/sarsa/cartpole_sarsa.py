@@ -1,3 +1,5 @@
+import os
+
 from agent import cartpole
 from agent.cartpole import CartPole
 from method.sarsa.sarsa import sarsa
@@ -6,14 +8,14 @@ from util.random_hyperparameter_search import random_hyperparameter_search
 
 TRIALS = 100
 
-# OTHERS = [0.5, 0.6]
-EPSILON = [0.2, 0.3, 0.4]
+# OTHERS = [0.1, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6]
+EPSILON = [0.25]
 
 # BAD = [0.1]
-# OTHERS = [0.0001, 0.001]
+# OTHERS = [0.0001, 0.001, 0.0005]
 ALPHA = [0.000001, 0.0005]
 
-# OTHERS = [5]
+# OTHERS = [3, 5]
 FOURIER_BASIS_ORDER = [3]
 
 
@@ -24,6 +26,11 @@ def execute():
 
         trials_dir = '{}__sarsa__e={}__a={}__f={}' \
             .format(cartpole.ENV, epsilon, alpha, fourier_basis_order)
+
+        skip_existing_path = True
+
+        if skip_existing_path and os.path.exists(trials_dir):
+            continue
 
         for trial in range(TRIALS):
             agent = CartPole(epsilon=epsilon, fourier_basis_order=fourier_basis_order)
