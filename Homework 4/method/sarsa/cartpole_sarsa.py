@@ -18,14 +18,18 @@ ALPHA = [0.000001, 0.00001, 0.00005, 0.0005]
 # OTHERS = [3, 4, 5]
 FOURIER_BASIS_ORDER = [3, 4, 5]
 
+# OTHERS = [100, 200]
+EPISODES = [200]
+
 
 def execute():
-    for epsilon, alpha, fourier_basis_order in \
-            random_hyperparameter_search(EPSILON, ALPHA, FOURIER_BASIS_ORDER):
+    for epsilon, alpha, fourier_basis_order, episodes in \
+            random_hyperparameter_search(EPSILON, ALPHA, FOURIER_BASIS_ORDER, EPISODES):
         fourier_basis_order = int(fourier_basis_order)
+        episodes = int(episodes)
 
-        trials_dir = '{}__sarsa__e={}__a={}__f={}' \
-            .format(cartpole.ENV, epsilon, alpha, fourier_basis_order)
+        trials_dir = '{}__sarsa__e={}__a={}__f={}__ep={}' \
+            .format(cartpole.ENV, epsilon, alpha, fourier_basis_order, episodes)
 
         # Skipping existing dirs helps in parallelization by skipping
         # those hyperparams that have already been checked
@@ -36,7 +40,7 @@ def execute():
         for trial in range(TRIALS):
             agent = CartPole(epsilon=epsilon, fourier_basis_order=fourier_basis_order)
             episode_results = sarsa(agent=agent, alpha=alpha,
-                    trial=trial, trials_total=TRIALS)
+                    trial=trial, trials_total=TRIALS, episodes=episodes)
 
             save_trial(arr=episode_results, trials_dir=trials_dir)
 
