@@ -3,7 +3,7 @@ from collections import defaultdict
 from itertools import groupby
 from operator import itemgetter
 
-from agent.agent_1 import Agent
+from agent.agent import Agent
 
 
 class TabularAgent(Agent, ABC):

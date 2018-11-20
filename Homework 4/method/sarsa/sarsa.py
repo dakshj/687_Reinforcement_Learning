@@ -1,6 +1,6 @@
 import numpy as np
 
-from agent.agent_1 import Agent
+from agent.agent import Agent
 from agent.non_tabular_agent import NonTabularAgent
 from agent.tabular_agent import TabularAgent
 
