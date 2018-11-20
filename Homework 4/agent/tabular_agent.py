@@ -1,42 +1,21 @@
-from abc import ABC
-from collections import defaultdict
-from itertools import groupby
-from operator import itemgetter
+from abc import ABC, abstractmethod
+
+import numpy as np
 
 from agent.agent import Agent
 
 
 class TabularAgent(Agent, ABC):
 
-    @staticmethod
-    def init_q() -> dict:
-        return defaultdict(float)
+    def init_q(self) -> np.ndarray:
+        return np.zeros((self.num_states(), self._num_actions))
 
     @staticmethod
-    def get_policy_from_q(q: dict) -> dict:
-        """
-        Chooses the best actions from the q dict, for each state
+    @abstractmethod
+    def num_states():
+        pass
 
-        :param q:
-        :return: Policy dict of state to action
-        """
-        grouped = [(k, [x for _, x in group]) for k, group in groupby(q, itemgetter(0))]
-
-        policy = {}
-
-        for state, action_list in grouped:
-            max_val = None
-            max_action = None
-
-            for action in action_list:
-                if max_val is None:
-                    max_val = q[(state, action)]
-                    max_action = action
-
-                if q[(state, action)] > max_val:
-                    max_val = q[(state, action)]
-                    max_action = action
-
-            policy[state] = max_action
-
-        return policy
+    @staticmethod
+    @abstractmethod
+    def get_state_index(state):
+        pass

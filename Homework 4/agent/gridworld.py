@@ -1,13 +1,13 @@
 import operator
 import random
 
-import numpy as np
-
 from agent.tabular_agent import TabularAgent
 
 ENV = 'gridworld'
 
 GAMMA = 0.9
+
+TOTAL_STATES = 23
 
 ROWS, COLS = 5, 5
 GRID_SHAPE = (ROWS, COLS)
@@ -54,27 +54,6 @@ VEERS = {
 MAX_ALLOWABLE_STEPS = 15
 
 
-def tabular_softmax_policy(policy_table, state):
-    # Convert coordinates to the 1-23 Gridworld range
-    i = (state[0] * ROWS) + (state[1] + 1)
-
-    # Subtract because of obstacles in GridWorld
-    if i >= 13:
-        i -= 1
-
-    if i >= 18:
-        i -= 1
-
-    if i >= 23:
-        i -= 1
-
-    # Get row of probability values for each direction
-    row = policy_table[i]
-
-    # Fetch a random direction based on the weighted probabilities of each direction
-    return np.random.choice(GridWorld.get_actions_list(), p=row)
-
-
 class GridWorld(TabularAgent):
 
     def has_terminated(self) -> bool:
@@ -102,12 +81,12 @@ class GridWorld(TabularAgent):
         if temp_state not in WALLS and \
                 (0 <= temp_state[0] < ROWS) and \
                 (0 <= temp_state[1] < COLS):
-            self.state = temp_state
+            self._state = temp_state
 
     def get_initial_state(self):
         return START
 
-    def get_state_vector_length(self) -> int:
+    def get_state_dimension(self) -> int:
         return len(self.get_initial_state())
 
     def _get_current_reward(self) -> float:
@@ -123,8 +102,26 @@ class GridWorld(TabularAgent):
         return GAMMA
 
     @staticmethod
-    def get_actions_list() -> list:
+    def _get_actions_list() -> list:
         return [UP, DOWN, LEFT, RIGHT]
 
-    def _get_action_from_policy(self, policy):
-        return tabular_softmax_policy(policy, self.state)
+    @staticmethod
+    def num_states():
+        return TOTAL_STATES
+
+    @staticmethod
+    def get_state_index(state):
+        # Convert coordinates to the 1-23 Gridworld range
+        index = (state[0] * ROWS) + (state[1] + 1)
+
+        # Subtract because of obstacles in GridWorld
+        if index >= 14:
+            index -= 1
+
+        if index >= 18:
+            index -= 1
+
+        # 0-based value
+        index -= 1
+
+        return index

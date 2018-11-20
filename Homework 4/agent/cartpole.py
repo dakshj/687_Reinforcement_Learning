@@ -86,7 +86,7 @@ class CartPole(NonTabularAgent):
     def get_initial_state(self):
         return np.zeros((4,))
 
-    def get_state_vector_length(self) -> int:
+    def get_state_dimension(self) -> int:
         return self.get_initial_state()[0]
 
     def _get_current_reward(self) -> float:
@@ -100,5 +100,5 @@ class CartPole(NonTabularAgent):
         return GAMMA
 
     @staticmethod
-    def get_actions_list() -> list:
+    def _get_actions_list() -> list:
         return [MOTOR_FORCE, -MOTOR_FORCE]

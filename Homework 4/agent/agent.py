@@ -16,7 +16,7 @@ class Agent(ABC):
         self._returns = None
         self.reset_for_new_episode()
 
-        self._num_actions = len(self.get_actions_list())
+        self._num_actions = len(self._get_actions_list())
 
         self._epsilon = epsilon
 
@@ -50,29 +50,30 @@ class Agent(ABC):
         pass
 
     @abstractmethod
-    def get_state_vector_length(self):
+    def get_state_dimension(self):
         pass
 
-    def get_action(self, q_or_weights):
+    def get_action(self, q_or_weights: np.ndarray):
         random_no = random.random()
 
         pick_greedy_prob = 1 - self._epsilon + self._epsilon / self._num_actions
 
         # Take random action
         if random_no >= pick_greedy_prob:
-            return np.random.choice(self.get_actions_list())
+            return np.random.choice(self._get_actions_list())
 
         # Choose best action from derived policy
+        q_values = None
         if isinstance(self, TabularAgent):
-            return self.get_policy_from_q(q_or_weights)[self._state]
-
+            q_values = q_or_weights[self.get_state_index(self._state)]
         elif isinstance(self, NonTabularAgent):
             q_values = np.dot(q_or_weights, self.get_phi())
-            return self.get_actions_list()[int(np.argmax(q_values))]
+
+        return self._get_actions_list()[int(np.argmax(q_values))]
 
     @staticmethod
     @abstractmethod
-    def get_actions_list() -> list:
+    def _get_actions_list() -> list:
         pass
 
     @abstractmethod
@@ -92,4 +93,4 @@ class Agent(ABC):
         pass
 
     def get_action_index(self, action) -> int:
-        return self.get_actions_list().index(action)
+        return self._get_actions_list().index(action)

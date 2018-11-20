@@ -41,16 +41,20 @@ def sarsa(agent: Agent, alpha: float) -> list:
                     q_or_weights=q if isinstance(agent, TabularAgent) else weights
             )
 
+            action_index = agent.get_action_index(action)
+            action_next_index = agent.get_action_index(action_next)
+
             if isinstance(agent, TabularAgent):
-                q[(state, action)] += alpha * \
-                                      (reward + agent.gamma *
-                                       q[(state_next, action_next)]) - \
-                                      q[(state, action)]
+                state_index = agent.get_state_index(state)
+
+                state_next_index = agent.get_state_index(state_next)
+
+                q[state_index, action_index] += \
+                    alpha * (reward + agent.gamma *
+                             q[state_next_index, action_next_index]) - \
+                    q[state_index, action_index]
             elif isinstance(agent, NonTabularAgent):
                 phi_next = agent.get_phi()
-
-                action_index = agent.get_action_index(action)
-                action_next_index = agent.get_action_index(action_next)
 
                 q_w = np.dot(weights[action_index], phi)
                 q_w_next = np.dot(weights[action_next_index], phi_next)

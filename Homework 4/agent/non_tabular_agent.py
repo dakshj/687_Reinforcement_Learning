@@ -14,7 +14,7 @@ class NonTabularAgent(Agent, ABC):
 
         self.fourier_arr = NonTabularAgent._get_fourier_arr(
                 fourier_basis_order=fourier_basis_order,
-                state_vector_length=self.get_state_vector_length()
+                state_dimension=self.get_state_dimension()
         )
 
         self.num_features_phi = self.fourier_arr.shape[0]
@@ -23,10 +23,10 @@ class NonTabularAgent(Agent, ABC):
         return np.zeros((self._num_actions, self.num_features_phi))
 
     @staticmethod
-    def _get_fourier_arr(fourier_basis_order: int, state_vector_length: int) \
+    def _get_fourier_arr(fourier_basis_order: int, state_dimension: int) \
             -> np.ndarray:
         return np.array(list(itertools.product(range(fourier_basis_order + 1),
-                repeat=state_vector_length)))
+                repeat=state_dimension)))
 
     def get_phi(self) -> np.ndarray:
         return np.cos(math.pi * np.dot(self.fourier_arr, self._state))
