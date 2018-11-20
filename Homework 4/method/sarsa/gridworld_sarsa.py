@@ -1,3 +1,5 @@
+import os
+
 from agent import gridworld
 from agent.gridworld import GridWorld
 from method.sarsa.sarsa import sarsa
@@ -6,21 +8,29 @@ from util.random_hyperparameter_search import random_hyperparameter_search
 
 TRIALS = 100
 
-# ALL   = [0.3, 0.35, 0.4, 0.45, 0.5]
-EPSILON = [0.3, 0.35, 0.4, 0.45, 0.5]
+# ALL   = [0.02, 0.3, 0.35, 0.4, 0.45, 0.5]
+EPSILON = [0.1]
 
-# ALL = [0.1, 0.01, 0.001, 0.0001, 0.00001, 0.000001]
-ALPHA = [0.1, 0.01, 0.001, 0.0001, 0.00001, 0.000001]
+# ALL = [0.1, 0.01, 0.001, 0.0001, 0.00001, 0.000001, 0.3]
+ALPHA = [0.001]
 
-# ALL    = [100, 200]
-EPISODES = [100, 200]
+# ALL    = [100, 200, 500]
+EPISODES = [500]
 
 
 def execute():
     for epsilon, alpha, episodes in \
             random_hyperparameter_search(EPSILON, ALPHA, EPISODES):
+        episodes = int(episodes)
+
         trials_dir = '{}__sarsa__e={}__a={}__ep={}' \
             .format(gridworld.ENV, epsilon, alpha, episodes)
+
+        # Skipping existing dirs helps in parallelization by skipping
+        # those hyperparams that have already been checked
+        skip_existing_path = True
+        if skip_existing_path and os.path.exists(trials_dir):
+            continue
 
         for trial in range(TRIALS):
             agent = GridWorld(epsilon=epsilon)

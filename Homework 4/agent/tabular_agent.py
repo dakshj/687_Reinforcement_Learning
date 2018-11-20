@@ -19,5 +19,6 @@ class TabularAgent(Agent, ABC):
     def _num_states():
         pass
 
+    # Not needed for TabularAgents
     def get_phi(self) -> np.ndarray:
         pass

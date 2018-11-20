@@ -12,19 +12,19 @@ class NonTabularAgent(Agent, ABC):
     def __init__(self, epsilon: float, fourier_basis_order: int):
         super().__init__(epsilon)
 
-        self.fourier_arr = NonTabularAgent._get_fourier_arr(
+        self._fourier_arr = self._get_fourier_arr(
                 fourier_basis_order=fourier_basis_order,
                 state_dimension=self._get_state_dimension()
         )
 
-        self.num_features_phi = self.fourier_arr.shape[0]
+        self._num_features_phi = self._fourier_arr.shape[0]
 
     @staticmethod
     def is_tabular() -> bool:
         return False
 
     def init_weights(self):
-        return np.zeros((self._num_actions, self.num_features_phi))
+        return np.zeros((self._num_actions, self._num_features_phi))
 
     @staticmethod
     def _get_fourier_arr(fourier_basis_order: int, state_dimension: int) \
@@ -33,8 +33,9 @@ class NonTabularAgent(Agent, ABC):
                 repeat=state_dimension)))
 
     def get_phi(self) -> np.ndarray:
-        return np.cos(math.pi * np.dot(self.fourier_arr, self._state))
+        return np.cos(math.pi * np.dot(self._fourier_arr, self._state))
 
+    # Not needed for NonTabularAgents
     @staticmethod
     def get_state_index(state):
         pass

@@ -55,7 +55,7 @@ VEERS = {
 class GridWorld(TabularAgent):
 
     def has_terminated(self) -> bool:
-        return self.state == GOAL
+        return self._state == GOAL
 
     def _update_state_from_action(self, action):
         direction_increment_coordinates = None
@@ -71,7 +71,7 @@ class GridWorld(TabularAgent):
         elif PROB_RIGHT <= rand_actual_no < PROB_STAY:
             direction_increment_coordinates = DIRECTIONS[STAY]
 
-        temp_state = self.state
+        temp_state = self._state
 
         temp_state = tuple(map(operator.add, temp_state,
                 direction_increment_coordinates))
@@ -88,10 +88,10 @@ class GridWorld(TabularAgent):
         return len(self._get_initial_state())
 
     def _get_current_reward(self) -> float:
-        if self.state == WATER:
+        if self._state == WATER:
             return REWARD_WATERS
 
-        elif self.state == GOAL:
+        elif self._state == GOAL:
             return REWARD_GOAL
 
         return 0
