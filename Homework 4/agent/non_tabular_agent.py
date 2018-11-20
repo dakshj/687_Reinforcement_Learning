@@ -4,7 +4,7 @@ from abc import ABC
 
 import numpy as np
 
-from agent.agent import Agent
+from agent.agent_1 import Agent
 
 
 class NonTabularAgent(Agent, ABC):
