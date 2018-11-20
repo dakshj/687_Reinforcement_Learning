@@ -98,6 +98,7 @@ class GridWorld(TabularAgent):
 
         return 0
 
+    @property
     def gamma(self) -> float:
         return GAMMA
 
