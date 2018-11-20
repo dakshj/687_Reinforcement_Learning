@@ -8,17 +8,17 @@ from util.random_hyperparameter_search import random_hyperparameter_search
 
 TRIALS = 100
 
-# OTHERS = [0.1, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6]
+# ALL   = [0.1, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6]
 EPSILON = [0.25, 0.3, 0.35, 0.4, 0.45, 0.5]
 
 # BAD = [0.1]
-# OTHERS = [0.000001, 0.00001, 0.0001, 0.00005, 0.001, 0.0005]
+# ALL = [0.000001, 0.00001, 0.0001, 0.00005, 0.001, 0.0005, 0.1]
 ALPHA = [0.000001, 0.00001, 0.00005, 0.0005]
 
-# OTHERS = [3, 4, 5]
+# ALL               = [3, 4, 5]
 FOURIER_BASIS_ORDER = [3, 4, 5]
 
-# OTHERS = [100, 200]
+# ALL    = [100, 200]
 EPISODES = [200]
 
 
