@@ -80,9 +80,9 @@ def execute(env: str, alpha: float, agent_execute_func, fourier_basis_n: int = N
     return np.average(np.sum(td_errs ** 2, axis=1))
 
 
-def get_nth_order_fourier_basis(policy: np.ndarray, fourier_basis_n: int) -> np.ndarray:
+def get_nth_order_fourier_basis(state: np.ndarray, fourier_basis_n: int) -> np.ndarray:
     return np.array(list(itertools.product(range(fourier_basis_n + 1),
-        repeat=policy.shape[0])))
+            repeat=state.shape[0])))
 
 
 def get_weights_zeros(n: int):
@@ -120,7 +120,7 @@ def execute_all():
             curr_results = []
             for alpha in ALPHA_VALUES:
                 mse = execute(env, math.pow(10, alpha), fourier_basis_n=fourier,
-                    agent_execute_func=get_agent_execute_func(env))
+                        agent_execute_func=get_agent_execute_func(env))
 
                 if mse <= MAX_ACCEPTABLE_MSE:
                     curr_results.append((alpha, mse))
