@@ -4,9 +4,6 @@ from abc import ABC, abstractmethod
 
 import numpy as np
 
-from agent.non_tabular_agent import NonTabularAgent
-from agent.tabular_agent import TabularAgent
-
 
 class Agent(ABC):
 
@@ -37,6 +34,11 @@ class Agent(ABC):
     def has_terminated(self) -> bool:
         pass
 
+    @staticmethod
+    @abstractmethod
+    def is_tabular() -> bool:
+        pass
+
     def _update_returns(self):
         self._returns += math.pow(self.gamma, self._time_step) * \
                          self._get_current_reward()
@@ -63,10 +65,9 @@ class Agent(ABC):
             return np.random.choice(self._get_actions_list())
 
         # Choose best action from derived policy
-        q_values = None
-        if isinstance(self, TabularAgent):
+        if self.is_tabular():
             q_values = q_or_weights[self.get_state_index(self._state)]
-        elif isinstance(self, NonTabularAgent):
+        else:
             q_values = np.dot(q_or_weights, self.get_phi())
 
         return self._get_actions_list()[int(np.argmax(q_values))]
@@ -94,3 +95,12 @@ class Agent(ABC):
 
     def get_action_index(self, action) -> int:
         return self._get_actions_list().index(action)
+
+    @staticmethod
+    @abstractmethod
+    def get_state_index(state):
+        pass
+
+    @abstractmethod
+    def get_phi(self) -> np.ndarray:
+        pass

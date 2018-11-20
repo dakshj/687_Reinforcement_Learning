@@ -7,6 +7,10 @@ from agent.agent import Agent
 
 class TabularAgent(Agent, ABC):
 
+    @staticmethod
+    def is_tabular() -> bool:
+        return True
+
     def init_q(self) -> np.ndarray:
         return np.zeros((self._num_states(), self._num_actions))
 
@@ -15,7 +19,5 @@ class TabularAgent(Agent, ABC):
     def _num_states():
         pass
 
-    @staticmethod
-    @abstractmethod
-    def get_state_index(state):
+    def get_phi(self) -> np.ndarray:
         pass
