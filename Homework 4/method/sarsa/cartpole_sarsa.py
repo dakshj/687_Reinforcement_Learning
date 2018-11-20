@@ -6,9 +6,15 @@ from util.random_hyperparameter_search import random_hyperparameter_search
 
 TRIALS = 100
 
-EPSILON = [0.3, 0.5, 0.6]
-ALPHA = [0.1, 0.0001, 0.001]
-FOURIER_BASIS_ORDER = [3, 5]
+# OTHERS = [0.5, 0.6]
+EPSILON = [0.2, 0.3, 0.4]
+
+# BAD = [0.1]
+# OTHERS = [0.0001, 0.001]
+ALPHA = [0.000001, 0.0005]
+
+# OTHERS = [5]
+FOURIER_BASIS_ORDER = [3]
 
 
 def execute():
