@@ -12,22 +12,32 @@ def save_trial(arr, trials_dir: str):
     np.save('{}/trial_{}'.format(trials_dir, time.time()), arr)
 
 
-def plot_dir(trials_dir):
+def read_stats(trials_dir):
     results = np.array(
             [np.load('{}/{}'.format(trials_dir, trial)) for trial in os.listdir(trials_dir)]
     )
 
-    plt.errorbar(range(1, results.shape[1] + 1),
-            np.mean(results, axis=0), np.std(results, axis=0), ecolor='yellow')
+    mean = np.mean(results, axis=0)
+    std = np.std(results, axis=0)
+    max_mean = np.max(np.mean(results, axis=0))
+    max_value = np.max(results)
+
+    return results, mean, std, max_mean, max_value
+
+
+def plot_dir(trials_dir):
+    results, mean, std, max_mean, max_value = read_stats(trials_dir)
+
+    plt.errorbar(range(1, results.shape[1] + 1), mean, std, ecolor='yellow')
     text = '{}\n' \
            '{}             {}\n' \
            '{}             {}\n' \
            '{}             {}' \
         .format(
             'Trials: {}'.format(results.shape[0]),
-            'Max Mean: {}'.format(np.max(np.mean(results, axis=0))),
+            'Max Mean: {}'.format(max_mean),
             'Min Mean: {}'.format(np.min(np.mean(results, axis=0))),
-            'Max Value: {}'.format(np.max(results)),
+            'Max Value: {}'.format(max_value),
             'Min Value: {}'.format(np.min(results)),
             'Max Std Dev: {}'.format(np.max(np.std(results, axis=0))),
             'Min Std Dev: {}'.format(np.min(np.std(results, axis=0))),
