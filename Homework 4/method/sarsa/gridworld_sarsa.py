@@ -6,8 +6,13 @@ from util.random_hyperparameter_search import random_hyperparameter_search
 
 TRIALS = 100
 
-EPSILON = [0.3]
-ALPHA = [0.1]
+# ALL   = [0.3, 0.35, 0.4, 0.45, 0.5]
+EPSILON = [0.3, 0.35, 0.4, 0.45, 0.5]
+
+# ALL = [0.1, 0.01, 0.001, 0.0001, 0.00001, 0.000001]
+ALPHA = [0.1, 0.01, 0.001, 0.0001, 0.00001, 0.000001]
+
+# ALL    = [100, 200]
 EPISODES = [100, 200]
 
 
