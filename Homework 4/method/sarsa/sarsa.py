@@ -1,41 +1,69 @@
-from agent import Agent
+import numpy as np
+
+from agent.agent import Agent
+from agent.non_tabular_agent import NonTabularAgent
+from agent.tabular_agent import TabularAgent
 
 EPISODES = 100
 
 
-def sarsa(agent: Agent, alpha: float) -> list:
+def sarsa(agent: Agent, alpha: float, fourier_basis_order: int, epsilon: float) -> list:
     # List of rewards across all episodes, for this one trial
     all_returns = []
 
-    # TODO What happens to q when we have a non-tabular policy?
-    # TODO maybe use if-else bby checking for is_tabular to init q and w respectively
-    q = agent.init_q()
-    w = agent.init_w()
+    # Tabular Variables
+    q = None
+
+    # Non-Tabular Variables
+    weights = None
+    phi = None
+    phi_next = None
+
+    if isinstance(agent, TabularAgent):
+        q = agent.init_q()
+    elif isinstance(agent, NonTabularAgent):
+        weights = agent.init_weights()
+        phi = agent.get_phi()
 
     for episode in range(EPISODES):
         agent.reset_for_new_episode()
 
-        s = agent.get_state()
+        state = agent.state
 
-        a = agent.get_action(agent.get_policy_from_q(q))
+        action = agent.get_action(
+                q_or_weights=q if isinstance(agent, TabularAgent) else weights
+        )
 
         while not agent.has_terminated():
-            r, s_next = agent.take_action(a)
+            reward, state_next = agent.take_action(action)
 
-            a_next = agent.get_action(agent.get_policy_from_q(q))
+            action_next = agent.get_action(
+                    q_or_weights=q if isinstance(agent, TabularAgent) else weights
+            )
 
-            if agent.is_tabular():
-                q[(s, a)] += alpha * (r + agent.gamma() * q[(s_next, a_next)]) \
-                             - q[(s, a)]
-            else:
-                # TODO
-                del_part = None
+            if isinstance(agent, TabularAgent):
+                q[(state, action)] += alpha * \
+                                      (reward + agent.gamma *
+                                       q[(state_next, action_next)]) - \
+                                      q[(state, action)]
+            elif isinstance(agent, NonTabularAgent):
+                phi_next = agent.get_phi()
 
-                w += alpha * (r + agent.gamma() * q[s_next, a_next] - q[s, a]) * del_part
+                action_index = agent.get_action_index(action)
+                action_next_index = agent.get_action_index(action_next)
 
-            s = s_next
-            a = a_next
+                q_w = np.dot(weights[action_index], phi)
+                q_w_next = np.dot(weights[action_next_index], phi_next)
+
+                weights[action_index] += \
+                    alpha * (reward + agent.gamma * q_w_next - q_w) * phi
+
+            state = state_next
+            action = action_next
+            phi = phi_next
 
             all_returns.append(agent.returns)
+
+            # Episode end
 
     return all_returns

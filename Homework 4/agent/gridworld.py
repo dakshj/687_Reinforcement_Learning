@@ -1,11 +1,9 @@
-import math
 import operator
 import random
-from collections import defaultdict
 
 import numpy as np
 
-from agent import TabularAgent
+from agent.tabular_agent import TabularAgent
 
 ENV = 'gridworld'
 
@@ -74,54 +72,15 @@ def tabular_softmax_policy(policy_table, state):
     row = policy_table[i]
 
     # Fetch a random direction based on the weighted probabilities of each direction
-    return np.random.choice([UP, DOWN, LEFT, RIGHT], p=row)
+    return np.random.choice(GridWorld.get_actions_list(), p=row)
 
 
 class GridWorld(TabularAgent):
 
-    @staticmethod
-    def env() -> str:
-        return ENV
-
-    @staticmethod
-    def __get_initial_state():
-        return START
-
-    @staticmethod
-    def init_q() -> dict:
-        return defaultdict(float)
-
-    @staticmethod
-    def gamma() -> float:
-        return GAMMA
-
     def has_terminated(self) -> bool:
-        return self.state == GOAL or self.time_step >= MAX_ALLOWABLE_STEPS
+        return self.state == GOAL or self._time_step >= MAX_ALLOWABLE_STEPS
 
-    def get_action(self, policy_table):
-        return tabular_softmax_policy(policy_table, self.state)
-
-    def take_action(self, action):
-        self.__update_state_from_action(action)
-        self.__update_returns()
-        self.time_step += 1
-
-        return self.__get_reward(), self.state
-
-    def __get_reward(self) -> int:
-        if self.state == WATER:
-            return REWARD_WATERS
-
-        elif self.state == GOAL:
-            return REWARD_GOAL
-
-        else:
-            return 0
-
-    def __update_returns(self):
-        self.returns += math.pow(GAMMA, self.time_step) * self.__get_reward()
-
-    def __update_state_from_action(self, action):
+    def _update_state_from_action(self, action):
         direction_increment_coordinates = None
 
         rand_actual_no = random.random()
@@ -138,9 +97,34 @@ class GridWorld(TabularAgent):
         temp_state = self.state
 
         temp_state = tuple(map(operator.add, temp_state,
-            direction_increment_coordinates))
+                direction_increment_coordinates))
 
         if temp_state not in WALLS and \
                 (0 <= temp_state[0] < ROWS) and \
                 (0 <= temp_state[1] < COLS):
             self.state = temp_state
+
+    def get_initial_state(self):
+        return START
+
+    def get_state_vector_length(self) -> int:
+        return len(self.get_initial_state())
+
+    def _get_current_reward(self) -> float:
+        if self.state == WATER:
+            return REWARD_WATERS
+
+        elif self.state == GOAL:
+            return REWARD_GOAL
+
+        return 0
+
+    def gamma(self) -> float:
+        return GAMMA
+
+    @staticmethod
+    def get_actions_list() -> list:
+        return [UP, DOWN, LEFT, RIGHT]
+
+    def _get_action_from_policy(self, policy):
+        return tabular_softmax_policy(policy, self.state)
