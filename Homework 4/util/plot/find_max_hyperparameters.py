@@ -18,9 +18,11 @@ def find_max_mean(method_dir):
         max_means.append(max_mean)
         max_values.append(max_value)
 
-    print('Directory = {}'.format(dirs[int(np.argmax(max_values))]))
-    print('Max Mean = {}'.format(max_means[int(np.argmax(max_values))]))
-    print('Max Value = {}'.format(np.max(max_values)))
+    i = int(np.argmax(max_values))
+
+    print('Directory = {}'.format(dirs[i]))
+    print('Max Mean = {}'.format(max_means[i]))
+    print('Max Value = {}'.format(max_values[i]))
 
 
 if __name__ == '__main__':
@@ -38,3 +40,7 @@ if __name__ == '__main__':
 # Directory = cartpole__sarsa__e=0.25__a=1e-06__f=3
 # Max Mean = 82.8
 # Max Value = 303.0
+
+# Directory = cartpole__sarsa__e=0.4__a=0.0005__f=5
+# Max Mean = 53.07
+# Max Value = 337.0
