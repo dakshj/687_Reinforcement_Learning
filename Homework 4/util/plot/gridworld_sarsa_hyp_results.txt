@@ -1,0 +1,18 @@
+# ALL   = [0.3, 0.35, 0.4, 0.45, 0.5]
+EPSILON = [0.3, 0.35, 0.4, 0.45, 0.5]
+
+# ALL = [0.1, 0.01, 0.001, 0.0001, 0.00001, 0.000001]
+ALPHA = [0.1, 0.01, 0.001, 0.0001, 0.00001, 0.000001]
+
+# ALL    = [100, 200]
+EPISODES = [100, 200]
+
+Picking by Max Mean
+Directory = gridworld__sarsa__e=0.3__a=0.1__ep=200
+Max Mean = 1.1715042313088655
+Max Value = 4.7829690000000005
+
+Picking by Max Value
+Directory = gridworld__sarsa__e=0.35__a=0.01__ep=200
+Max Mean = 0.2821851604963996
+Max Value = 4.7829690000000005
