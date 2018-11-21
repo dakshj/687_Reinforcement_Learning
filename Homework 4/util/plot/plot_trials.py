@@ -52,4 +52,4 @@ def plot_dir(trials_dir):
 
 if __name__ == '__main__':
     plot_dir('../../method/sarsa/'
-             'gridworld__sarsa__e=0.5__d=0.9__a=0.3__ep=300')
+             'cartpole__sarsa__e=0.35__d=0.98__a=0.001__f=5__ep=400')

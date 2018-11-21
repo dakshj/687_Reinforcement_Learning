@@ -24,7 +24,6 @@ def sarsa(agent: Agent, epsilon: float, epsilon_decay: float,
         q = agent.init_q()
     elif isinstance(agent, NonTabularAgent):
         weights = agent.init_weights()
-        phi = agent.get_phi()
 
     exec_time = time.time()
     for episode in range(episodes):
@@ -36,6 +35,7 @@ def sarsa(agent: Agent, epsilon: float, epsilon_decay: float,
         agent.reset_for_new_episode(epsilon=epsilon)
 
         state = agent.state
+        phi = agent.get_phi()
 
         action = agent.get_action(
                 q_or_weights=q if isinstance(agent, TabularAgent) else weights
