@@ -60,6 +60,12 @@ class Agent(ABC):
     def _get_state_dimension(self):
         pass
 
+    def _get_q_values_vector(self, q_or_weights: np.ndarray):
+        if self.is_tabular():
+            return q_or_weights[self.get_state_index(self._state)]
+        else:
+            return np.dot(q_or_weights, self.get_phi())
+
     def get_action(self, q_or_weights: np.ndarray):
         random_no = random.random()
 
@@ -70,12 +76,11 @@ class Agent(ABC):
             return np.random.choice(self._get_actions_list())
 
         # Choose best action from derived policy
-        if self.is_tabular():
-            q_values = q_or_weights[self.get_state_index(self._state)]
-        else:
-            q_values = np.dot(q_or_weights, self.get_phi())
-
+        q_values = self._get_q_values_vector(q_or_weights=q_or_weights)
         return self._get_actions_list()[int(np.argmax(q_values))]
+
+    def get_max_q_value(self, q_or_weights: np.ndarray):
+        return np.max(self._get_q_values_vector(q_or_weights=q_or_weights))
 
     @staticmethod
     @abstractmethod
