@@ -23,7 +23,7 @@ class NonTabularAgent(Agent, ABC):
         return False
 
     def init_weights(self):
-        return np.zeros((self._num_actions, self._num_features_phi))
+        return np.random.random((self._num_actions, self._num_features_phi))
 
     @staticmethod
     def _get_fourier_arr(fourier_basis_order: int, state_dimension: int) \

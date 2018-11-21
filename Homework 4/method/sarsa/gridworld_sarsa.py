@@ -9,17 +9,17 @@ from util.random_hyperparameter_search import random_hyperparameter_search
 TRIALS = 100
 
 # ALL   = [0.02, 0.3, 0.35, 0.4, 0.45, 0.5]
-EPSILON = [0.3]
+EPSILON = [0.3, 0.35, 0.4, 0.45, 0.5]
 
 # `1` means no decay
 # ALL         = [1, 0.98]
-EPSILON_DECAY = [1]
+EPSILON_DECAY = [0.98, 0.95, 0.9]
 
 # ALL = [0.1, 0.01, 0.001, 0.0001, 0.00001, 0.000001, 0.3, 0.75]
-ALPHA = [0.75]
+ALPHA = [0.75, 0.3, 0.1]
 
-# ALL    = [100, 200, 500]
-EPISODES = [500]
+# ALL    = [100, 200, 500, 700, 1000]
+EPISODES = [100, 200, 300, 400, 500, 600, 700]
 
 
 def execute():
@@ -32,7 +32,7 @@ def execute():
 
         # Skipping existing dirs helps in parallelization by skipping
         # those hyperparams that have already been checked
-        skip_existing_path = False
+        skip_existing_path = True
         if skip_existing_path and os.path.exists(trials_dir):
             continue
 

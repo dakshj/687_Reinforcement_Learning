@@ -12,7 +12,7 @@ class TabularAgent(Agent, ABC):
         return True
 
     def init_q(self) -> np.ndarray:
-        return np.zeros((self._num_states(), self._num_actions))
+        return np.random.random((self._num_states(), self._num_actions))
 
     @staticmethod
     @abstractmethod
