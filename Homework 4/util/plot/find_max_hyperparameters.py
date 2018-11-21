@@ -31,4 +31,4 @@ def find_max_mean(method_dir):
 
 
 if __name__ == '__main__':
-    find_max_mean('../../method/sarsa')
+    find_max_mean('../../method/q_learning')
