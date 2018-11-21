@@ -52,4 +52,4 @@ def plot_dir(trials_dir):
 
 if __name__ == '__main__':
     plot_dir('../../method/q_learning/'
-             'gridworld__q_learning__e=0.4__d=0.95__a=0.1__ep=300')
+             'gridworld__q_learning__e=0.35__d=0.5__a=0.1__ep=300')
