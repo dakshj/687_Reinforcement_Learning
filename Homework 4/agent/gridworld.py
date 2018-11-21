@@ -51,7 +51,7 @@ VEERS = {
     },
 }
 
-MAX_TIME_STEPS = 10000
+MAX_TIME_STEPS = 50
 
 
 class GridWorld(TabularAgent):
