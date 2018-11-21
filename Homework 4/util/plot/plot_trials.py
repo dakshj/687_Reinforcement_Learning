@@ -48,3 +48,8 @@ def plot_dir(trials_dir):
     plt.ylabel('Expected Returns', fontsize=16)
 
     plt.show()
+
+
+if __name__ == '__main__':
+    plot_dir('../../method/sarsa/'
+             'gridworld__sarsa__e=0.5__d=0.9__a=0.3__ep=300')

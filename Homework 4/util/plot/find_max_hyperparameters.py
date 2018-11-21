@@ -11,6 +11,10 @@ def find_max_mean(method_dir):
             'e=' in trials_dir and
             len(os.listdir(os.path.join(method_dir, trials_dir))) >= 100]
 
+    if not dirs:
+        print('No directories ready for finding max mean')
+        return
+
     max_means = []
     max_values = []
 
