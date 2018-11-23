@@ -17,8 +17,6 @@ def sarsa(agent: Agent, epsilon: float, epsilon_decay: float,
 
     # Non-Tabular Variables
     weights = None
-    phi = None
-    phi_next = None
 
     if isinstance(agent, TabularAgent):
         q = agent.init_q()
@@ -50,6 +48,8 @@ def sarsa(agent: Agent, epsilon: float, epsilon_decay: float,
 
             action_index = agent.get_action_index(action)
             action_next_index = agent.get_action_index(action_next)
+
+            phi_next = None
 
             if isinstance(agent, TabularAgent):
                 state_index = agent.get_state_index(state)
