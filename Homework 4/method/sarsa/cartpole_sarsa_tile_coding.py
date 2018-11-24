@@ -2,6 +2,7 @@ import os
 
 from agent import cartpole
 from agent.cartpole import CartPole
+from agent.non_tabular_agent import NonTabularAgent
 from method.sarsa.sarsa import sarsa
 from util.plot.plot_trials import save_trial
 from util.random_hyperparameter_search import random_hyperparameter_search
@@ -25,19 +26,27 @@ FOURIER_BASIS_ORDER = [5]
 # ALL    = [100, 200]
 EPISODES = [400]
 
+# ALL   = []
+TILINGS = []
+
+# ALL            = []
+TILES_PER_TILING = []
+
 SKIP_EXISTING_PATH = True
 
 
 def execute():
-    for epsilon, epsilon_decay, alpha, fourier_basis_order, episodes in \
+    for epsilon, epsilon_decay, alpha, \
+        episodes, tilings, tiles_per_tiling in \
             random_hyperparameter_search(EPSILON, EPSILON_DECAY,
-                    ALPHA, FOURIER_BASIS_ORDER, EPISODES):
-        fourier_basis_order = int(fourier_basis_order)
+                    ALPHA, TILINGS, TILES_PER_TILING):
         episodes = int(episodes)
+        tilings = int(tilings)
+        tiles_per_tiling = int(tiles_per_tiling)
 
-        trials_dir = '{}__sarsa__e={}__d={}__a={}__f={}__ep={}' \
+        trials_dir = '{}__sarsa__e={}__d={}__a={}__ep={}__t1={}__t2={}' \
             .format(cartpole.ENV, epsilon, epsilon_decay,
-                alpha, fourier_basis_order, episodes)
+                alpha, episodes, tilings, tiles_per_tiling)
 
         # Skipping existing dirs helps in parallelization by skipping
         # those hyperparams that have already been checked
@@ -45,7 +54,10 @@ def execute():
             continue
 
         for trial in range(TRIALS):
-            agent = CartPole(fourier_basis_order=fourier_basis_order)
+            agent = CartPole(
+                    function_approximation_method=NonTabularAgent.TILE_CODING,
+                    tilings=tilings, tiles_per_tiling=tiles_per_tiling
+            )
             episode_results = sarsa(agent=agent,
                     epsilon=epsilon, epsilon_decay=epsilon_decay,
                     alpha=alpha, trial=trial, trials_total=TRIALS, episodes=episodes)

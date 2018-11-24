@@ -25,6 +25,8 @@ FOURIER_BASIS_ORDER = [3, 5]
 # ALL    = [100, 200]
 EPISODES = [200, 300, 400]
 
+SKIP_EXISTING_PATH = True
+
 
 def execute():
     for epsilon, epsilon_decay, alpha, fourier_basis_order, episodes in \
@@ -39,8 +41,7 @@ def execute():
 
         # Skipping existing dirs helps in parallelization by skipping
         # those hyperparams that have already been checked
-        skip_existing_path = True
-        if skip_existing_path and os.path.exists(trials_dir):
+        if SKIP_EXISTING_PATH and os.path.exists(trials_dir):
             continue
 
         for trial in range(TRIALS):

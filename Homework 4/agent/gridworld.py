@@ -111,7 +111,7 @@ class GridWorld(TabularAgent):
         return TOTAL_STATES
 
     @staticmethod
-    def get_state_index(state):
+    def get_state_index(state) -> int:
         # Convert coordinates to the 1-23 Gridworld range
         index = (state[0] * ROWS) + (state[1] + 1)
 

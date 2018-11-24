@@ -22,11 +22,11 @@ class Agent(ABC):
         return self._state
 
     @property
-    def returns(self):
+    def returns(self) -> float:
         return self._returns
 
     @property
-    def time_step(self):
+    def time_step(self) -> int:
         return self._time_step
 
     def reset_for_new_episode(self, epsilon):
@@ -57,10 +57,10 @@ class Agent(ABC):
         pass
 
     @abstractmethod
-    def _get_state_dimension(self):
+    def _get_state_dimension(self) -> int:
         pass
 
-    def _get_q_values_vector(self, q_or_weights: np.ndarray):
+    def _get_q_values_vector(self, q_or_weights: np.ndarray) -> np.ndarray:
         if self.is_tabular():
             return q_or_weights[self.get_state_index(self._state)]
         else:
@@ -79,7 +79,7 @@ class Agent(ABC):
         q_values = self._get_q_values_vector(q_or_weights=q_or_weights)
         return self._get_actions_list()[int(np.argmax(q_values))]
 
-    def get_max_q_value(self, q_or_weights: np.ndarray):
+    def get_max_q_value(self, q_or_weights: np.ndarray) -> float:
         return np.max(self._get_q_values_vector(q_or_weights=q_or_weights))
 
     @staticmethod
@@ -108,7 +108,7 @@ class Agent(ABC):
 
     @staticmethod
     @abstractmethod
-    def get_state_index(state):
+    def get_state_index(state) -> int:
         pass
 
     @abstractmethod
