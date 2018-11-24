@@ -20,11 +20,13 @@ X_BOUND_LOW, X_BOUND_HIGH = -1.2, 0.5
 
 V_BOUND_LOW, V_BOUND_HIGH = -0.07, 0.07
 
+MAX_TIME_STEPS = 500
+
 
 class MountainCar(NonTabularAgent):
 
     def has_terminated(self) -> bool:
-        return self._state[IDX_X] >= X_BOUND_HIGH
+        return self._state[IDX_X] >= X_BOUND_HIGH or self._time_step >= MAX_TIME_STEPS
 
     def _update_state_from_action(self, action):
         x, v = self._state
