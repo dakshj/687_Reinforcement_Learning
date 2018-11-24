@@ -26,9 +26,6 @@ MAX_TIME_STEPS = 1010
 
 REWARD_POLE_UP = 1
 
-ACTION_LEFT = 'left'
-ACTION_RIGHT = 'right'
-
 X_MAX = 3
 X_MIN = -3
 
@@ -85,7 +82,7 @@ class CartPole(NonTabularAgent):
         self._state[IDX_THETA] += (TIME_STEP_ACTUAL * self._state[IDX_THETA_DOT])
         self._state[IDX_THETA_DOT] += (TIME_STEP_ACTUAL * theta_dot_dot)
 
-    def _get_initial_state(self):
+    def _get_initial_state(self) -> np.ndarray:
         return np.zeros((STATE_DIMENSION,))
 
     def _get_state_dimension(self) -> int:
