@@ -48,7 +48,8 @@ def execute():
             agent = CartPole(fourier_basis_order=fourier_basis_order)
             episode_results = sarsa(agent=agent,
                     epsilon=epsilon, epsilon_decay=epsilon_decay,
-                    alpha=alpha, trial=trial, trials_total=TRIALS, episodes=episodes)
+                    alpha=alpha, trial=trial, trials_total=TRIALS, episodes=episodes,
+                    trials_dir=trials_dir)
 
             save_trial(arr=episode_results, trials_dir=trials_dir)
 

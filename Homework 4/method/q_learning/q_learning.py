@@ -8,7 +8,8 @@ from agent.tabular.tabular_agent import TabularAgent
 
 
 def q_learning(agent: Agent, epsilon: float, epsilon_decay: float,
-               alpha: float, trial: int, trials_total: int, episodes: int) -> list:
+               alpha: float, trial: int, trials_total: int, episodes: int,
+               trials_dir: str) -> list:
     # List of rewards across all episodes, for this one trial
     episode_returns = []
 
@@ -25,9 +26,9 @@ def q_learning(agent: Agent, epsilon: float, epsilon_decay: float,
 
     exec_time = time.time()
     for episode in range(episodes):
-        print('Episode {} / {} in Trial {} / {} (Time = {} s, Time steps = {})'
+        print('Episode {} / {} in Trial {} / {} (Time = {} s, Time steps = {}, {})'
             .format(episode + 1, episodes, trial + 1, trials_total,
-                round(time.time() - exec_time, 2), agent.time_step))
+                round(time.time() - exec_time, 2), agent.time_step, trials_dir))
         exec_time = time.time()
 
         agent.reset_for_new_episode(epsilon=epsilon)

@@ -39,7 +39,8 @@ def execute():
         for trial in range(TRIALS):
             episode_results = sarsa(agent=GridWorld(),
                     epsilon=epsilon, epsilon_decay=epsilon_decay,
-                    alpha=alpha, trial=trial, trials_total=TRIALS, episodes=episodes)
+                    alpha=alpha, trial=trial, trials_total=TRIALS, episodes=episodes,
+                    trials_dir=trials_dir)
 
             save_trial(arr=episode_results, trials_dir=trials_dir)
 
