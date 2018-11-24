@@ -20,7 +20,7 @@ X_BOUND_LOW, X_BOUND_HIGH = -1.2, 0.5
 
 V_BOUND_LOW, V_BOUND_HIGH = -0.07, 0.07
 
-MAX_TIME_STEPS = 500
+MAX_TIME_STEPS = 1000
 
 
 class MountainCar(NonTabularAgent):
