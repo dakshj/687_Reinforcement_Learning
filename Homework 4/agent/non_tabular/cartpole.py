@@ -2,7 +2,7 @@ import math
 
 import numpy as np
 
-from agent.non_tabular_agent import NonTabularAgent
+from agent.non_tabular.non_tabular_agent import NonTabularAgent
 
 ENV = 'cartpole'
 

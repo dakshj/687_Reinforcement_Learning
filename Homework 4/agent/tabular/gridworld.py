@@ -1,7 +1,7 @@
 import operator
 import random
 
-from agent.tabular_agent import TabularAgent
+from agent.tabular.tabular_agent import TabularAgent
 
 ENV = 'gridworld'
 

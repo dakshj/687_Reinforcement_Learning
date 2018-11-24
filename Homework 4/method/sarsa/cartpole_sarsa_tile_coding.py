@@ -1,8 +1,8 @@
 import os
 
-from agent import cartpole
-from agent.cartpole import CartPole
-from agent.non_tabular_agent import NonTabularAgent
+from agent.non_tabular import cartpole
+from agent.non_tabular.cartpole import CartPole
+from agent.non_tabular.non_tabular_agent import NonTabularAgent
 from method.sarsa.sarsa import sarsa
 from util.plot.plot_trials import save_trial
 from util.random_hyperparameter_search import random_hyperparameter_search

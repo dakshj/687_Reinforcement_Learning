@@ -1,7 +1,7 @@
 import os
 
-from agent import gridworld
-from agent.gridworld import GridWorld
+from agent.tabular import gridworld
+from agent.tabular.gridworld import GridWorld
 from method.q_learning.q_learning import q_learning
 from util.plot.plot_trials import save_trial
 from util.random_hyperparameter_search import random_hyperparameter_search

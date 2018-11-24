@@ -3,8 +3,8 @@ import time
 import numpy as np
 
 from agent.agent import Agent
-from agent.non_tabular_agent import NonTabularAgent
-from agent.tabular_agent import TabularAgent
+from agent.non_tabular.non_tabular_agent import NonTabularAgent
+from agent.tabular.tabular_agent import TabularAgent
 
 
 def q_learning(agent: Agent, epsilon: float, epsilon_decay: float,
