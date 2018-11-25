@@ -71,3 +71,11 @@ class MountainCar(NonTabularAgent):
     @staticmethod
     def _get_actions_list() -> list:
         return [FORWARD, NEUTRAL, REVERSE]
+
+    # Needed only if we are going to run tile coding on this agent
+    def _get_min_state_dimension_values(self) -> np.ndarray:
+        pass
+
+    # Needed only if we are going to run tile coding on this agent
+    def _get_max_state_dimension_values(self) -> np.ndarray:
+        pass

@@ -8,8 +8,6 @@ ENV = 'cartpole'
 
 GAMMA = 1.
 
-ANGLE_MAX = math.pi / 2
-ANGLE_MIN = -math.pi / 2
 ANGLE_START = 0
 
 MOTOR_FORCE = 10
@@ -26,8 +24,10 @@ MAX_TIME_STEPS = 1010
 
 REWARD_POLE_UP = 1
 
-X_MAX = 3
-X_MIN = -3
+X_MIN, X_MAX = -3, 3
+V_MIN, V_MAX = -10, 10
+ANGLE_MIN, ANGLE_MAX = -math.pi / 2, math.pi / 2
+THETA_DOT_MIN, THETA_DOT_MAX = -math.pi, math.pi
 
 IDX_X, IDX_V, IDX_THETA, IDX_THETA_DOT = 0, 1, 2, 3
 
@@ -101,3 +101,9 @@ class CartPole(NonTabularAgent):
     @staticmethod
     def _get_actions_list() -> list:
         return [MOTOR_FORCE, -MOTOR_FORCE]
+
+    def _get_min_state_dimension_values(self) -> np.ndarray:
+        return np.array([X_MIN, V_MIN, ANGLE_MIN, THETA_DOT_MIN])
+
+    def _get_max_state_dimension_values(self) -> np.ndarray:
+        return np.array([X_MAX, V_MAX, ANGLE_MAX, THETA_DOT_MAX])

@@ -1,6 +1,6 @@
 import itertools
 import math
-from abc import ABC
+from abc import ABC, abstractmethod
 
 import numpy as np
 
@@ -59,3 +59,11 @@ class NonTabularAgent(Agent, ABC):
 
     def _is_tile_coding(self) -> bool:
         return self._func_approx_method is NonTabularAgent.TILE_CODING
+
+    @abstractmethod
+    def _get_min_state_dimension_values(self) -> np.ndarray:
+        pass
+
+    @abstractmethod
+    def _get_max_state_dimension_values(self) -> np.ndarray:
+        pass
