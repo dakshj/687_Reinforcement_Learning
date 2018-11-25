@@ -34,12 +34,14 @@ def q_learning(agent: Agent, epsilon: float, epsilon_decay: float,
         agent.reset_for_new_episode(epsilon=epsilon)
 
         state = agent.state
-        phi = agent.get_phi()
 
         while not agent.has_terminated():
             action = agent.get_action(
                     q_or_weights=q if isinstance(agent, TabularAgent) else weights
             )
+
+            # Save phi for current state (before taking action)
+            phi = agent.get_phi()
 
             reward, state_next = agent.take_action(action)
 
@@ -59,8 +61,6 @@ def q_learning(agent: Agent, epsilon: float, epsilon_decay: float,
 
                 weights[action_index] += \
                     alpha * (reward + agent.gamma * max_q_value - q_w) * phi
-
-                phi = agent.get_phi()
 
                 # If-Else end
 
