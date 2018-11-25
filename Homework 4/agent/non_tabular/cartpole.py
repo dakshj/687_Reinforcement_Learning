@@ -68,14 +68,14 @@ def calculate_accelerations(state: np.ndarray, action: int) -> (float, float):
 class CartPole(NonTabularAgent):
 
     def has_terminated(self) -> bool:
-        pole_down = not (ANGLE_MIN <= self._state[IDX_THETA] <= ANGLE_MAX)
-        cart_outside = not (X_MIN < self._state[IDX_X] < X_MAX)
+        pole_down = not (ANGLE_MIN <= self.state[IDX_THETA] <= ANGLE_MAX)
+        cart_outside = not (X_MIN < self.state[IDX_X] < X_MAX)
         reached_max_time = self._time_step >= MAX_TIME_STEPS
 
         return pole_down or cart_outside or reached_max_time
 
     def _update_state_from_action(self, action):
-        theta_dot_dot, x_dot_dot = calculate_accelerations(self._state, action)
+        theta_dot_dot, x_dot_dot = calculate_accelerations(self.state, action)
 
         self._state[IDX_X] += (TIME_STEP_ACTUAL * self._state[IDX_V])
         self._state[IDX_V] += (TIME_STEP_ACTUAL * x_dot_dot)

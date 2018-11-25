@@ -26,10 +26,10 @@ MAX_TIME_STEPS = 1000
 class MountainCar(NonTabularAgent):
 
     def has_terminated(self) -> bool:
-        return self._state[IDX_X] >= X_BOUND_HIGH or self._time_step >= MAX_TIME_STEPS
+        return self.state[IDX_X] >= X_BOUND_HIGH or self._time_step >= MAX_TIME_STEPS
 
     def _update_state_from_action(self, action):
-        x, v = self._state
+        x, v = self.state
 
         v += 0.001 * action - 0.0025 * math.cos(3 * x)
 

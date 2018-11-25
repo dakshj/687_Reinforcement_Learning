@@ -47,7 +47,7 @@ class NonTabularAgent(Agent, ABC):
                 repeat=state_dimension)))
 
     def get_phi(self) -> np.ndarray:
-        return np.cos(math.pi * np.dot(self._fourier_arr, self._state))
+        return np.cos(math.pi * np.dot(self._fourier_arr, self.state))
 
     # Not needed for NonTabularAgents
     @staticmethod

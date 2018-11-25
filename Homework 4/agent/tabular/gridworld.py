@@ -57,7 +57,7 @@ MAX_TIME_STEPS = 50
 class GridWorld(TabularAgent):
 
     def has_terminated(self) -> bool:
-        return self._state == GOAL or self._time_step >= MAX_TIME_STEPS
+        return self.state == GOAL or self._time_step >= MAX_TIME_STEPS
 
     def _update_state_from_action(self, action):
         direction_increment_coordinates = None
@@ -73,7 +73,7 @@ class GridWorld(TabularAgent):
         elif PROB_RIGHT <= rand_actual_no < PROB_STAY:
             direction_increment_coordinates = DIRECTIONS[STAY]
 
-        temp_state = self._state
+        temp_state = self.state
 
         temp_state = tuple(map(operator.add, temp_state,
                 direction_increment_coordinates))
@@ -90,10 +90,10 @@ class GridWorld(TabularAgent):
         return len(self._get_initial_state())
 
     def _get_current_reward(self) -> float:
-        if self._state == WATER:
+        if self.state == WATER:
             return REWARD_WATERS
 
-        elif self._state == GOAL:
+        elif self.state == GOAL:
             return REWARD_GOAL
 
         return 0

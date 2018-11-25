@@ -19,7 +19,10 @@ class Agent(ABC):
 
     @property
     def state(self):
-        return self._state
+        if self.is_tabular():
+            return self._state
+
+        return np.copy(self._state)
 
     @property
     def returns(self) -> float:
@@ -62,7 +65,7 @@ class Agent(ABC):
 
     def _get_q_values_vector(self, q_or_weights: np.ndarray) -> np.ndarray:
         if self.is_tabular():
-            return q_or_weights[self.get_state_index(self._state)]
+            return q_or_weights[self.get_state_index(self.state)]
         else:
             return np.dot(q_or_weights, self.get_phi())
 
@@ -96,7 +99,7 @@ class Agent(ABC):
         self._update_returns()
         self._time_step += 1
 
-        return self._get_current_reward(), self._state
+        return self._get_current_reward(), self.state
 
     @property
     @abstractmethod
