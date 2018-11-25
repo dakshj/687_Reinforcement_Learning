@@ -18,6 +18,7 @@ EPSILON_DECAY = [0.98]
 
 # BAD = [0.1]
 # ALL = [0.000001, 0.00001, 0.0001, 0.00005, 0.001, 0.0005, 0.1]
+# TODO Alpha needs to be 1/num tilings
 ALPHA = [0.001]
 
 # ALL               = [3, 4, 5]

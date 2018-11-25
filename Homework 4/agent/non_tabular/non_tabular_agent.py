@@ -27,6 +27,8 @@ class NonTabularAgent(Agent, ABC):
         elif self._is_tile_coding():
             self._tilings = tilings
             self._tiles_per_tiling = tiles_per_tiling
+            self._num_features_tile_coding = \
+                self._tilings * (self._tiles_per_tiling ** self._get_state_dimension())
 
     @staticmethod
     def is_tabular() -> bool:
@@ -37,8 +39,22 @@ class NonTabularAgent(Agent, ABC):
             return np.random.random((self._num_actions, self._num_features_phi))
 
         elif self._is_tile_coding():
-            # TODO Return weights with dimensions that are correct for tile coding
-            return None
+            return np.random.random((self._num_actions, self._num_features_tile_coding))
+
+    def get_tile_coding_features(self, state):
+        state -= self._get_min_state_dimension_values()
+        tileIndices = np.zeros(self._tilings)
+        matrix = np.zeros([self._tilings, self._get_state_dimension()])
+        for i in range(self._tilings):
+            for j in range(self._get_state_dimension()):
+                matrix[i, j] = int(state[j] / self.tileSize[j] \
+                                    + i / self.numTilings)
+        for i in range(1, self.dim):
+            matrix[:, i] *= self.tilesPerTiling ** i
+        for i in range(self.numTilings):
+            tileIndices[i] = (i * (self.tilesPerTiling ** self.dim) \
+                              + sum(matrix[i, :]))
+        return tileIndices
 
     @staticmethod
     def _get_fourier_arr(fourier_basis_order: int, state_dimension: int) \

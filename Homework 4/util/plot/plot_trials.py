@@ -51,5 +51,5 @@ def plot_dir(trials_dir):
 
 
 if __name__ == '__main__':
-    plot_dir('../../method/q_learning/'
-             'gridworld__q_learning__e=0.35__d=0.5__a=0.1__ep=300')
+    plot_dir('../../method/sarsa/'
+             'cartpole__sarsa__e=0.9__d=0.99__a=0.001__f=5__ep=200')

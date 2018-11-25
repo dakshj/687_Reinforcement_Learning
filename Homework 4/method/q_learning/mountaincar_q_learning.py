@@ -1,31 +1,30 @@
 import os
 
-from agent.non_tabular import cartpole
-from agent.non_tabular.cartpole import CartPole
+from agent.non_tabular import mountaincar
+from agent.non_tabular.mountaincar import MountainCar
 from method.q_learning.q_learning import q_learning
 from util.plot.plot_trials import save_trial
 from util.random_hyperparameter_search import random_hyperparameter_search
 
 TRIALS = 20
 
-# ALL   = [0.1, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6]
-EPSILON = [0.6, 0.7, 0.9]
+# ALL   = [0.1, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6, 0.85, 0.95]
+EPSILON = [0.95]
 
 # `1` means no decay
-# ALL         = [1, 0.98]
-EPSILON_DECAY = [0.99, 0.95, 0.9]
+# ALL         = [1, 0.98, 0.9, 0.85, 0.9, 0.99, 0.95]
+EPSILON_DECAY = [0.95]
 
-# BAD = [0.1]
-# ALL = [0.000001, 0.00001, 0.0001, 0.00005, 0.001, 0.0005, 0.1]
-ALPHA = [0.5, 0.1, 0.01, 0.001]
+# ALL = [0.001, 0.0005, 0.005, 0.1, 0.000001, 0.0001, 0.05, 0.02]
+ALPHA = [0.01]
 
-# ALL               = [3, 4, 5]
-FOURIER_BASIS_ORDER = [3, 5]
+# ALL               = [1, 2, 3, 4, 5, 8]
+FOURIER_BASIS_ORDER = [3]
 
-# ALL    = [100, 200]
-EPISODES = [500]
+# ALL    = [200, 300]
+EPISODES = [600]
 
-SKIP_EXISTING_PATH = True
+SKIP_EXISTING_PATH = False
 
 
 def execute():
@@ -36,7 +35,7 @@ def execute():
         episodes = int(episodes)
 
         trials_dir = '{}__q_learning__e={}__d={}__a={}__f={}__ep={}' \
-            .format(cartpole.ENV, epsilon, epsilon_decay,
+            .format(mountaincar.ENV, epsilon, epsilon_decay,
                 alpha, fourier_basis_order, episodes)
 
         # Skipping existing dirs helps in parallelization by skipping
@@ -45,7 +44,7 @@ def execute():
             continue
 
         for trial in range(TRIALS):
-            agent = CartPole(fourier_basis_order=fourier_basis_order)
+            agent = MountainCar(fourier_basis_order=fourier_basis_order)
             episode_results = q_learning(agent=agent,
                     epsilon=epsilon, epsilon_decay=epsilon_decay,
                     alpha=alpha, trial=trial, trials_total=TRIALS, episodes=episodes,

@@ -9,11 +9,11 @@ from util.random_hyperparameter_search import random_hyperparameter_search
 TRIALS = 100
 
 # ALL   = [0.1, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6]
-EPSILON = [0.35]
+EPSILON = [0.9]
 
 # `1` means no decay
 # ALL         = [1, 0.98]
-EPSILON_DECAY = [0.98]
+EPSILON_DECAY = [0.99]
 
 # BAD = [0.1]
 # ALL = [0.000001, 0.00001, 0.0001, 0.00005, 0.001, 0.0005, 0.1]
@@ -23,9 +23,9 @@ ALPHA = [0.001]
 FOURIER_BASIS_ORDER = [5]
 
 # ALL    = [100, 200]
-EPISODES = [400]
+EPISODES = [200]
 
-SKIP_EXISTING_PATH = True
+SKIP_EXISTING_PATH = False
 
 
 def execute():

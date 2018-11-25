@@ -6,26 +6,25 @@ from method.sarsa.sarsa import sarsa
 from util.plot.plot_trials import save_trial
 from util.random_hyperparameter_search import random_hyperparameter_search
 
-TRIALS = 100
+TRIALS = 20
 
-# ALL   = [0.1, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6]
-EPSILON = [0.1, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6]
+# ALL   = [0.1, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6, 0.85, 0.95]
+EPSILON = [0.95]
 
 # `1` means no decay
-# ALL         = [1, 0.98, 0.9, 0.85]
-EPSILON_DECAY = [1, 0.98, 0.9, 0.85]
+# ALL         = [1, 0.98, 0.9, 0.85, 0.9, 0.99, 0.95]
+EPSILON_DECAY = [0.99]
 
-# BAD = [0.1]
-# ALL = [0.000001, 0.00001, 0.0001, 0.00005, 0.001, 0.0005, 0.1]
-ALPHA = [0.001, 0.0005, 0.1, 0.000001, 0.0001]
+# ALL = [0.001, 0.0005, 0.005, 0.1, 0.000001, 0.0001, 0.05, 0.02]
+ALPHA = [0.01]
 
-# ALL               = [3, 4, 5]
-FOURIER_BASIS_ORDER = [3, 4, 5]
+# ALL               = [1, 2, 3, 4, 5, 8]
+FOURIER_BASIS_ORDER = [3]
 
-# ALL    = [100, 200]
-EPISODES = [300]
+# ALL    = [200, 300]
+EPISODES = [200]
 
-SKIP_EXISTING_PATH = True
+SKIP_EXISTING_PATH = False
 
 
 def execute():
