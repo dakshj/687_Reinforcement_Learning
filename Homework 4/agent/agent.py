@@ -1,5 +1,4 @@
 import math
-import random
 from abc import ABC, abstractmethod
 
 import numpy as np
@@ -70,17 +69,12 @@ class Agent(ABC):
             return np.dot(q_or_weights, self.get_phi())
 
     def get_action(self, q_or_weights: np.ndarray):
-        random_no = random.random()
+        pi = np.ones(self._num_actions) * self._epsilon / self._num_actions
 
-        pick_greedy_prob = 1 - self._epsilon + self._epsilon / self._num_actions
-
-        # Take random action
-        if random_no >= pick_greedy_prob:
-            return np.random.choice(self._get_actions_list())
-
-        # Choose best action from derived policy
         q_values = self._get_q_values_vector(q_or_weights=q_or_weights)
-        return self._get_actions_list()[int(np.argmax(q_values))]
+        pi[int(np.argmax(q_values))] += 1 - self._epsilon
+
+        return np.random.choice(self._get_actions_list(), p=pi)
 
     def get_max_q_value(self, q_or_weights: np.ndarray) -> float:
         return np.max(self._get_q_values_vector(q_or_weights=q_or_weights))
