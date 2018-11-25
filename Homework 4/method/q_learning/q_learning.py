@@ -2,14 +2,15 @@ import time
 
 import numpy as np
 
-from agent.agent import Agent
+from agent.agent import Agent, EPSILON_GREEDY
 from agent.non_tabular.non_tabular_agent import NonTabularAgent
 from agent.tabular.tabular_agent import TabularAgent
 
 
 def q_learning(agent: Agent, epsilon: float, epsilon_decay: float,
                alpha: float, trial: int, trials_total: int, episodes: int,
-               trials_dir: str) -> list:
+               trials_dir: str, action_selection_method: str = EPSILON_GREEDY,
+               sigma: float = None) -> list:
     # List of rewards across all episodes, for this one trial
     episode_returns = []
 
@@ -31,13 +32,14 @@ def q_learning(agent: Agent, epsilon: float, epsilon_decay: float,
                 round(time.time() - exec_time, 2), agent.time_step, trials_dir))
         exec_time = time.time()
 
-        agent.reset_for_new_episode(epsilon=epsilon)
+        agent.reset_for_new_episode(epsilon=epsilon, sigma=sigma)
 
         state = agent.state
 
         while not agent.has_terminated():
             action = agent.get_action(
-                    q_or_weights=q if isinstance(agent, TabularAgent) else weights
+                    q_or_weights=q if isinstance(agent, TabularAgent) else weights,
+                    action_selection_method=action_selection_method
             )
 
             # Save phi for current state (before taking action)
