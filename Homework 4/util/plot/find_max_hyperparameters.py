@@ -5,7 +5,7 @@ import numpy as np
 from util.plot.plot_trials import read_stats
 
 
-def find_max_mean(method_dir, min_trials_per_directory=10):
+def find_max_mean(method_dir, min_trials_per_directory=10, print_top_n=3):
     dirs = [trials_dir for trials_dir in os.listdir(method_dir)
             if os.path.isdir(os.path.join(method_dir, trials_dir)) and
             'e=' in trials_dir and
@@ -25,10 +25,10 @@ def find_max_mean(method_dir, min_trials_per_directory=10):
         max_means.append(max_mean)
         max_values.append(max_value)
 
-    i = int(np.argmax(max_means))
-    print('\nDirectory = {}'.format(dirs[i]))
-    print('Max Mean = {}'.format(max_means[i]))
-    print('Max Value = {}'.format(max_values[i]))
+    for i in np.argsort(max_means)[::-1][:print_top_n]:
+        print('\nDirectory = {}'.format(dirs[i]))
+        print('Max Mean = {}'.format(max_means[i]))
+        print('Max Value = {}'.format(max_values[i]))
 
 
 if __name__ == '__main__':
