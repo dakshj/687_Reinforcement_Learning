@@ -1,7 +1,5 @@
 import time
 
-import numpy as np
-
 from agent.agent import Agent, EPSILON_GREEDY
 from agent.non_tabular.non_tabular_agent import NonTabularAgent
 from agent.tabular.tabular_agent import TabularAgent
@@ -42,9 +40,6 @@ def q_learning(agent: Agent, epsilon: float, epsilon_decay: float,
                     action_selection_method=action_selection_method
             )
 
-            # Save phi for current state (before taking action)
-            phi = agent.get_phi()
-
             reward, state_next = agent.take_action(action)
 
             action_index = agent.get_action_index(action)
@@ -59,10 +54,12 @@ def q_learning(agent: Agent, epsilon: float, epsilon_decay: float,
                     alpha * (reward + agent.gamma * max_q_value) - \
                     q[state_index, action_index]
             elif isinstance(agent, NonTabularAgent):
-                q_w = np.dot(weights[action_index], phi)
+                q_w = agent.get_q_values_vector(
+                        state=state, q_or_weights=weights)[action_index]
 
                 weights[action_index] += \
-                    alpha * (reward + agent.gamma * max_q_value - q_w) * phi
+                    alpha * (reward + agent.gamma * max_q_value - q_w) * \
+                    agent.get_features_for_weight_update(features=agent.get_phi(state))
 
                 # If-Else end
 

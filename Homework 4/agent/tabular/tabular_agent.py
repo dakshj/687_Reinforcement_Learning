@@ -7,10 +7,6 @@ from agent.agent import Agent
 
 class TabularAgent(Agent, ABC):
 
-    @staticmethod
-    def is_tabular() -> bool:
-        return True
-
     def init_q(self) -> np.ndarray:
         return np.random.random((self._num_states(), self._num_actions))
 
@@ -19,6 +15,14 @@ class TabularAgent(Agent, ABC):
     def _num_states():
         pass
 
-    # Not needed for TabularAgents
-    def get_phi(self) -> np.ndarray:
+    @property
+    def state(self):
+        return self._state
+
+    def get_q_values_vector(self, state, q_or_weights: np.ndarray) -> np.ndarray:
+        return q_or_weights[self.get_state_index(state)]
+
+    @staticmethod
+    @abstractmethod
+    def get_state_index(state) -> int:
         pass

@@ -8,8 +8,6 @@ ENV = 'cartpole'
 
 GAMMA = 1.
 
-ANGLE_START = 0
-
 MOTOR_FORCE = 10
 
 G = 9.8
@@ -83,7 +81,7 @@ class CartPole(NonTabularAgent):
         self._state[IDX_THETA_DOT] += (TIME_STEP_ACTUAL * theta_dot_dot)
 
     def _get_initial_state(self) -> np.ndarray:
-        return np.zeros((STATE_DIMENSION,))
+        return np.zeros(STATE_DIMENSION)
 
     def _get_state_dimension(self) -> int:
         return STATE_DIMENSION

@@ -1,7 +1,5 @@
 import time
 
-import numpy as np
-
 from agent.agent import Agent, EPSILON_GREEDY
 from agent.non_tabular.non_tabular_agent import NonTabularAgent
 from agent.tabular.tabular_agent import TabularAgent
@@ -36,7 +34,6 @@ def sarsa(agent: Agent, epsilon: float, epsilon_decay: float,
         agent.reset_for_new_episode(epsilon=epsilon, sigma=sigma)
 
         state = agent.state
-        phi = agent.get_phi()
 
         action = agent.get_action(
                 q_or_weights=q if isinstance(agent, TabularAgent) else weights,
@@ -54,8 +51,6 @@ def sarsa(agent: Agent, epsilon: float, epsilon_decay: float,
             action_index = agent.get_action_index(action)
             action_next_index = agent.get_action_index(action_next)
 
-            phi_next = None
-
             if isinstance(agent, TabularAgent):
                 state_index = agent.get_state_index(state)
 
@@ -66,19 +61,20 @@ def sarsa(agent: Agent, epsilon: float, epsilon_decay: float,
                              q[state_next_index, action_next_index]) - \
                     q[state_index, action_index]
             elif isinstance(agent, NonTabularAgent):
-                phi_next = agent.get_phi()
-
-                q_w = np.dot(weights[action_index], phi)
-                q_w_next = np.dot(weights[action_next_index], phi_next)
+                q_w = agent.get_q_values_vector(
+                        state=state, q_or_weights=weights)[action_index]
+                q_w_next = agent.get_q_values_vector(
+                        state=state, q_or_weights=weights)[action_next_index]
 
                 weights[action_index] += \
-                    alpha * (reward + agent.gamma * q_w_next - q_w) * phi
+                    alpha * (
+                            reward + (agent.gamma * q_w_next) - q_w) * \
+                    agent.get_features_for_weight_update(features=agent.get_phi(state))
 
                 # If-Else end
 
             state = state_next
             action = action_next
-            phi = phi_next
 
             # Time step end
 

@@ -8,7 +8,7 @@ from util.random_hyperparameter_search import random_hyperparameter_search
 
 TRIALS = 100
 
-# ALL   = [0.1, 0.2, 0.35, 0.4, 0.5, 0.6, 0.7 0.8]
+# ALL   = [0.1, 0.2, 0.35, 0.4, 0.5, 0.6, 0.7, 0.8]
 EPSILON = [0.8]
 
 # `1` means no decay
