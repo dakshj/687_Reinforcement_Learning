@@ -7,8 +7,9 @@ from agent.tabular.tabular_agent import TabularAgent
 
 def sarsa_lambda(agent: Agent, epsilon: float, epsilon_decay: float,
                  alpha: float, trial: int, trials_total: int, episodes: int,
-                 trials_dir: str,
-                 action_selection_method: str = EPSILON_GREEDY, sigma: float = None) -> list:
+                 trials_dir: str, lambda_: float,
+                 action_selection_method: str = EPSILON_GREEDY,
+                 sigma: float = None) -> list:
     # List of rewards across all episodes, for this one trial
     episode_returns = []
 
@@ -40,6 +41,8 @@ def sarsa_lambda(agent: Agent, epsilon: float, epsilon_decay: float,
                 action_selection_method=action_selection_method
         )
 
+        e_trace = agent.init_e_trace()
+
         while not agent.has_terminated():
             reward, state_next = agent.take_action(action)
 
@@ -51,25 +54,37 @@ def sarsa_lambda(agent: Agent, epsilon: float, epsilon_decay: float,
             action_index = agent.get_action_index(action)
             action_next_index = agent.get_action_index(action_next)
 
+            del_by_del_part_of_e_trace = None
+            if isinstance(agent, TabularAgent):
+                del_by_del_part_of_e_trace = 1
+            elif isinstance(agent, NonTabularAgent):
+                del_by_del_part_of_e_trace = agent.get_features_for_weight_update(
+                        features=agent.get_phi(state)
+                )
+            e_trace[action_index] = \
+                agent.gamma * lambda_ * e_trace[action_index] \
+                + del_by_del_part_of_e_trace
+
             if isinstance(agent, TabularAgent):
                 state_index = agent.get_state_index(state)
 
                 state_next_index = agent.get_state_index(state_next)
 
-                q[state_index, action_index] += \
-                    alpha * (reward + agent.gamma *
-                             q[state_next_index, action_next_index]) - \
-                    q[state_index, action_index]
+                delta = reward + \
+                        agent.gamma * q[state_next_index, action_next_index] \
+                        - q[state_index, action_index]
+
+                q[state_index, action_index] += alpha * delta * \
+                                                e_trace[state_index, action_index]
             elif isinstance(agent, NonTabularAgent):
                 q_w = agent.get_q_values_vector(
                         state=state, q_or_weights=weights)[action_index]
                 q_w_next = agent.get_q_values_vector(
                         state=state, q_or_weights=weights)[action_next_index]
 
-                weights[action_index] += \
-                    alpha * (
-                            reward + (agent.gamma * q_w_next) - q_w) * \
-                    agent.get_features_for_weight_update(features=agent.get_phi(state))
+                delta = reward + agent.gamma * q_w_next - q_w
+
+                weights[action_index] += alpha * delta * e_trace[action_index]
 
                 # If-Else end
 

@@ -125,3 +125,6 @@ class NonTabularAgent(Agent, ABC):
         return (state - self._get_min_state_dimension_values()) / \
                (self._get_max_state_dimension_values() -
                 self._get_min_state_dimension_values())
+
+    def init_e_trace(self) -> np.ndarray:
+        return np.zeros_like(self.init_weights())

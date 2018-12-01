@@ -24,19 +24,22 @@ FOURIER_BASIS_ORDER = [5]
 # ALL    = [200, 300]
 EPISODES = [100]
 
+# ALL  = [0, 0.2, 0.3, 0.5, 0.7, 0.9, 1.0]
+LAMBDA = [0, 0.2, 0.3, 0.5, 0.7, 0.9, 1.0]
+
 SKIP_EXISTING_PATH = False
 
 
 def execute():
-    for epsilon, epsilon_decay, alpha, fourier_basis_order, episodes in \
+    for epsilon, epsilon_decay, alpha, fourier_basis_order, episodes, lambda_ in \
             random_hyperparameter_search(EPSILON, EPSILON_DECAY,
-                    ALPHA, FOURIER_BASIS_ORDER, EPISODES):
+                    ALPHA, FOURIER_BASIS_ORDER, EPISODES, LAMBDA):
         fourier_basis_order = int(fourier_basis_order)
         episodes = int(episodes)
 
-        trials_dir = '{}__sarsa__e={}__d={}__a={}__f={}__ep={}' \
+        trials_dir = '{}__sarsa_lambda__e={}__d={}__a={}__f={}__ep={}__l={}' \
             .format(mountaincar.ENV, epsilon, epsilon_decay,
-                alpha, fourier_basis_order, episodes)
+                alpha, fourier_basis_order, episodes, lambda_)
 
         # Skipping existing dirs helps in parallelization by skipping
         # those hyperparams that have already been checked
@@ -48,7 +51,7 @@ def execute():
             episode_results = sarsa_lambda(agent=agent,
                     epsilon=epsilon, epsilon_decay=epsilon_decay,
                     alpha=alpha, trial=trial, trials_total=TRIALS, episodes=episodes,
-                    trials_dir=trials_dir)
+                    trials_dir=trials_dir, lambda_=lambda_)
 
             save_trial(arr=episode_results, trials_dir=trials_dir)
 
