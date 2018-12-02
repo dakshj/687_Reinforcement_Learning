@@ -12,7 +12,7 @@ STATE_DIMENSION = 2
 
 REWARD_NOT_REACHED_GOAL = -1
 
-REVERSE, NEUTRAL, FORWARD = 0, 1, 2
+REVERSE, NEUTRAL, FORWARD = -1, 0, 1
 
 IDX_X, IDX_V = 0, 1
 
@@ -20,7 +20,7 @@ X_BOUND_LOW, X_BOUND_HIGH = -1.2, 0.5
 
 V_BOUND_LOW, V_BOUND_HIGH = -0.07, 0.07
 
-MAX_TIME_STEPS = 1000
+MAX_TIME_STEPS = 3000
 
 
 class MountainCar(NonTabularAgent):
@@ -72,10 +72,8 @@ class MountainCar(NonTabularAgent):
     def _get_actions_list() -> list:
         return [FORWARD, NEUTRAL, REVERSE]
 
-    # Needed only if we are going to run tile coding on this agent
     def _get_min_state_dimension_values(self) -> np.ndarray:
-        pass
+        return np.array([X_BOUND_LOW, V_BOUND_LOW])
 
-    # Needed only if we are going to run tile coding on this agent
     def _get_max_state_dimension_values(self) -> np.ndarray:
-        pass
+        return np.array([X_BOUND_HIGH, V_BOUND_HIGH])
