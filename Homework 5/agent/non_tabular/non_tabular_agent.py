@@ -51,12 +51,12 @@ class NonTabularAgent(Agent, ABC):
     def get_phi(self, state) -> np.ndarray:
         if self._is_fourier_basis():
             return np.cos(math.pi * np.dot(self._fourier_arr,
-                    self.get_normalized_state(state)))
+                    self._get_normalized_state(state)))
         elif self._is_tile_coding():
             return self._get_tile_coding_features(state)
 
     def _get_tile_coding_features(self, state):
-        state_norm = self.get_normalized_state(state)
+        state_norm = self._get_normalized_state(state)
         feature_index_values = np.zeros(self._tilings)
         temp_array = np.zeros([self._tilings, self._get_state_dimension()])
         for i in range(self._tilings):
@@ -121,7 +121,7 @@ class NonTabularAgent(Agent, ABC):
         elif self._is_tile_coding():
             return self._get_hot_vector_tile_coding(features=features)
 
-    def get_normalized_state(self, state):
+    def _get_normalized_state(self, state):
         return (state - self._get_min_state_dimension_values()) / \
                (self._get_max_state_dimension_values() -
                 self._get_min_state_dimension_values())
