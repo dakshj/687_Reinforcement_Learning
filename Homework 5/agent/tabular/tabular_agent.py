@@ -29,6 +29,3 @@ class TabularAgent(Agent, ABC):
 
     def init_e_trace(self) -> np.ndarray:
         return np.zeros_like(self.init_q())
-
-    def get_features_for_weight_update(self, features: np.ndarray):
-        return 1

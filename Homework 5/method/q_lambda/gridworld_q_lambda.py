@@ -21,26 +21,31 @@ ALPHA = [0.1]
 # ALL    = [100, 200, 300, 400]
 EPISODES = [200]
 
+# ALL  = []
+LAMBDA = []
+
+SKIP_EXISTING_PATH = True
+
 
 def execute():
-    for epsilon, epsilon_decay, alpha, episodes in \
-            random_hyperparameter_search(EPSILON, EPSILON_DECAY, ALPHA, EPISODES):
+    for epsilon, epsilon_decay, alpha, episodes, lambda_ in \
+            random_hyperparameter_search(EPSILON, EPSILON_DECAY,
+                    ALPHA, EPISODES, LAMBDA):
         episodes = int(episodes)
 
-        trials_dir = '{}__q_learning__e={}__d={}__a={}__ep={}' \
-            .format(gridworld.ENV, epsilon, epsilon_decay, alpha, episodes)
+        trials_dir = '{}__q_learning__e={}__d={}__a={}__ep={}__l={}' \
+            .format(gridworld.ENV, epsilon, epsilon_decay, alpha, episodes, lambda_)
 
         # Skipping existing dirs helps in parallelization by skipping
         # those hyperparams that have already been checked
-        skip_existing_path = True
-        if skip_existing_path and os.path.exists(trials_dir):
+        if SKIP_EXISTING_PATH and os.path.exists(trials_dir):
             continue
 
         for trial in range(TRIALS):
             episode_results = q_lambda(agent=GridWorld(),
                     epsilon=epsilon, epsilon_decay=epsilon_decay,
                     alpha=alpha, trial=trial, trials_total=TRIALS, episodes=episodes,
-                    trials_dir=trials_dir)
+                    trials_dir=trials_dir, lambda_=lambda_)
 
             save_trial(arr=episode_results, trials_dir=trials_dir)
 

@@ -123,7 +123,3 @@ class Agent(ABC):
     @abstractmethod
     def init_e_trace(self) -> np.ndarray:
         pass
-
-    @abstractmethod
-    def get_features_for_weight_update(self, features: np.ndarray):
-        pass

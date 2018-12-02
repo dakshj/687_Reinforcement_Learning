@@ -76,6 +76,7 @@ def sarsa_lambda(agent: Agent, epsilon: float, epsilon_decay: float,
 
                 q[state_index, action_index] += alpha * delta * \
                                                 e_trace[state_index, action_index]
+
             elif isinstance(agent, NonTabularAgent):
                 q_w = agent.get_q_values_vector(
                         state=state, q_or_weights=weights)[action_index]
