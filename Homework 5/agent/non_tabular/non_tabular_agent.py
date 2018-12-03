@@ -53,3 +53,7 @@ class NonTabularAgent(Agent, ABC):
 
     def init_e_trace(self) -> np.ndarray:
         return np.zeros_like(self.init_weights())
+
+    @abstractmethod
+    def _get_state_dimension(self) -> int:
+        pass

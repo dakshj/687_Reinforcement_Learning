@@ -57,10 +57,6 @@ class Agent(ABC):
         pass
 
     @abstractmethod
-    def _get_state_dimension(self) -> int:
-        pass
-
-    @abstractmethod
     def get_q_values_vector(self, state, q_or_weights: np.ndarray) -> np.ndarray:
         pass
 

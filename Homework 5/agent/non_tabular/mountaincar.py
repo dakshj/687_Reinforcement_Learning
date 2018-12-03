@@ -8,8 +8,6 @@ ENV = 'mountaincar'
 
 GAMMA = 1.
 
-STATE_DIMENSION = 2
-
 REWARD_NOT_REACHED_GOAL = -1
 
 REVERSE, NEUTRAL, FORWARD = -1, 0, 1
@@ -56,7 +54,7 @@ class MountainCar(NonTabularAgent):
         return np.array([-0.5, 0])
 
     def _get_state_dimension(self) -> int:
-        return STATE_DIMENSION
+        return self._get_initial_state().shape[0]
 
     def _get_current_reward(self) -> float:
         if not self.has_terminated():
@@ -79,4 +77,4 @@ class MountainCar(NonTabularAgent):
         return np.array([X_BOUND_HIGH, V_BOUND_HIGH])
 
     def init_weights(self) -> np.ndarray:
-        return np.random.random((self._num_actions, self._num_features_phi))
+        return np.zeros((self._num_actions, self._num_features_phi))

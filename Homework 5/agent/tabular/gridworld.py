@@ -86,9 +86,6 @@ class GridWorld(TabularAgent):
     def _get_initial_state(self):
         return START
 
-    def _get_state_dimension(self) -> int:
-        return len(self._get_initial_state())
-
     def _get_current_reward(self) -> float:
         if self.state == WATER:
             return REWARD_WATERS
