@@ -51,9 +51,7 @@ def q_lambda(agent: Agent, epsilon: float, epsilon_decay: float,
             if isinstance(agent, TabularAgent):
                 del_by_del_part_of_e_trace = 1
             elif isinstance(agent, NonTabularAgent):
-                del_by_del_part_of_e_trace = agent.get_features_for_weight_update(
-                        features=agent.get_phi(state)
-                )
+                del_by_del_part_of_e_trace = agent.get_phi(state)
             e_trace[action_index] = \
                 agent.gamma * lambda_ * e_trace[action_index] \
                 + del_by_del_part_of_e_trace

@@ -20,7 +20,7 @@ X_BOUND_LOW, X_BOUND_HIGH = -1.2, 0.5
 
 V_BOUND_LOW, V_BOUND_HIGH = -0.07, 0.07
 
-MAX_TIME_STEPS = 1000
+MAX_TIME_STEPS = 2000
 
 
 class MountainCar(NonTabularAgent):
@@ -77,3 +77,6 @@ class MountainCar(NonTabularAgent):
 
     def _get_max_state_dimension_values(self) -> np.ndarray:
         return np.array([X_BOUND_HIGH, V_BOUND_HIGH])
+
+    def init_weights(self) -> np.ndarray:
+        return np.random.random((self._num_actions, self._num_features_phi))
