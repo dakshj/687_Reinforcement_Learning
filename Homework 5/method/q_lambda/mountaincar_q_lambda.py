@@ -8,24 +8,24 @@ from util.random_hyperparameter_search import random_hyperparameter_search
 
 TRIALS = 100
 
-# ALL   = [0.1, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6, 0.85, 0.9, 0.95]
-EPSILON = [0.9]
+# ALL   = [0.98, 0.95, 0.9, 0.8, 0.4, 0.3, 0.1]
+EPSILON = [0.98, 0.95, 0.9, 0.8, 0.4, 0.3, 0.1]
 
 # `1` means no decay
-# ALL         = [1, 0.98, 0.9, 0.85, 0.99, 0.95]
-EPSILON_DECAY = [0.98]
+# ALL         = [1, 0.99, 0.98, 0.95]
+EPSILON_DECAY = [1, 0.99, 0.98, 0.95]
 
-# ALL = [0.001, 0.0005, 0.005, 0.1, 0.000001, 0.0001, 0.05, 0.02]
-ALPHA = [0.005]
+# ALL = [0.1, 0.01, 0.001, 0.005, 0.05, 0.2, 0.3, 0.4]
+ALPHA = [0.1, 0.01, 0.001, 0.005, 0.05, 0.2, 0.3, 0.4]
 
-# ALL               = [1, 2, 3, 4, 5, 8]
-FOURIER_BASIS_ORDER = [3]
+# ALL               = [3, 4, 5, 7, 8]
+FOURIER_BASIS_ORDER = [3, 4, 5, 7, 8]
 
-# ALL    = [200, 300]
-EPISODES = [100]
+# ALL    = [150]
+EPISODES = [150]
 
-# ALL  = []
-LAMBDA = []
+# ALL  = [0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 0.9, 1.0]
+LAMBDA = [0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 0.9, 1.0]
 
 SKIP_EXISTING_PATH = True
 
