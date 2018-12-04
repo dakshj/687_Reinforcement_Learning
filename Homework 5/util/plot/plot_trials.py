@@ -52,4 +52,4 @@ def plot_dir(trials_dir):
 
 if __name__ == '__main__':
     plot_dir('../../method/sarsa_lambda/'
-             'mountaincar__sarsa_lambda__e=0.8__d=0.95__a=0.001__f=4__ep=150__l=0.7')
+             'gridworld__sarsa_lambda__e=0.9__d=0.95__a=0.2__ep=150__l=0.8')
