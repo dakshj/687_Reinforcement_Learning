@@ -66,7 +66,7 @@ def q_lambda(agent: Agent, epsilon: float, epsilon_decay: float,
 
                 # If-Else end
 
-            e_trace *= agent.gamma * lambda_ + dq_dw
+            e_trace = e_trace * agent.gamma * lambda_ + dq_dw
 
             weights += alpha * delta * e_trace
 
