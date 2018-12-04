@@ -47,7 +47,6 @@ def q_lambda(agent: Agent, epsilon: float, epsilon_decay: float,
             elif isinstance(agent, NonTabularAgent):
                 dq_dw = np.zeros_like(weights)
                 dq_dw[action_index] = agent.get_phi(state)
-            e_trace = agent.gamma * lambda_ * e_trace + dq_dw
 
             max_q_value = agent.get_max_q_value(state=state_next, weights=weights)
 
@@ -56,11 +55,18 @@ def q_lambda(agent: Agent, epsilon: float, epsilon_decay: float,
             if isinstance(agent, TabularAgent):
                 state_index = agent.get_state_index(state)
 
+                e_trace[state_index, action_index] = \
+                    agent.gamma * lambda_ * e_trace[state_index, action_index] \
+                    + dq_dw
+
                 delta = reward + \
                         agent.gamma * max_q_value - \
                         weights[state_index, action_index]
 
             elif isinstance(agent, NonTabularAgent):
+                e_trace[action_index] = \
+                    agent.gamma * lambda_ * e_trace[action_index] + dq_dw
+
                 q_w = agent.get_q_values_vector(
                         state=state, weights=weights)[action_index]
 
