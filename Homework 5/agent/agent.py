@@ -57,40 +57,35 @@ class Agent(ABC):
         pass
 
     @abstractmethod
-    def get_q_values_vector(self, state, q_or_weights: np.ndarray) -> np.ndarray:
+    def get_q_values_vector(self, state, weights: np.ndarray) -> np.ndarray:
         pass
 
-    def epsilon_greedy(self, q_or_weights):
+    def epsilon_greedy(self, weights):
         pi = np.ones(self._num_actions) * self._epsilon / self._num_actions
 
-        q_values = self.get_q_values_vector(state=self.state,
-                q_or_weights=q_or_weights)
+        q_values = self.get_q_values_vector(state=self.state, weights=weights)
         pi[int(np.argmax(q_values))] += 1 - self._epsilon
 
         return pi
 
-    def softmax(self, q_or_weights):
-        q_values = self.get_q_values_vector(state=self.state,
-                q_or_weights=q_or_weights)
+    def softmax(self, weights):
+        q_values = self.get_q_values_vector(state=self.state, weights=weights)
         pi = np.exp(self._sigma * q_values - np.max(self._sigma * q_values)) / \
              np.sum(np.exp(self._sigma * q_values - np.max(self._sigma * q_values)))
 
         return pi
 
-    def get_action(self, q_or_weights: np.ndarray,
-                   action_selection_method: str):
+    def get_action(self, weights: np.ndarray, action_selection_method: str):
         method = None
         if action_selection_method is EPSILON_GREEDY:
             method = self.epsilon_greedy
         elif action_selection_method is SOFTMAX:
             method = self.softmax
 
-        return np.random.choice(self._get_actions_list(),
-                p=method(q_or_weights=q_or_weights))
+        return np.random.choice(self._get_actions_list(), p=method(weights=weights))
 
-    def get_max_q_value(self, state, q_or_weights: np.ndarray) -> float:
-        return np.max(self.get_q_values_vector(state=state,
-                q_or_weights=q_or_weights))
+    def get_max_q_value(self, state, weights: np.ndarray) -> float:
+        return np.max(self.get_q_values_vector(state=state, weights=weights))
 
     @staticmethod
     @abstractmethod
@@ -116,6 +111,9 @@ class Agent(ABC):
     def get_action_index(self, action) -> int:
         return self._get_actions_list().index(action)
 
-    @abstractmethod
     def init_e_trace(self) -> np.ndarray:
+        return np.zeros_like(self.init_weights())
+
+    @abstractmethod
+    def init_weights(self) -> np.ndarray:
         pass

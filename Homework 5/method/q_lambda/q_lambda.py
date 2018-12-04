@@ -16,16 +16,7 @@ def q_lambda(agent: Agent, epsilon: float, epsilon_decay: float,
     # List of rewards across all episodes, for this one trial
     episode_returns = []
 
-    # Tabular Variables
-    q = None
-
-    # Non-Tabular Variables
-    weights = None
-
-    if isinstance(agent, TabularAgent):
-        q = agent.init_q()
-    elif isinstance(agent, NonTabularAgent):
-        weights = agent.init_weights()
+    weights = agent.init_weights()
 
     exec_time = time.time()
     for episode in range(episodes):
@@ -42,7 +33,7 @@ def q_lambda(agent: Agent, epsilon: float, epsilon_decay: float,
 
         while not agent.has_terminated():
             action = agent.get_action(
-                    q_or_weights=q if isinstance(agent, TabularAgent) else weights,
+                    weights=weights,
                     action_selection_method=action_selection_method
             )
 
@@ -58,27 +49,26 @@ def q_lambda(agent: Agent, epsilon: float, epsilon_decay: float,
                 dq_dw[action_index] = agent.get_phi(state)
             e_trace = agent.gamma * lambda_ * e_trace + dq_dw
 
-            max_q_value = agent.get_max_q_value(
-                    state=state_next,
-                    q_or_weights=q if isinstance(agent, TabularAgent) else weights)
+            max_q_value = agent.get_max_q_value(state=state_next, weights=weights)
+
+            delta = None
 
             if isinstance(agent, TabularAgent):
                 state_index = agent.get_state_index(state)
 
                 delta = reward + \
-                        agent.gamma * max_q_value - q[state_index, action_index]
-
-                q += alpha * delta * e_trace
+                        agent.gamma * max_q_value - \
+                        weights[state_index, action_index]
 
             elif isinstance(agent, NonTabularAgent):
                 q_w = agent.get_q_values_vector(
-                        state=state, q_or_weights=weights)[action_index]
+                        state=state, weights=weights)[action_index]
 
                 delta = reward + agent.gamma * max_q_value - q_w
 
-                weights += alpha * delta * e_trace
-
                 # If-Else end
+
+            weights += alpha * delta * e_trace
 
             state = deepcopy(state_next)
 

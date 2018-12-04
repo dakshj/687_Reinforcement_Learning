@@ -17,10 +17,6 @@ class NonTabularAgent(Agent, ABC):
                 state_dimension=self._get_state_dimension())
         self._num_features_phi = self._fourier_arr.shape[0]
 
-    @abstractmethod
-    def init_weights(self) -> np.ndarray:
-        pass
-
     @staticmethod
     def _get_fourier_arr(fourier_basis_order: int, state_dimension: int) \
             -> np.ndarray:
@@ -43,16 +39,13 @@ class NonTabularAgent(Agent, ABC):
     def state(self) -> np.ndarray:
         return np.copy(self._state)
 
-    def get_q_values_vector(self, state, q_or_weights: np.ndarray) -> np.ndarray:
-        return np.dot(q_or_weights, self.get_phi(state))
+    def get_q_values_vector(self, state, weights: np.ndarray) -> np.ndarray:
+        return np.dot(weights, self.get_phi(state))
 
     def _get_normalized_state(self, state):
         return (state - self._get_min_state_dimension_values()) / \
                (self._get_max_state_dimension_values() -
                 self._get_min_state_dimension_values())
-
-    def init_e_trace(self) -> np.ndarray:
-        return np.zeros_like(self.init_weights())
 
     @abstractmethod
     def _get_state_dimension(self) -> int:

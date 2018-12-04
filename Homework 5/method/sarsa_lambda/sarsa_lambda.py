@@ -16,16 +16,7 @@ def sarsa_lambda(agent: Agent, epsilon: float, epsilon_decay: float,
     # List of rewards across all episodes, for this one trial
     episode_returns = []
 
-    # Tabular Variables
-    q = None
-
-    # Non-Tabular Variables
-    weights = None
-
-    if isinstance(agent, TabularAgent):
-        q = agent.init_q()
-    elif isinstance(agent, NonTabularAgent):
-        weights = agent.init_weights()
+    weights = agent.init_weights()
 
     exec_time = time.time()
     for episode in range(episodes):
@@ -40,7 +31,7 @@ def sarsa_lambda(agent: Agent, epsilon: float, epsilon_decay: float,
         state = agent.state
 
         action = agent.get_action(
-                q_or_weights=q if isinstance(agent, TabularAgent) else weights,
+                weights=weights,
                 action_selection_method=action_selection_method
         )
 
@@ -50,7 +41,7 @@ def sarsa_lambda(agent: Agent, epsilon: float, epsilon_decay: float,
             reward, state_next = agent.take_action(action)
 
             action_next = agent.get_action(
-                    q_or_weights=q if isinstance(agent, TabularAgent) else weights,
+                    weights=weights,
                     action_selection_method=action_selection_method
             )
 
@@ -65,28 +56,28 @@ def sarsa_lambda(agent: Agent, epsilon: float, epsilon_decay: float,
                 dq_dw[action_index] = agent.get_phi(state)
             e_trace = agent.gamma * lambda_ * e_trace + dq_dw
 
+            delta = None
+
             if isinstance(agent, TabularAgent):
                 state_index = agent.get_state_index(state)
 
                 state_next_index = agent.get_state_index(state_next)
 
                 delta = reward + \
-                        agent.gamma * q[state_next_index, action_next_index] \
-                        - q[state_index, action_index]
-
-                q += alpha * delta * e_trace
+                        agent.gamma * weights[state_next_index, action_next_index] \
+                        - weights[state_index, action_index]
 
             elif isinstance(agent, NonTabularAgent):
                 q_w = agent.get_q_values_vector(
-                        state=state, q_or_weights=weights)[action_index]
+                        state=state, weights=weights)[action_index]
                 q_w_next = agent.get_q_values_vector(
-                        state=state_next, q_or_weights=weights)[action_next_index]
+                        state=state_next, weights=weights)[action_next_index]
 
                 delta = reward + agent.gamma * q_w_next - q_w
 
-                weights += alpha * delta * e_trace
-
                 # If-Else end
+
+            weights += alpha * delta * e_trace
 
             state = deepcopy(state_next)
             action = deepcopy(action_next)
