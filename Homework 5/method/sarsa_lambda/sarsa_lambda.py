@@ -1,4 +1,7 @@
 import time
+from copy import deepcopy
+
+import numpy as np
 
 from agent.agent import Agent, EPSILON_GREEDY
 from agent.non_tabular.non_tabular_agent import NonTabularAgent
@@ -54,14 +57,13 @@ def sarsa_lambda(agent: Agent, epsilon: float, epsilon_decay: float,
             action_index = agent.get_action_index(action)
             action_next_index = agent.get_action_index(action_next)
 
-            del_by_del_part_of_e_trace = None
+            dq_dw = None
             if isinstance(agent, TabularAgent):
-                del_by_del_part_of_e_trace = 1
+                dq_dw = 1
             elif isinstance(agent, NonTabularAgent):
-                del_by_del_part_of_e_trace = agent.get_phi(state)
-            e_trace[action_index] = \
-                agent.gamma * lambda_ * e_trace[action_index] \
-                + del_by_del_part_of_e_trace
+                dq_dw = np.zeros_like(weights)
+                dq_dw[action_index] = agent.get_phi(state)
+            e_trace = agent.gamma * lambda_ * e_trace + dq_dw
 
             if isinstance(agent, TabularAgent):
                 state_index = agent.get_state_index(state)
@@ -72,23 +74,22 @@ def sarsa_lambda(agent: Agent, epsilon: float, epsilon_decay: float,
                         agent.gamma * q[state_next_index, action_next_index] \
                         - q[state_index, action_index]
 
-                q[state_index, action_index] += alpha * delta * \
-                                                e_trace[state_index, action_index]
+                q += alpha * delta * e_trace
 
             elif isinstance(agent, NonTabularAgent):
                 q_w = agent.get_q_values_vector(
                         state=state, q_or_weights=weights)[action_index]
                 q_w_next = agent.get_q_values_vector(
-                        state=state, q_or_weights=weights)[action_next_index]
+                        state=state_next, q_or_weights=weights)[action_next_index]
 
                 delta = reward + agent.gamma * q_w_next - q_w
 
-                weights[action_index] += alpha * delta * e_trace[action_index]
+                weights += alpha * delta * e_trace
 
                 # If-Else end
 
-            state = state_next
-            action = action_next
+            state = deepcopy(state_next)
+            action = deepcopy(action_next)
 
             # Time step end
 

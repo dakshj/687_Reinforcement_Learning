@@ -88,8 +88,8 @@ class Agent(ABC):
         return np.random.choice(self._get_actions_list(),
                 p=method(q_or_weights=q_or_weights))
 
-    def get_max_q_value(self, q_or_weights: np.ndarray) -> float:
-        return np.max(self.get_q_values_vector(state=self.state,
+    def get_max_q_value(self, state, q_or_weights: np.ndarray) -> float:
+        return np.max(self.get_q_values_vector(state=state,
                 q_or_weights=q_or_weights))
 
     @staticmethod

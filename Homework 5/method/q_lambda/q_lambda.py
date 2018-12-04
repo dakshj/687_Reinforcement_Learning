@@ -1,4 +1,7 @@
 import time
+from copy import deepcopy
+
+import numpy as np
 
 from agent.agent import Agent, EPSILON_GREEDY
 from agent.non_tabular.non_tabular_agent import NonTabularAgent
@@ -47,16 +50,16 @@ def q_lambda(agent: Agent, epsilon: float, epsilon_decay: float,
 
             action_index = agent.get_action_index(action)
 
-            del_by_del_part_of_e_trace = None
+            dq_dw = None
             if isinstance(agent, TabularAgent):
-                del_by_del_part_of_e_trace = 1
+                dq_dw = 1
             elif isinstance(agent, NonTabularAgent):
-                del_by_del_part_of_e_trace = agent.get_phi(state)
-            e_trace[action_index] = \
-                agent.gamma * lambda_ * e_trace[action_index] \
-                + del_by_del_part_of_e_trace
+                dq_dw = np.zeros_like(weights)
+                dq_dw[action_index] = agent.get_phi(state)
+            e_trace = agent.gamma * lambda_ * e_trace + dq_dw
 
             max_q_value = agent.get_max_q_value(
+                    state=state_next,
                     q_or_weights=q if isinstance(agent, TabularAgent) else weights)
 
             if isinstance(agent, TabularAgent):
@@ -65,8 +68,7 @@ def q_lambda(agent: Agent, epsilon: float, epsilon_decay: float,
                 delta = reward + \
                         agent.gamma * max_q_value - q[state_index, action_index]
 
-                q[state_index, action_index] += alpha * delta * \
-                                                e_trace[state_index, action_index]
+                q += alpha * delta * e_trace
 
             elif isinstance(agent, NonTabularAgent):
                 q_w = agent.get_q_values_vector(
@@ -74,11 +76,11 @@ def q_lambda(agent: Agent, epsilon: float, epsilon_decay: float,
 
                 delta = reward + agent.gamma * max_q_value - q_w
 
-                weights[action_index] += alpha * delta * e_trace[action_index]
+                weights += alpha * delta * e_trace
 
                 # If-Else end
 
-            state = state_next
+            state = deepcopy(state_next)
 
             # Time step end
 
