@@ -47,9 +47,32 @@ def plot_dir(trials_dir):
     plt.xlabel('Episodes', fontsize=16)
     plt.ylabel('Expected Returns', fontsize=16)
 
+    plt.title(trials_dir)
+
     plt.show()
 
 
+def plot_top_dirs(method_dir: str, min_trials_per_directory=10, plot_top_n=5):
+    dirs = [trials_dir for trials_dir in os.listdir(method_dir)
+            if os.path.isdir(os.path.join(method_dir, trials_dir)) and
+            'e=' in trials_dir and
+            len(os.listdir(os.path.join(method_dir, trials_dir))) >=
+            min_trials_per_directory]
+
+    if not dirs:
+        print('No directories ready for finding max mean')
+        return
+
+    max_means = []
+
+    for d in dirs:
+        results, mean, std, max_mean, max_value = \
+            read_stats(trials_dir=os.path.join(method_dir, d))
+        max_means.append(max_mean)
+
+    for i in np.argsort(max_means)[::-1][:plot_top_n]:
+        plot_dir(os.path.join(method_dir, dirs[i]))
+
+
 if __name__ == '__main__':
-    plot_dir('../../method/sarsa_lambda/'
-             'gridworld__sarsa_lambda__e=0.9__d=0.95__a=0.2__ep=150__l=0.8')
+    plot_top_dirs('../../method/q_lambda/')
