@@ -51,5 +51,5 @@ def plot_dir(trials_dir):
 
 
 if __name__ == '__main__':
-    plot_dir('../../method/sarsa/'
-             'cartpole__sarsa_tc__e=0.95__d=1.0__ep=150__t1=8__t2=20')
+    plot_dir('../../method/sarsa_lambda/'
+             'mountaincar__sarsa_lambda__e=0.8__d=0.95__a=0.001__f=4__ep=150__l=0.7')
