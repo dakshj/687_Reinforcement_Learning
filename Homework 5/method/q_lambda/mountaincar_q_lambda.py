@@ -37,7 +37,7 @@ def execute():
         fourier_basis_order = int(fourier_basis_order)
         episodes = int(episodes)
 
-        trials_dir = '{}__q_learning__e={}__d={}__a={}__f={}__ep={}__l={}' \
+        trials_dir = '{}__q_lambda__e={}__d={}__a={}__f={}__ep={}__l={}' \
             .format(mountaincar.ENV, epsilon, epsilon_decay,
                 alpha, fourier_basis_order, episodes, lambda_)
 

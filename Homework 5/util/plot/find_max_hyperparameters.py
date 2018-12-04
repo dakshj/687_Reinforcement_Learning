@@ -2,7 +2,7 @@ import os
 
 import numpy as np
 
-from util.plot.plot_trials import read_stats
+from util.plot.plot_trials import read_trials_dir
 
 
 def find_max_mean(method_dir, min_trials_per_directory=10, print_top_n=5):
@@ -21,7 +21,7 @@ def find_max_mean(method_dir, min_trials_per_directory=10, print_top_n=5):
 
     for d in dirs:
         results, mean, std, max_mean, max_value = \
-            read_stats(trials_dir=os.path.join(method_dir, d))
+            read_trials_dir(trials_dir=os.path.join(method_dir, d))
         max_means.append(max_mean)
         max_values.append(max_value)
 

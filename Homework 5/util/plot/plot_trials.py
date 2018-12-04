@@ -12,7 +12,7 @@ def save_trial(arr, trials_dir: str):
     np.save('{}/trial_{}'.format(trials_dir, time.time()), arr)
 
 
-def read_stats(trials_dir, episode_limit=-1):
+def read_trials_dir(trials_dir, episode_limit=-1):
     results = np.array(
             [np.load('{}/{}'.format(trials_dir, trial))[:episode_limit] for trial in
              os.listdir(trials_dir)]
@@ -27,7 +27,7 @@ def read_stats(trials_dir, episode_limit=-1):
 
 
 def plot_dir(trials_dir):
-    results, mean, std, max_mean, max_value = read_stats(trials_dir)
+    results, mean, std, max_mean, max_value = read_trials_dir(trials_dir)
 
     plt.errorbar(range(1, results.shape[1] + 1), mean, std, ecolor='yellow')
     text = '{}\n' \
@@ -68,7 +68,7 @@ def plot_top_dirs(method_dir: str, min_trials_per_directory=10, plot_top_n=5):
 
     for d in dirs:
         results, mean, std, max_mean, max_value = \
-            read_stats(trials_dir=os.path.join(method_dir, d))
+            read_trials_dir(trials_dir=os.path.join(method_dir, d))
         max_means.append(max_mean)
 
     for i in np.argsort(max_means)[::-1][:plot_top_n]:
