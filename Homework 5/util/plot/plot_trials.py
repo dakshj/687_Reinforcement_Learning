@@ -12,10 +12,10 @@ def save_trial(arr, trials_dir: str):
     np.save('{}/trial_{}'.format(trials_dir, time.time()), arr)
 
 
-def read_stats(trials_dir):
+def read_stats(trials_dir, episode_limit=-1):
     results = np.array(
             [np.load('{}/{}'.format(trials_dir, trial)) for trial in os.listdir(trials_dir)]
-    )
+    )[:episode_limit]
 
     mean = np.mean(results, axis=0)
     std = np.std(results, axis=0)
