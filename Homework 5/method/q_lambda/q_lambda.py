@@ -41,38 +41,32 @@ def q_lambda(agent: Agent, epsilon: float, epsilon_decay: float,
 
             action_index = agent.get_action_index(action)
 
-            dq_dw = None
-            if isinstance(agent, TabularAgent):
-                dq_dw = 1
-            elif isinstance(agent, NonTabularAgent):
-                dq_dw = np.zeros_like(weights)
-                dq_dw[action_index] = agent.get_phi(state)
-
             max_q_value = agent.get_max_q_value(state=state_next, weights=weights)
 
+            dq_dw = np.zeros_like(weights)
             delta = None
 
+            # Calculate TD Error, and set dq_dw based on agent
             if isinstance(agent, TabularAgent):
                 state_index = agent.get_state_index(state)
-
-                e_trace[state_index, action_index] = \
-                    agent.gamma * lambda_ * e_trace[state_index, action_index] \
-                    + dq_dw
 
                 delta = reward + \
                         agent.gamma * max_q_value - \
                         weights[state_index, action_index]
 
-            elif isinstance(agent, NonTabularAgent):
-                e_trace[action_index] = \
-                    agent.gamma * lambda_ * e_trace[action_index] + dq_dw
+                dq_dw[state_index, action_index] = 1
 
+            elif isinstance(agent, NonTabularAgent):
                 q_w = agent.get_q_values_vector(
                         state=state, weights=weights)[action_index]
 
                 delta = reward + agent.gamma * max_q_value - q_w
 
+                dq_dw[action_index] = agent.get_phi(state)
+
                 # If-Else end
+
+            e_trace *= agent.gamma * delta + dq_dw
 
             weights += alpha * delta * e_trace
 
