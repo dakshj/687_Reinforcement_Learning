@@ -30,7 +30,7 @@ def actor_critic(agent: Agent, lambda_: float,
         agent.reset_for_new_episode(sigma=sigma)
 
         e_v = agent.init_e_v()
-        e_0 = agent.init_e_0()
+        e_theta = agent.init_e_theta()
 
         state = agent.state
 
@@ -47,7 +47,7 @@ def actor_critic(agent: Agent, lambda_: float,
             dv_dw = np.zeros_like(e_v)
             delta = None
 
-            # Calculate TD Error, and set dv_dw & dlnpi_d0 based on agent
+            # Calculate TD Error, and set dv_dw based on agent
             if isinstance(agent, TabularAgent):
                 state_index = agent.get_state_index(state)
 
@@ -77,9 +77,10 @@ def actor_critic(agent: Agent, lambda_: float,
             weights += alpha_critic * delta * e_v
 
             # Actor Update
-            # TODO Pass the appropriate parameters
-            e_0 = e_0 * agent.gamma * lambda_ + get_dlnpi_d0()
-            theta += alpha_actor * delta * e_0
+            e_theta = e_theta * agent.gamma * lambda_ + \
+                      get_d_ln_pi__d_theta(agent=agent, theta=theta, state=state,
+                              action_index=action_index)
+            theta += alpha_actor * delta * e_theta
 
             state = deepcopy(state_next)
 
@@ -92,24 +93,29 @@ def actor_critic(agent: Agent, lambda_: float,
     return episode_returns
 
 
-def get_dlnpi_d0(agent, theta, state, action_index) -> np.ndarray:
-    dlnpi_d0 = None
-
+def get_d_ln_pi__d_theta(agent, theta, state, action_index) -> np.ndarray:
     pi = agent.get_q_values_vector(state=state, weights=theta)
     pi = np.exp(pi)
     pi /= np.sum(pi)
 
+    derivative = np.zeros_like(theta)
+
+    state_index = agent.get_state_index(state=state)
+
     if isinstance(agent, TabularAgent):
-        # TODO Implement this
-        pass
+        for i in range(agent.num_actions):
+            if i != action_index:
+                derivative[state_index, i] = -pi[i]
+            else:
+                derivative[state_index, i] = 1 - pi[i]
 
     elif isinstance(agent, NonTabularAgent):
-        dlnpi_d0 = np.ones_like(theta) * agent.get_phi(state=state)
+        derivative += agent.get_phi(state=state)
 
-        for i in range(action_index):
+        for i in range(agent.num_actions):
             if i != action_index:
-                dlnpi_d0[i] *= -pi[i]
+                derivative[i] *= -pi[i]
             else:
-                dlnpi_d0[i] *= 1 - pi[i]
+                derivative[i] *= 1 - pi[i]
 
-    return dlnpi_d0
+    return derivative

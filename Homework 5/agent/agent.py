@@ -129,5 +129,9 @@ class Agent(ABC):
     def init_e_v(self) -> np.ndarray:
         pass
 
-    def init_e_0(self) -> np.ndarray:
+    def init_e_theta(self) -> np.ndarray:
         return self.init_e_trace()
+
+    @property
+    def num_actions(self):
+        return self._num_actions
