@@ -6,26 +6,26 @@ from method.actor_critic.actor_critic import actor_critic
 from util.plot.plot_trials import save_trial
 from util.random_hyperparameter_search import random_hyperparameter_search
 
-TRIALS = 15
+TRIALS = 100
 
 # ALL               = [3, 4, 5, 7, 8]
-FOURIER_BASIS_ORDER = [3, 4, 5, 7, 8]
+FOURIER_BASIS_ORDER = [7]
 
 # ALL  = [0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 0.9, 1.0]
-LAMBDA = [0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 0.9, 1.0]
+LAMBDA = [0.3]
 
 # ALL       = [0.1, 0.01, 0.001, 0.005, 0.05]
-ALPHA_ACTOR = [0.1, 0.01, 0.001, 0.005, 0.05]
+ALPHA_ACTOR = [0.001]
 
 # ALL        = [0.1, 0.01, 0.001, 0.005, 0.05]
-ALPHA_CRITIC = [0.1, 0.01, 0.001, 0.005, 0.05]
+ALPHA_CRITIC = [0.05]
 
 # ALL = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
-SIGMA = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+SIGMA = [0.9]
 
 EPISODES = 150
 
-SKIP_EXISTING_PATH = True
+SKIP_EXISTING_PATH = False
 
 
 def execute():
