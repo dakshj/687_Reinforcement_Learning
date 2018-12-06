@@ -100,9 +100,9 @@ def get_d_ln_pi__d_theta(agent, theta, state, action_index) -> np.ndarray:
 
     derivative = np.zeros_like(theta)
 
-    state_index = agent.get_state_index(state=state)
-
     if isinstance(agent, TabularAgent):
+        state_index = agent.get_state_index(state=state)
+
         for i in range(agent.num_actions):
             if i != action_index:
                 derivative[state_index, i] = -pi[i]
