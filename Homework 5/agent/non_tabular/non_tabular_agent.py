@@ -50,3 +50,6 @@ class NonTabularAgent(Agent, ABC):
     @abstractmethod
     def _get_state_dimension(self) -> int:
         pass
+
+    def init_e_v(self) -> np.ndarray:
+        return np.zeros(self._num_features_phi)

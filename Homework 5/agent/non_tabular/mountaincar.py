@@ -78,3 +78,6 @@ class MountainCar(NonTabularAgent):
 
     def init_weights(self) -> np.ndarray:
         return np.zeros((self._num_actions, self._num_features_phi))
+
+    def init_weights_actor_critic(self) -> np.ndarray:
+        return np.zeros(self._num_features_phi)

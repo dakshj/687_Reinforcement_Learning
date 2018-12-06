@@ -33,7 +33,7 @@ class Agent(ABC):
     def time_step(self) -> int:
         return self._time_step
 
-    def reset_for_new_episode(self, epsilon, sigma):
+    def reset_for_new_episode(self, epsilon=None, sigma=None):
         self._time_step = 0
         self._state = self._get_initial_state()
         self._returns = 0.
@@ -116,4 +116,18 @@ class Agent(ABC):
 
     @abstractmethod
     def init_weights(self) -> np.ndarray:
+        """
+        For Actor-Critic, this will be used for `theta`, and not `weights`.
+        """
         pass
+
+    @abstractmethod
+    def init_weights_actor_critic(self) -> np.ndarray:
+        pass
+
+    @abstractmethod
+    def init_e_v(self) -> np.ndarray:
+        pass
+
+    def init_e_0(self) -> np.ndarray:
+        return self.init_e_trace()

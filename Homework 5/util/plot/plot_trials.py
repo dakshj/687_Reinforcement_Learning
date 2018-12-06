@@ -76,4 +76,4 @@ def plot_top_dirs(method_dir: str, min_trials_per_directory=10, plot_top_n=5):
 
 
 if __name__ == '__main__':
-    plot_top_dirs('../../method/q_lambda/')
+    plot_top_dirs('../../method/actor_critic/')

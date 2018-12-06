@@ -10,6 +10,9 @@ class TabularAgent(Agent, ABC):
     def init_weights(self) -> np.ndarray:
         return np.random.random((self._num_states(), self._num_actions))
 
+    def init_weights_actor_critic(self) -> np.ndarray:
+        return np.random.random(self._num_states())
+
     @staticmethod
     @abstractmethod
     def _num_states():
@@ -26,3 +29,6 @@ class TabularAgent(Agent, ABC):
     @abstractmethod
     def get_state_index(state) -> int:
         pass
+
+    def init_e_v(self) -> np.ndarray:
+        return np.zeros(self._num_states())
