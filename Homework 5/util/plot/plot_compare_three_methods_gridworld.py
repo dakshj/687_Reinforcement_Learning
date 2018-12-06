@@ -23,7 +23,7 @@ plt.errorbar(range(1, results_2.shape[1] + 1), mean_2, std_2, label='Q(λ)',
         color='blue', ecolor='lightblue')
 
 plt.errorbar(range(1, results_3.shape[1] + 1), mean_3, std_3, label='Actor-Critic',
-        color='red', ecolor='lightcoral', )
+        color='red', ecolor='lightcoral')
 
 plt.xlabel('Episodes', fontsize=16)
 plt.ylabel('Expected Returns', fontsize=16)
