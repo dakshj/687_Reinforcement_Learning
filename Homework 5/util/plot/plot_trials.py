@@ -56,7 +56,7 @@ def plot_dir(trials_dir):
 def plot_top_dirs(method_dir: str, min_trials_per_directory=10, plot_top_n=5):
     dirs = [trials_dir for trials_dir in os.listdir(method_dir)
             if os.path.isdir(os.path.join(method_dir, trials_dir)) and
-            'e=' in trials_dir and
+            '__' in trials_dir and
             len(os.listdir(os.path.join(method_dir, trials_dir))) >=
             min_trials_per_directory]
 
