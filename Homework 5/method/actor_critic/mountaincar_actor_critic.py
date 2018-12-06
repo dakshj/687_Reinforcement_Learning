@@ -44,6 +44,9 @@ def execute():
         if SKIP_EXISTING_PATH and os.path.exists(trials_dir):
             continue
 
+        if not os.path.exists(trials_dir):
+            os.mkdir(trials_dir)
+
         for trial in range(TRIALS):
             agent = MountainCar(fourier_basis_order=fourier_basis_order)
             episode_results = actor_critic(agent=agent, lambda_=lambda_,
