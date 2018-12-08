@@ -32,4 +32,4 @@ def find_max_mean(method_dir, min_trials_per_directory=10, print_top_n=5):
 
 
 if __name__ == '__main__':
-    find_max_mean('../../method/actor_critic')
+    find_max_mean('../../method/reinforce')
