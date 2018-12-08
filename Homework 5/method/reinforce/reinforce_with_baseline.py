@@ -42,33 +42,34 @@ def reinforce_with_baseline(agent: Agent, lambda_: float,
 
             reward, state_next = agent.take_action(action)
 
-            current_returns = agent.returns
-
             episode_vars_list.append(
                     EpisodeVars(state=state, state_next=state_next,
-                            action=action, reward=reward,
-                            current_returns=current_returns)
+                            action=action, reward=reward)
             )
 
             # Episode end
+
+        g_array = get_g_array(episode_vars_list=episode_vars_list,
+                gamma=agent.gamma)
 
         delta_j_pi = np.zeros_like(theta)
 
         e_trace = agent.init_e_v()
 
         for t in range(len(episode_vars_list)):
-            v_w, v_w_next = get__v_w__values(agent=agent, t=t,
-                    episode_vars_list=episode_vars_list, weights=weights)
+            v_w, v_w_next, dv_dw = get__v_w__dv_dw(agent=agent, t=t,
+                    episode_vars_list=episode_vars_list, weights=weights,
+                    e_trace=e_trace)
 
             delta_j_pi += math.pow(agent.gamma, t) * \
-                          (episode_vars_list[t].current_returns - v_w) * \
+                          (g_array[t] - v_w) * \
                           get_d_ln_pi__d_theta(agent=agent, theta=theta,
                                   state=episode_vars_list[t].state,
                                   action_index=agent.get_action_index(
                                           episode_vars_list[t].action)
                           )
 
-            e_trace *= agent.gamma * lambda_
+            e_trace *= agent.gamma * lambda_ + dv_dw
 
             delta = episode_vars_list[t].reward + \
                     agent.gamma * v_w_next - v_w
@@ -86,13 +87,17 @@ def reinforce_with_baseline(agent: Agent, lambda_: float,
     return episode_returns
 
 
-def get__v_w__values(agent: Agent, t: int, episode_vars_list: List[EpisodeVars],
-                     weights: np.ndarray) -> tuple:
+def get__v_w__dv_dw(agent: Agent, t: int, episode_vars_list: List[EpisodeVars],
+                    weights: np.ndarray, e_trace: np.ndarray) -> tuple:
+    dv_dw = np.zeros_like(e_trace)
+
     if isinstance(agent, TabularAgent):
         state_index = agent.get_state_index(episode_vars_list[t].state)
         state_next_index = agent.get_state_index(episode_vars_list[t].state_next)
 
-        return weights[state_index], weights[state_next_index]
+        dv_dw[state_index] = 1
+
+        return weights[state_index], weights[state_next_index], dv_dw
 
     elif isinstance(agent, NonTabularAgent):
         v_w = agent.get_q_values_vector(state=episode_vars_list[t].state,
@@ -101,4 +106,19 @@ def get__v_w__values(agent: Agent, t: int, episode_vars_list: List[EpisodeVars],
                 state=episode_vars_list[t].state_next,
                 weights=weights)
 
-        return v_w, v_w_next
+        dv_dw = agent.get_phi(episode_vars_list[t].state)
+
+        return v_w, v_w_next, dv_dw
+
+
+def get_g_array(episode_vars_list: List[EpisodeVars], gamma: float) \
+        -> np.ndarray:
+    g_array = np.zeros(len(episode_vars_list))
+
+    for i in range(len(g_array))[::-1]:
+        g_array[i] = episode_vars_list[i].reward
+
+        if i != len(g_array) - 1:
+            g_array[i] += gamma * g_array[i + 1]
+
+    return g_array

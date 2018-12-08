@@ -7,6 +7,7 @@ import numpy as np
 from agent.agent import Agent, SOFTMAX
 from method.actor_critic.actor_critic import get_d_ln_pi__d_theta
 from method.reinforce.model.episode_vars import EpisodeVars
+from method.reinforce.reinforce_with_baseline import get_g_array
 
 
 def reinforce_without_baseline(agent: Agent, alpha_theta: float,
@@ -37,21 +38,21 @@ def reinforce_without_baseline(agent: Agent, alpha_theta: float,
 
             reward, state_next = agent.take_action(action)
 
-            current_returns = agent.returns
-
             episode_vars_list.append(
                     EpisodeVars(state=state, state_next=state_next,
-                            action=action, reward=reward,
-                            current_returns=current_returns)
+                            action=action, reward=reward)
             )
 
             # Episode end
+
+        g_array = get_g_array(episode_vars_list=episode_vars_list,
+                gamma=agent.gamma)
 
         delta_j_pi = np.zeros_like(theta)
 
         for t in range(len(episode_vars_list)):
             delta_j_pi += math.pow(agent.gamma, t) * \
-                          episode_vars_list[t].current_returns * \
+                          g_array[t] * \
                           get_d_ln_pi__d_theta(agent=agent, theta=theta,
                                   state=episode_vars_list[t].state,
                                   action_index=agent.get_action_index(
