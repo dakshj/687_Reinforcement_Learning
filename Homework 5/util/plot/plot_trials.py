@@ -29,7 +29,8 @@ def read_trials_dir(trials_dir, episode_limit=-1):
 def plot_dir(trials_dir):
     results, mean, std, max_mean, max_value = read_trials_dir(trials_dir)
 
-    plt.errorbar(range(1, results.shape[1] + 1), mean, std, ecolor='yellow')
+    plt.errorbar(range(1, results.shape[1] + 1), mean, std,
+            color='blue', ecolor='lightblue')
     text = '{}\n' \
            '{}             {}\n' \
            '{}             {}\n' \
@@ -76,4 +77,4 @@ def plot_top_dirs(method_dir: str, min_trials_per_directory=10, plot_top_n=5):
 
 
 if __name__ == '__main__':
-    plot_top_dirs('../../method/reinforce')
+    plot_top_dirs('../../method/reinforce/FINALIZED PLOTS')
