@@ -7,7 +7,7 @@ from method.reinforce.reinforce_without_baseline import reinforce_without_baseli
 from util.plot.plot_trials import save_trial
 from util.random_hyperparameter_search import random_hyperparameter_search
 
-TRIALS = 20
+TRIALS = 100
 
 # ALL               = [3, 4, 5, 7, 8]
 FOURIER_BASIS_ORDER = [4]
