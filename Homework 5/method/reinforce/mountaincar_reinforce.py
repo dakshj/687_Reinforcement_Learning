@@ -7,27 +7,27 @@ from method.reinforce.reinforce_without_baseline import reinforce_without_baseli
 from util.plot.plot_trials import save_trial
 from util.random_hyperparameter_search import random_hyperparameter_search
 
-TRIALS = 100
+TRIALS = 20
 
 # ALL               = [3, 4, 5, 7, 8]
-FOURIER_BASIS_ORDER = [3, 4, 5, 7, 8]
+FOURIER_BASIS_ORDER = [4]
 
 # ALL  = [0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 0.9, 1]
-LAMBDA = [0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 0.9, 1]
+LAMBDA = [0.05]
 
 # ALL       = [0.1, 0.01, 0.001, 0.005, 0.05]
-ALPHA_THETA = [0.1, 0.01, 0.001, 0.005, 0.05]
+ALPHA_THETA = [.005]
 
 # ALL         = [0.1, 0.01, 0.001, 0.005, 0.05]
-ALPHA_WEIGHTS = [0.1, 0.01, 0.001, 0.005, 0.05]
+ALPHA_WEIGHTS = [0.005]
 
 # ALL = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
-SIGMA = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+SIGMA = [0.1]
 
 # ALL    = [True, False]
-WITH_BASELINE = [True, False]
+WITH_BASELINE = [False]
 
-EPISODES = 500
+EPISODES = 200
 
 SKIP_EXISTING_PATH = False
 
